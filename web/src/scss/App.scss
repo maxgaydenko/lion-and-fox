@@ -1,18 +1,23 @@
 .App {
   .layer-conic {
     z-index: 10;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: conic-gradient(from 52deg at 50px 50%, white, black 45deg, white);
+    position: fixed;
+    left: calc(-100vw - 100vh + 50px);
+    top: calc(-100vw - 50vh - 66px);
+    width: calc(200vw + 200vh);
+    height: calc(200vw + 200vh);
+    background: conic-gradient(from 355deg, #010510, #6E727D 76deg, #1B1E29 136deg, #333742 204deg, #5F636E 280deg, #ABAFBA 320deg, #010510);
+    // background: conic-gradient(from 355deg at 50px calc(50% - 66px), #010510, #6E727D 76deg, #1B1E29 136deg, #333742 204deg, #5F636E 280deg, #ABAFBA 320deg, #010510);
+    // background: conic-gradient(from 52deg at 50px 50%, white, black 45deg, white);
     background-repeat: no-repeat;
-    background-size: contain;   
+    background-size: contain;
+    transition: transform 1s linear;
+    transform-origin: center center;
+    // transform-origin: 50px calc(50% - 66px);
   }
   .layer-ameba {
     z-index: 20;
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     width: 100%;
@@ -20,6 +25,7 @@
     background: url("../assets/png/cell.png") 0 0 no-repeat;
     background-size: cover;
     opacity: 0.8;
+    transition: opacity 1s linear;
   }
   .layer-content {
     z-index: 100;
@@ -35,21 +41,32 @@
       position: fixed;
       left: 50px;
       top: 50%;
+      margin-left: -12px;
+      margin-top: -78px;
       ul {
+        margin: 0;
+        padding: 0;
         li {
           list-style: none;
-          a {
+          display: block;
+          padding: 0 0 32px;
+          margin: 0;
+          .icon {
             display: block;
             width: 24px;
             height: 24px;
-          }
-          a:hover {}
-          .icon {
+            background-color: transparent;
             background-repeat: no-repeat;
             background-position: center center;
+            border: none;
+            outline: none;
+          }
+          .icon:hover {
+            cursor: pointer;
           }
           .icon-menu {
             @extend %svg-menu;
+            transition: transform 1s linear;
           }
           .icon-instagram {
             @extend %svg-instagram;
@@ -63,8 +80,18 @@
   }
 }
 .App-menu-shown {
+  .layer-conic {
+    transform: rotate(90deg);
+  }
   .layer-ameba {
-    background: pink !important;
+    opacity: 0.2;
+  }
+  .Sidebar {
+    .icons {
+      .icon-menu {
+        transform: rotate(90deg);
+      }
+    }
   }
 }
 
