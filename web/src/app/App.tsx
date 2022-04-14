@@ -10,7 +10,11 @@ function App() {
     <div className={"App" + (menuShown? " App-menu-shown": "")}>
       <div className='layer-conic'></div>
       <div className='layer-ameba'></div>
-      <div className='layer-content'>hello</div>
+      <div className='layer-content'>
+        <div className='content-wrapper'>
+         <div style={{textAlign:'center', padding: '1em 0'}}>content will be here later</div>
+        </div>
+      </div>
       <Sidebar onMenuClick={() => setMenuShown(!menuShown)} />
     </div>
   );
