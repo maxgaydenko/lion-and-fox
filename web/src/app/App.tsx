@@ -1,4 +1,6 @@
 import React from 'react';
+// import {HashRouter as Router, Routes, Route} from "react-router-dom";
+// import {Route} from "react-router";
 import { Menu } from '../components/Menu';
 import { PageCars } from '../components/PageCars';
 import { Sidebar } from '../components/Sidebar';
@@ -14,6 +16,16 @@ function App() {
       <div className='layer-ameba'></div>
       <div className='layer-content'>
         <div className='content-wrapper'>
+         {/* <Router>
+           <Routes>
+            <Route path='/'>
+              <React.Fragment>@home</React.Fragment>
+            </Route>
+            <Route path='/page'>
+              <React.Fragment><PageCars /></React.Fragment>
+            </Route>
+           </Routes>
+         </Router> */}
          <PageCars />
         </div>
       </div>

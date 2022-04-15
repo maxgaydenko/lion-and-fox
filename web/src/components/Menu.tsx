@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom"
 
 interface IProps {
 }
@@ -10,7 +11,7 @@ export const Menu: React.FC<IProps> = (props: IProps) => {
     <div className="menu-box">
      <ul>
       <li className="section"><a href="#1">future</a></li>
-      <li><a href="#2">future model</a></li>
+      <li><a href={'/page/2'}>future model</a></li>
       <li className="section">autonomouse robots</li>
       <li><a href="#3">robots of lion and fox</a></li>
       <li className="section">cars</li>
