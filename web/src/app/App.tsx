@@ -1,4 +1,6 @@
 import React from 'react';
+import { Menu } from '../components/Menu';
+import { PageCars } from '../components/PageCars';
 import { Sidebar } from '../components/Sidebar';
 // import { Counter } from '../features/counter/Counter';
 // import { Logo } from '../features/logo/Logo';
@@ -12,10 +14,11 @@ function App() {
       <div className='layer-ameba'></div>
       <div className='layer-content'>
         <div className='content-wrapper'>
-         <div style={{textAlign:'center', padding: '1em 0'}}>content will be here later</div>
+         <PageCars />
         </div>
       </div>
       <Sidebar onMenuClick={() => setMenuShown(!menuShown)} />
+      <Menu />
     </div>
   );
 }
