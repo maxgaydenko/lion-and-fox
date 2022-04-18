@@ -5,10 +5,14 @@ import App from './App';
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
+const backend = process.env.REACT_APP_BACKEND_URL || 'localhost:8080';
+console.log('Backend url', backend);
+console.log('App version:', process.env.REACT_APP_VERSION);
+
 const client = new ApolloClient({
     // uri: '//dev.taske.ru/api/graphql',
     // uri: '//keystone:3055/api/graphql',
-    uri: process.env.BACKEND,
+    uri: `${backend}/api/graphql`,
     cache: new InMemoryCache(),
     credentials: 'include',
     headers: {
