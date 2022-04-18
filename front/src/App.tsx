@@ -1,12 +1,12 @@
 import React from 'react';
-import { HashRouter, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
 import './App.scss';
 import { One } from './One';
 import { Two } from './Two';
 
 function App() {
   return (
-   <HashRouter>
+   <Router>
     <div className="App">
       <div>
         <Link to={'/'}>home</Link> | <Link to={'/one'}>one</Link> | <Link to={'/two'}>two</Link>
@@ -19,7 +19,7 @@ function App() {
         </Routes>
       </div>
     </div>
-   </HashRouter>
+   </Router>
   );
 }
 
