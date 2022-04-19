@@ -1,118 +1,166 @@
-import { list } from '@keystone-6/core';
+import { list } from "@keystone-6/core";
 
-import {
-  text,
-  relationship,
-  password,
-  timestamp,
-  select,
-} from '@keystone-6/core/fields';
-import { document } from '@keystone-6/fields-document';
+import { text, relationship, password, timestamp, select, integer, checkbox } from "@keystone-6/core/fields";
+import { document } from "@keystone-6/fields-document";
+import { Lists } from ".keystone/types";
 
-import { Lists } from '.keystone/types';
+type Session = {
+  data: {
+    id: string;
+    name: string;
+    isAdmin: boolean;
+  }
+}
+
+// const isAdmin = ({ session }: { session: Session }) => session?.data.isAdmin;
+const isAdmin = ({ session }: { session: Session }) => {
+  console.log('-- isAdmin', session);
+  return session?.data.isAdmin
+};
 
 export const lists: Lists = {
-  User: list({
-    fields: {
-      name: text({ validation: { isRequired: true } }),
-      email: text({
-        validation: { isRequired: true },
-        isIndexed: 'unique',
-        isFilterable: true,
-      }),
-      password: password({ validation: { isRequired: true } }),
-      posts: relationship({ ref: 'Post.author', many: true }),
+ User: list({
+  access: {
+    item: {
+      update: isAdmin,
+      delete: isAdmin,
     },
-    ui: {
-      listView: {
-        initialColumns: ['name', 'posts'],
+    operation: {
+      update: isAdmin,
+      delete: isAdmin,
+    },
+    filter: {
+      query: ({session} : {session: Session}) => {
+        // return session.data.isAdmin? true: {id: {equals: null}};
+        if(session.data.isAdmin)
+         return true;
+        return (session && session.data && session.data.name) // && session.data.isAdmin)
+         ? {name: {equals: session?.data?.name}}
+         : {id: {equals: null}}
       },
-    },
-  }),
-  Page: list({
-    fields: {
-      title: text({validation: {isRequired:true, }}),
-      status: select({
-        options: [
-          { label: 'Published', value: 'published' },
-          { label: 'Draft', value: 'draft' },
-        ],
-        defaultValue: 'draft',
-        ui: {
-          displayMode: 'segmented-control',
-        },
-      }),
-      content: document({
-        formatting: true,
-        layouts: [
-          [1, 1],
-          [1, 1, 1],
-          [2, 1],
-          [1, 2],
-          [1, 2, 1],
-        ],
-        links: true,
-        dividers: true,
-      }),
+      delete: isAdmin,
+      update: isAdmin,
     }
-  }),
-  Post: list({
-    fields: {
-      title: text(),
-      status: select({
-        options: [
-          { label: 'Published', value: 'published' },
-          { label: 'Draft', value: 'draft' },
-        ],
-        defaultValue: 'draft',
-        ui: {
-          displayMode: 'segmented-control',
-        },
-      }),
-      content: document({
-        formatting: true,
-        layouts: [
-          [1, 1],
-          [1, 1, 1],
-          [2, 1],
-          [1, 2],
-          [1, 2, 1],
-        ],
-        links: true,
-        dividers: true,
-      }),
-      publishDate: timestamp(),
-      author: relationship({
-        ref: 'User.posts',
-        ui: {
-          displayMode: 'cards',
-          cardFields: ['name', 'email'],
-          inlineEdit: { fields: ['name', 'email'] },
-          linkToItem: true,
-          inlineCreate: { fields: ['name', 'email'] },
-        },
-      }),
-      tags: relationship({
-        ref: 'Tag.posts',
-        ui: {
-          displayMode: 'cards',
-          cardFields: ['name'],
-          inlineEdit: { fields: ['name'] },
-          linkToItem: true,
-          inlineConnect: true,
-          inlineCreate: { fields: ['name'] },
-        },
-        many: true,
-      }),
-    },
-  }),
-  Tag: list({
+  },
+  fields: {
+   name: text({ validation: { isRequired: true } }),
+   email: text({
+    validation: { isRequired: true },
+    isIndexed: "unique",
+    isFilterable: true,
+    access: {
+      update: isAdmin,
+    }
+   }),
+   isAdmin: checkbox({access: {update: isAdmin}}),
+   password: password({ validation: { isRequired: true } }),
+   posts: relationship({ ref: "Post.author", many: true , ui: {itemView: {fieldMode: "hidden"}}}),
+  },
+  ui: {
+   listView: {
+    initialColumns: ["name", "email", "isAdmin"],
+
+   },
+  },
+ }),
+ Page: list({
+  fields: {
+   menuName: text({ validation: { isRequired: true } }),
+   url: text({ validation: { isRequired: true, match: {regex: RegExp(/^([a-zA-Z0-9])+(\/[a-zA-Z0-9]+)*$/), explanation: 'Url must contains alpha and numbers divided by /'} }, isIndexed: "unique" }),
+   pos: integer({validation: {isRequired: true}, defaultValue: 0}),
+   isPublished: checkbox({}),
+  //  status: select({
+  //   options: [
+  //    { label: "Published", value: "published" },
+  //    { label: "Draft", value: "draft" },
+  //   ],
+  //   defaultValue: "draft",
+  //   ui: {
+  //    displayMode: "segmented-control",
+  //   },
+  //  }),
+   title: text({ validation: { isRequired: true } }),
+   hasBlazon: checkbox(),
+   content: document({
+    formatting: true,
+    layouts: [
+     [1, 1],
+     [1, 1, 1],
+     [2, 1],
+     [1, 2],
+     [1, 2, 1],
+    ],
+    links: true,
+    dividers: true,
+   }),
+  },
+  ui: {
+    listView: {
+      initialColumns: ['menuName', 'url', 'pos', 'isPublished'],
+      initialSort: {field: "pos", direction: "ASC"},
+    }
+  },
+ }),
+ Post: list({
+  ui: {
+    isHidden: true,
+  },
+  fields: {
+   title: text(),
+   status: select({
+    options: [
+     { label: "Published", value: "published" },
+     { label: "Draft", value: "draft" },
+    ],
+    defaultValue: "draft",
     ui: {
-      isHidden: true,
+     displayMode: "segmented-control",
     },
-    fields: {
-      name: text(),
-      posts: relationship({ ref: 'Post.tags', many: true }),
+   }),
+   content: document({
+    formatting: true,
+    layouts: [
+     [1, 1],
+     [1, 1, 1],
+     [2, 1],
+     [1, 2],
+     [1, 2, 1],
+    ],
+    links: true,
+    dividers: true,
+   }),
+   publishDate: timestamp(),
+   author: relationship({
+    ref: "User.posts",
+    ui: {
+     displayMode: "cards",
+     cardFields: ["name", "email"],
+     inlineEdit: { fields: ["name", "email"] },
+     linkToItem: true,
+     inlineCreate: { fields: ["name", "email"] },
     },
-  }),
+   }),
+   tags: relationship({
+    ref: "Tag.posts",
+    ui: {
+     displayMode: "cards",
+     cardFields: ["name"],
+     inlineEdit: { fields: ["name"] },
+     linkToItem: true,
+     inlineConnect: true,
+     inlineCreate: { fields: ["name"] },
+    },
+    many: true,
+   }),
+  },
+ }),
+ Tag: list({
+  ui: {
+   isHidden: true,
+  },
+  fields: {
+   name: text(),
+   posts: relationship({ ref: "Post.tags", many: true }),
+  },
+ }),
 };

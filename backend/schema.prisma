@@ -12,18 +12,23 @@ generator client {
 }
 
 model User {
-  id       String @id @default(cuid())
-  name     String @default("")
-  email    String @unique @default("")
+  id       String  @id @default(cuid())
+  name     String  @default("")
+  email    String  @unique @default("")
+  isAdmin  Boolean @default(false)
   password String
-  posts    Post[] @relation("Post_author")
+  posts    Post[]  @relation("Post_author")
 }
 
 model Page {
-  id      String  @id @default(cuid())
-  title   String  @default("")
-  status  String? @default("draft")
-  content String  @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  id          String  @id @default(cuid())
+  menuName    String  @default("")
+  url         String  @unique @default("")
+  pos         Int     @default(0)
+  isPublished Boolean @default(false)
+  title       String  @default("")
+  hasBlazon   Boolean @default(false)
+  content     String  @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
 }
 
 model Post {

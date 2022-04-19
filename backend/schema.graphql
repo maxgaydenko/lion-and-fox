@@ -5,6 +5,7 @@ type User {
   id: ID!
   name: String
   email: String
+  isAdmin: Boolean
   password: PasswordState
   posts(
     where: PostWhereInput! = {}
@@ -31,6 +32,7 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
+  isAdmin: BooleanFilter
   posts: PostManyRelationFilter
 }
 
@@ -73,6 +75,11 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
 input PostManyRelationFilter {
   every: PostWhereInput
   some: PostWhereInput
@@ -83,6 +90,7 @@ input UserOrderByInput {
   id: OrderDirection
   name: OrderDirection
   email: OrderDirection
+  isAdmin: OrderDirection
 }
 
 enum OrderDirection {
@@ -93,6 +101,7 @@ enum OrderDirection {
 input UserUpdateInput {
   name: String
   email: String
+  isAdmin: Boolean
   password: String
   posts: PostRelateToManyForUpdateInput
 }
@@ -112,6 +121,7 @@ input UserUpdateArgs {
 input UserCreateInput {
   name: String
   email: String
+  isAdmin: Boolean
   password: String
   posts: PostRelateToManyForCreateInput
 }
@@ -123,8 +133,12 @@ input PostRelateToManyForCreateInput {
 
 type Page {
   id: ID!
+  menuName: String
+  url: String
+  pos: Int
+  isPublished: Boolean
   title: String
-  status: String
+  hasBlazon: Boolean
   content: Page_content_Document
 }
 
@@ -134,6 +148,7 @@ type Page_content_Document {
 
 input PageWhereUniqueInput {
   id: ID
+  url: String
 }
 
 input PageWhereInput {
@@ -141,47 +156,42 @@ input PageWhereInput {
   OR: [PageWhereInput!]
   NOT: [PageWhereInput!]
   id: IDFilter
+  menuName: StringFilter
+  url: StringFilter
+  pos: IntFilter
+  isPublished: BooleanFilter
   title: StringFilter
-  status: StringNullableFilter
+  hasBlazon: BooleanFilter
 }
 
-input StringNullableFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  not: NestedStringNullableFilter
-}
-
-input NestedStringNullableFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  not: NestedStringNullableFilter
+input IntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntFilter
 }
 
 input PageOrderByInput {
   id: OrderDirection
+  menuName: OrderDirection
+  url: OrderDirection
+  pos: OrderDirection
+  isPublished: OrderDirection
   title: OrderDirection
-  status: OrderDirection
+  hasBlazon: OrderDirection
 }
 
 input PageUpdateInput {
+  menuName: String
+  url: String
+  pos: Int
+  isPublished: Boolean
   title: String
-  status: String
+  hasBlazon: Boolean
   content: JSON
 }
 
@@ -191,8 +201,12 @@ input PageUpdateArgs {
 }
 
 input PageCreateInput {
+  menuName: String
+  url: String
+  pos: Int
+  isPublished: Boolean
   title: String
-  status: String
+  hasBlazon: Boolean
   content: JSON
 }
 
@@ -233,6 +247,34 @@ input PostWhereInput {
   publishDate: DateTimeNullableFilter
   author: UserWhereInput
   tags: TagManyRelationFilter
+}
+
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringNullableFilter
+}
+
+input NestedStringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringNullableFilter
 }
 
 input DateTimeNullableFilter {
@@ -409,6 +451,7 @@ type UserAuthenticationWithPasswordFailure {
 input CreateInitialUserInput {
   name: String
   email: String
+  isAdmin: Boolean
   password: String
 }
 
