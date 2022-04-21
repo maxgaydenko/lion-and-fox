@@ -1,0 +1,79 @@
+.App {
+  .layer-conic {
+    z-index: 10;
+    position: fixed;
+    // left: calc(-100vw - 100vh + 50px);
+    // top: calc(-100vw - 50vh - 66px);
+    left: calc(-100vw - 100vh + 32px);
+    top: calc(-100vw - 100vh + 32px);
+    width: calc(200vw + 200vh);
+    height: calc(200vw + 200vh);
+    background: conic-gradient(from 355deg, #010510, #6E727D 76deg, #1B1E29 136deg, #333742 204deg, #5F636E 280deg, #ABAFBA 320deg, #010510);
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: transform $menu-duration linear;
+    transform-origin: center center;
+  }
+  @media (min-width: $tablet-min-width) {
+    .layer-conic {
+     left: calc(-100vw - 100vh + 100px);
+     top: calc(-100vw - 50vh - 56px);
+    }
+  }
+  @media (min-width: $desktop-min-width) {
+    .layer-conic {
+      left: calc(-100vw - 100vh + 200px);
+      // top: calc(-100vw - 50vh - 56px);
+     }
+   }
+  .layer-ameba {
+    z-index: 20;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: url("../assets/png/cell.png") 0 0 no-repeat;
+    background-size: cover;
+    opacity: 0.2;
+    transition: opacity $menu-duration linear;
+  }
+  .layer-content {
+    z-index: 100;
+    position: relative;
+    // margin: 24px 16px 24px 64px;
+    margin-left: 64px;
+    margin-right: 16px;
+    padding: 24px 0;
+    transition: opacity $menu-duration linear;
+    @media (min-width: $tablet-min-width) {
+      margin-left: 164px;
+      padding-top: 56px;
+    }
+    @media (min-width: $desktop-min-width) {
+      margin-left: 224px; // TODO change to layout spec!
+    }
+    .content-wrapper {
+      margin: 0 auto;
+      max-width: 800px;
+      // background: #dd01;
+      // @media (min-width: $tablet-min-width) {
+      //   background: #d0d1;
+      // }
+      // @media (min-width: $desktop-min-width) {
+      //   background: #0dd1;
+      // }
+    }
+  }
+}
+.App-menu-shown {
+  .layer-conic {
+    transform: rotate(90deg);
+  }
+  .layer-ameba {
+    opacity: 0.1;
+  }
+  .layer-content {
+    opacity: 0;
+  }
+}
