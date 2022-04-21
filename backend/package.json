@@ -1,11 +1,12 @@
 {
   "name": "keystone-app",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "scripts": {
     "dev": "keystone dev",
     "start": "keystone start",
     "build": "keystone build",
+    "migrate": "keystone prisma migrate deploy",
     "postinstall": "keystone postinstall"
   },
   "dependencies": {
