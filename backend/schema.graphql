@@ -133,6 +133,7 @@ input PostRelateToManyForCreateInput {
 
 type Page {
   id: ID!
+  menuSection: String
   menuName: String
   url: String
   pos: Int
@@ -156,6 +157,7 @@ input PageWhereInput {
   OR: [PageWhereInput!]
   NOT: [PageWhereInput!]
   id: IDFilter
+  menuSection: StringFilter
   menuName: StringFilter
   url: StringFilter
   pos: IntFilter
@@ -177,6 +179,7 @@ input IntFilter {
 
 input PageOrderByInput {
   id: OrderDirection
+  menuSection: OrderDirection
   menuName: OrderDirection
   url: OrderDirection
   pos: OrderDirection
@@ -186,6 +189,7 @@ input PageOrderByInput {
 }
 
 input PageUpdateInput {
+  menuSection: String
   menuName: String
   url: String
   pos: Int
@@ -201,6 +205,7 @@ input PageUpdateArgs {
 }
 
 input PageCreateInput {
+  menuSection: String
   menuName: String
   url: String
   pos: Int

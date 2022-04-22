@@ -71,6 +71,7 @@ export const lists: Lists = {
    },
   },
   fields: {
+   menuSection: text(),
    menuName: text({ validation: { isRequired: true } }),
    url: text({
     validation: {
@@ -81,16 +82,6 @@ export const lists: Lists = {
    }),
    pos: integer({ validation: { isRequired: true }, defaultValue: 0 }),
    isPublished: checkbox({}),
-   //  status: select({
-   //   options: [
-   //    { label: "Published", value: "published" },
-   //    { label: "Draft", value: "draft" },
-   //   ],
-   //   defaultValue: "draft",
-   //   ui: {
-   //    displayMode: "segmented-control",
-   //   },
-   //  }),
    title: text({ validation: { isRequired: true } }),
    hasBlazon: checkbox(),
    content: document({

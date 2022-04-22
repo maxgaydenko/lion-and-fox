@@ -36,7 +36,9 @@
     background: url("../assets/png/cell_VERT.png") 0 0 no-repeat;
     background-size: cover;
     opacity: 0.2;
-    transition: all $menu-duration linear;
+    // transition: opacity 500ms linear;
+    // transition: background-position 1000ms cubic-bezier(0, 0.99, 0.99, 1);
+    transition: all 1000ms cubic-bezier(0, 0.99, 0.99, 1);
   }
   .layer-content {
     z-index: 100;
@@ -64,6 +66,11 @@
       //   background: #0dd1;
       // }
     }
+  }
+}
+.App-home {
+  .layer-ameba {
+    opacity: 1;
   }
 }
 .App-page {
