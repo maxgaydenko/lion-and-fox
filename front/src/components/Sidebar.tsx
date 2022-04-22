@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface IProps {
  onMenuClick: () => void
@@ -7,8 +8,8 @@ interface IProps {
 export const Sidebar: React.FC<IProps> = (props: IProps) => {
  return (
   <div className="Sidebar">
-   <div className="logo"><a href="/"><span>lion and fox</span></a></div>
-   <div className="title">lion and fox <span>alive</span>&copy; 2022</div>
+   <div className="logo"><Link to="/"><span>lion and fox</span></Link></div>
+   <div className="title">lion and fox <Link to="future">alive</Link>&copy; 2022</div>
    <div className="username">832F-4816-12.05.2022</div>
    <div className="icons">
     <ul>

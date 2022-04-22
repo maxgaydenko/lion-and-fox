@@ -1,12 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { PageCars } from "./PageCars";
+// import { PageCars } from "./PageCars";
 import { Sidebar } from "./Sidebar";
 import { Menu } from "./Menu";
 import { GET_MENU_PAGES, IMenuLoaded } from "../hooks/use-menu-load";
 import { combineMenu, EMenuRouteComponentType, IMenu } from "../utils/menu";
 import { Page } from "./Page";
+import { PageHome } from "./PageHome";
 
 function AppLoader() {
 //  const [menuShown, setMenuShown] = React.useState<boolean>(false);
@@ -69,20 +70,29 @@ interface IProps {
 }
 
 const App: React.FC<IProps> = (props: IProps) => {
+  const [homeMarker, setHomeMarker] = React.useState<boolean>(true);
   const [menuShown, setMenuShown] = React.useState<boolean>(false);
 
-  const menuHide = () => setMenuShown(false);
+  const pageLoaded = () => {
+    setHomeMarker(false);
+    setMenuShown(false);
+  }
+
+  const homePageLoaded = () => {
+    setHomeMarker(true);
+    setMenuShown(false);
+  }
 
   return (
     <Router>
-    <div className={"App" + (menuShown ? " App-menu-shown" : "")}>
+    <div className={"App" + (homeMarker? " App-home": " App-page") + (menuShown ? " App-menu-shown" : "")}>
      <div className="layer-conic"></div>
      <div className="layer-ameba"></div>
      <div className="layer-content">
       <div className="content-wrapper">
        <Routes>
-        <Route path="/" element={<div>@home</div>} />
-        {props.menu.items.filter(f => f.routeComponentType===EMenuRouteComponentType.Page).map((f,i) => <Route key={i} path={f.url} element={<Page url={f.url} menu={props.menu} onPageReady={menuHide} />} />)}
+        <Route path="/" element={<PageHome onPageReady={homePageLoaded} />} />
+        {props.menu.items.filter(f => f.routeComponentType===EMenuRouteComponentType.Page).map((f,i) => <Route key={i} path={f.url} element={<Page url={f.url} menu={props.menu} onPageReady={pageLoaded} />} />)}
         {/* <Route path="page1" element={<div>Page1</div>} />
         <Route path="page1/sub1" element={<div>Page1.1</div>} />
         <Route path="page1/sub1/sub1" element={<div>Page1.1.1</div>} />

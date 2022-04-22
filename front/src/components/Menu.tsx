@@ -20,18 +20,9 @@ export const Menu: React.FC<IProps> = (props: IProps) => {
   <div className="Menu">
    <div className="menu-wrapper">
     <div className="menu-box">
-     {/* {menuStruct && (
-      <ul>
-       {menuStruct.__menuItems.map((menuItem, idx) => (
-        <li key={idx}>
-         <a href={"#" + menuItem.url}>{menuItem.name}</a>
-        </li>
-       ))}
-      </ul>
-     )} */}
      <ul>
       {props.menu.items.map((f,i) => <li key={i}><Link to={f.url}>{f.title}</Link></li>)}
-      <li>-</li>
+      {/* <li>-</li>
       <li className="section">
        <Link to="/">future</Link>
       </li>
@@ -48,19 +39,19 @@ export const Menu: React.FC<IProps> = (props: IProps) => {
       </li>
       <li>
        <Link to="page1/sub3">projects</Link>
-      </li>
+      </li> */}
       <li className="section">contact</li>
       <li>
        <a href="mailto:mail@lionandfox.co.uk">mail@lionandfox.co.uk</a>
       </li>
-      <li className="section">presentations</li>
+      {/* <li className="section">presentations</li>
       <li>
        <a href="#6">832F-4816-12.05.2022</a>
       </li>
       <li>–</li>
       <li>
        <a href="#7">logout</a>
-      </li>
+      </li> */}
 
       {/*
       <li className="section"><a href="#1">2-future</a></li>

@@ -1,6 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
 import { Link } from "react-router-dom";
+import { DocumentRenderer } from "../utils/document-renderer";
 import { IMenu, IMenuItem } from "../utils/menu";
 import { PageError } from "./PageError";
 
@@ -64,7 +65,8 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
    </div>
    <div className="body">
     <h1>{props.page.title}</h1>
-    <pre>{JSON.stringify(props.page.content.document, null, 2)}</pre>
+    {/* <pre>{JSON.stringify(props.page.content.document, null, 2)}</pre> */}
+    <DocumentRenderer document={props.page.content.document} />
    </div>
   </div>
  );
