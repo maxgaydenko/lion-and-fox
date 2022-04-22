@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import App from "./components/App";
+import AppLoader from "./components/App";
 
 import "./scss/index.scss";
 
@@ -24,7 +24,7 @@ ReactDOM.render(
  <React.StrictMode>
   {/* <Provider store={store}> */}
   <ApolloProvider client={client}>
-   <App />
+   <AppLoader />
   </ApolloProvider>
   {/* </Provider> */}
  </React.StrictMode>,

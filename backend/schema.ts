@@ -14,7 +14,7 @@ type Session = {
 
 // const isAdmin = ({ session }: { session: Session }) => session?.data.isAdmin;
 const isAdmin = ({ session }: { session: Session }) => {
- console.log("-- isAdmin", session);
+//  console.log("-- isAdmin", session);
  return session?.data.isAdmin;
 };
 
@@ -65,9 +65,8 @@ export const lists: Lists = {
   access: {
    filter: {
     query: ({ session }: { session: Session }) => {
-     console.log("query page", session);
+    //  console.log("query page", session);
      return Boolean(session) ? true : { isPublished: { equals: true } };
-     // return (session.data.isAdmin)? true: {isPublished: {equals: true}}
     },
    },
   },

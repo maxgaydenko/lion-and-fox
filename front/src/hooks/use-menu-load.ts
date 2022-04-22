@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
-import { IMenuResult } from "../utils/menu";
+import { IMenuDataItem } from "../utils/menu";
 
 export const GET_MENU_PAGES = gql`
  query GetMenuPages {
@@ -12,7 +12,7 @@ export const GET_MENU_PAGES = gql`
 `;
 
 export interface IMenuLoaded {
- pages: IMenuResult[]
+ pages: IMenuDataItem[]
 }
 
 interface IUseMenuLoadResult {

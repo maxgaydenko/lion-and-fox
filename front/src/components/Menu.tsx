@@ -1,49 +1,53 @@
 import React from "react";
-import { combineMenu, IMenuResult, IMenuStruct } from "../utils/menu";
+import { Link } from "react-router-dom";
+import { IMenu } from "../utils/menu";
 // import {Link} from "react-router-dom"
 
 interface IProps {
- pageItems: IMenuResult[];
- galleryItems: IMenuResult[];
+ menu: IMenu
+//  pageItems: IMenuResult[];
+//  galleryItems: IMenuResult[];
 }
 
 export const Menu: React.FC<IProps> = (props: IProps) => {
- const [menuStruct, setMenuStruct] = React.useState<IMenuStruct>();
- React.useEffect(() => {
-  console.log("Menu struct");
-  setMenuStruct(combineMenu(props.pageItems));
- }, [props.pageItems]);
+//  const [menuStruct, setMenuStruct] = React.useState<IMenu>();
+//  React.useEffect(() => {
+//   console.log("Menu struct");
+//   setMenuStruct(combineMenu(props.pageItems, []));
+//  }, [props.pageItems]);
 
  return (
   <div className="Menu">
    <div className="menu-wrapper">
     <div className="menu-box">
-     {menuStruct && (
+     {/* {menuStruct && (
       <ul>
-       {menuStruct.menuItems.map((menuItem, idx) => (
+       {menuStruct.__menuItems.map((menuItem, idx) => (
         <li key={idx}>
          <a href={"#" + menuItem.url}>{menuItem.name}</a>
         </li>
        ))}
       </ul>
-     )}
+     )} */}
      <ul>
+      {props.menu.items.map((f,i) => <li key={i}><Link to={f.url}>{f.title}</Link></li>)}
+      <li>-</li>
       <li className="section">
-       <a href="#1">future</a>
+       <Link to="/">future</Link>
       </li>
       <li>
-       <a href={"/page/2"}>future model</a>
+       <Link to={"page1"}>future model</Link>
       </li>
       <li className="section">autonomouse robots</li>
       <li>
-       <a href="#3">robots of lion and fox</a>
+       <Link to="page2">robots of lion and fox</Link>
       </li>
       <li className="section">cars</li>
       <li>
-       <a href="#4">about</a>
+       <Link to="page1/sub1">about</Link>
       </li>
       <li>
-       <a href="#5">projects</a>
+       <Link to="page1/sub3">projects</Link>
       </li>
       <li className="section">contact</li>
       <li>
