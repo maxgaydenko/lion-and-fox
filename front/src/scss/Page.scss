@@ -41,9 +41,30 @@
   font-weight: 300;
   h1 {
    font-weight: 100;
+   font-size: 24px;
+   line-height: 33px;
+   padding: 0;
+   margin: 0;
   }
   p {
+   margin: 0;
+   padding: 28px 0 0;
    line-height: 28px;
+  }
+  ul, ol {
+   margin: 0 0 0 32px;
+   padding: 28px 0 0;
+  }
+  hr {
+   margin-top: 28px;
+  }
+  a {
+   color: #00FB99;
+   text-decoration: none;
+   transition: all $hover-duration linear;
+  }
+  a:hover {
+   opacity: .6;
   }
  }
 }
