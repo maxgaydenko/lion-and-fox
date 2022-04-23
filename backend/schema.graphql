@@ -105,8 +105,8 @@ input UserCreateInput {
 
 type Page {
   id: ID!
-  menuSection: String
   menuName: String
+  menuSection: String
   url: String
   pos: Int
   isPublished: Boolean
@@ -129,8 +129,8 @@ input PageWhereInput {
   OR: [PageWhereInput!]
   NOT: [PageWhereInput!]
   id: IDFilter
-  menuSection: StringFilter
   menuName: StringFilter
+  menuSection: StringFilter
   url: StringFilter
   pos: IntFilter
   isPublished: BooleanFilter
@@ -151,8 +151,8 @@ input IntFilter {
 
 input PageOrderByInput {
   id: OrderDirection
-  menuSection: OrderDirection
   menuName: OrderDirection
+  menuSection: OrderDirection
   url: OrderDirection
   pos: OrderDirection
   isPublished: OrderDirection
@@ -161,8 +161,8 @@ input PageOrderByInput {
 }
 
 input PageUpdateInput {
-  menuSection: String
   menuName: String
+  menuSection: String
   url: String
   pos: Int
   isPublished: Boolean
@@ -177,8 +177,8 @@ input PageUpdateArgs {
 }
 
 input PageCreateInput {
-  menuSection: String
   menuName: String
+  menuSection: String
   url: String
   pos: Int
   isPublished: Boolean

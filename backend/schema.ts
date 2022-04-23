@@ -69,8 +69,8 @@ export const lists: Lists = {
    },
   },
   fields: {
-   menuSection: text(),
    menuName: text({ validation: { isRequired: true } }),
+   menuSection: text(),
    url: text({
     validation: {
      isRequired: true,
@@ -115,7 +115,7 @@ export const lists: Lists = {
   },
   ui: {
    listView: {
-    initialColumns: ["menuName", "url", "pos", "isPublished"],
+    initialColumns: ["menuName", "menuSection", "url", "pos", "isPublished"],
     initialSort: { field: "pos", direction: "ASC" },
    },
   },

@@ -22,10 +22,10 @@ const getProductionEnv = (envVariable: string, defaultValue: string): string => 
 // }
 
 const packageJson = require('./package.json');
-const filesStoragePath = getProductionEnv("FILES_STORAGE_PATH", "../storage_files/");
+const filesStoragePath = getProductionEnv("FILES_STORAGE_PATH", "../storage/files/");
 const filesBaseUrl = getProductionEnv("FILES_BASE_URL", "/storage");
-const imagesStoragePath = getProductionEnv("IMAGES_STORAGE_PATH", "../storage_images/");
-const imagesBaseUrl = getProductionEnv("IMAGES_BASE_URL", "/imgs");
+const imagesStoragePath = getProductionEnv("IMAGES_STORAGE_PATH", "../storage/images/");
+const imagesBaseUrl = getProductionEnv("IMAGES_BASE_URL", "/images");
 
 export default withAuth(
  config({

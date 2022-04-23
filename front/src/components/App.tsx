@@ -4,14 +4,18 @@ import { useQuery } from "@apollo/client";
 // import { PageCars } from "./PageCars";
 import { Sidebar } from "./Sidebar";
 import { Menu } from "./Menu";
-import { GET_MENU_PAGES, IMenuLoaded } from "../hooks/use-menu-load";
-import { combineMenu, EMenuRouteComponentType, IMenu } from "../utils/menu";
+import { GET_STRUCT } from "../gqls/gqls";
+import { combineMenu, EMenuItemType, IMenu, IMenuDataItem } from "../utils/menu";
 import { Page } from "./Page";
 import { PageHome } from "./PageHome";
 
+interface IStructResult {
+  pages: IMenuDataItem[]
+}
+
 function AppLoader() {
 //  const [menuShown, setMenuShown] = React.useState<boolean>(false);
- const { data, loading, error } = useQuery<IMenuLoaded>(GET_MENU_PAGES, {
+ const { data, loading, error } = useQuery<IStructResult>(GET_STRUCT, {
   notifyOnNetworkStatusChange: true,
   fetchPolicy: "no-cache",
  });
@@ -23,46 +27,6 @@ function AppLoader() {
  }
 
  return data? <App menu={combineMenu(data.pages!, [])} />: <div>No data</div>
-
- // React.useEffect(() => {
- //   const menuLoad = useMenuLoad();
- //   if(menuLoad.data)
- //    setMenuData(menuLoad.data);
- // }, []);
-//  return (
-//   <Router>
-//    <div className={"App" + (menuShown ? " App-menu-shown" : "")}>
-//     <div className="layer-conic"></div>
-//     <div className="layer-ameba"></div>
-//     <div className="layer-content">
-//      <div className="content-wrapper">
-//       <Routes>
-//        <Route path="/" element={<div>@home</div>} />
-//        <Route path="page1" element={<div>Page1</div>} />
-//        <Route path="page1/sub1" element={<div>Page1.1</div>} />
-//        <Route path="page1/sub1/sub1" element={<div>Page1.1.1</div>} />
-//        <Route path="page2" element={<div>Page2</div>} />
-//        <Route path="*" element={<div>@notFound</div>} />
-//       </Routes>
-//       {/* <Router>
-//            <Routes>
-//             <Route path='/'>
-//               <React.Fragment>@home</React.Fragment>
-//             </Route>
-//             <Route path='/page'>
-//               <React.Fragment><PageCars /></React.Fragment>
-//             </Route>
-//            </Routes>
-//          </Router> */}
-
-//       {/* <PageCars /> */}
-//      </div>
-//     </div>
-//     <Sidebar onMenuClick={() => setMenuShown(!menuShown)} />
-//     {data && <Menu pageItems={data.pages} galleryItems={[]} />}
-//    </div>
-//   </Router>
-//  );
 }
 
 interface IProps {
@@ -92,11 +56,7 @@ const App: React.FC<IProps> = (props: IProps) => {
       <div className="content-wrapper">
        <Routes>
         <Route path="/" element={<PageHome onPageReady={homePageLoaded} />} />
-        {props.menu.items.filter(f => f.routeComponentType===EMenuRouteComponentType.Page).map((f,i) => <Route key={i} path={f.url} element={<Page url={f.url} menu={props.menu} onPageReady={pageLoaded} />} />)}
-        {/* <Route path="page1" element={<div>Page1</div>} />
-        <Route path="page1/sub1" element={<div>Page1.1</div>} />
-        <Route path="page1/sub1/sub1" element={<div>Page1.1.1</div>} />
-        <Route path="page2" element={<div>Page2</div>} /> */}
+        {props.menu.items.filter(f => f.type===EMenuItemType.Page).map((f,i) => <Route key={i} path={f.url} element={<Page url={f.url} menu={props.menu} onPageReady={pageLoaded} />} />)}
         <Route path="*" element={<div>@notFound</div>} />
        </Routes>
        {/* <Router>

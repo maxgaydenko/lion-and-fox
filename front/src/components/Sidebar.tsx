@@ -9,7 +9,7 @@ export const Sidebar: React.FC<IProps> = (props: IProps) => {
  return (
   <div className="Sidebar">
    <div className="logo"><Link to="/"><span>lion and fox</span></Link></div>
-   <div className="title">lion and fox <Link to="future">alive</Link>&copy; 2022</div>
+   <div className="title"><Link to="/">lion</Link> <Link to="/future">and</Link> fox <span>alive</span>&copy; 2022</div>
    <div className="username">832F-4816-12.05.2022</div>
    <div className="icons">
     <ul>

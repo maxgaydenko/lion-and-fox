@@ -1,27 +1,42 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { IMenu } from "../utils/menu";
+import { EMenuItemType, IMenu } from "../utils/menu";
 // import {Link} from "react-router-dom"
 
 interface IProps {
- menu: IMenu
-//  pageItems: IMenuResult[];
-//  galleryItems: IMenuResult[];
+ menu: IMenu;
+}
+
+interface IMenuListItem {
+ readonly url: string;
+ readonly title: string;
+ readonly isSection: boolean;
 }
 
 export const Menu: React.FC<IProps> = (props: IProps) => {
-//  const [menuStruct, setMenuStruct] = React.useState<IMenu>();
-//  React.useEffect(() => {
-//   console.log("Menu struct");
-//   setMenuStruct(combineMenu(props.pageItems, []));
-//  }, [props.pageItems]);
+ const [listItems, setListItems] = React.useState<IMenuListItem[]>();
+ React.useEffect(() => {
+  let prevSection = "";
+  const _listItems: IMenuListItem[] = props.menu.items.reduce((p, c) => {
+   if (c.section && prevSection !== c.section)
+    p.push({ title: c.section, url: `${c.url}`, isSection: true });
+   p.push({ title: c.title, url: `${c.url}`, isSection: false });
+   prevSection = c.section;
+   return p;
+  }, [] as IMenuListItem[]);
+  setListItems(_listItems);
+ }, []);
 
  return (
   <div className="Menu">
    <div className="menu-wrapper">
     <div className="menu-box">
      <ul>
-      {props.menu.items.map((f,i) => <li key={i}><Link to={f.url}>{f.title}</Link></li>)}
+      {listItems && listItems.map((f, i) => (
+       <li key={i} className={f.isSection ? "section" : ""}>
+        <Link to={f.url}>{f.title}</Link>
+       </li>
+      ))}
       {/* <li>-</li>
       <li className="section">
        <Link to="/">future</Link>

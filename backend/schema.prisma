@@ -21,8 +21,8 @@ model User {
 
 model Page {
   id          String  @id @default(cuid())
-  menuSection String  @default("")
   menuName    String  @default("")
+  menuSection String  @default("")
   url         String  @unique @default("")
   pos         Int     @default(0)
   isPublished Boolean @default(false)

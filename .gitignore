@@ -1,6 +1,7 @@
 # 
 /db/
 /uploaded/
+/storage/
 
 # Logs
 logs
