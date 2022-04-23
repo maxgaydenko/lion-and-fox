@@ -1,6 +1,6 @@
 import { list } from "@keystone-6/core";
 
-import { text, relationship, password, timestamp, select, integer, checkbox } from "@keystone-6/core/fields";
+import { text, password, integer, checkbox } from "@keystone-6/core/fields";
 import { document } from "@keystone-6/fields-document";
 import { Lists } from ".keystone/types";
 
@@ -12,9 +12,9 @@ type Session = {
  };
 };
 
-// const isAdmin = ({ session }: { session: Session }) => session?.data.isAdmin;
+// const isAuth = ({ session }: { session: Session }) => Boolean(session.data)
+
 const isAdmin = ({ session }: { session: Session }) => {
-//  console.log("-- isAdmin", session);
  return session?.data.isAdmin;
 };
 
@@ -53,7 +53,6 @@ export const lists: Lists = {
    }),
    isAdmin: checkbox({ access: { update: isAdmin } }),
    password: password({ validation: { isRequired: true } }),
-   posts: relationship({ ref: "Post.author", many: true, ui: { itemView: { fieldMode: "hidden" } } }),
   },
   ui: {
    listView: {
@@ -65,7 +64,6 @@ export const lists: Lists = {
   access: {
    filter: {
     query: ({ session }: { session: Session }) => {
-    //  console.log("query page", session);
      return Boolean(session) ? true : { isPublished: { equals: true } };
     },
    },
@@ -100,24 +98,17 @@ export const lists: Lists = {
         ordered: true,
         unordered: true,
       },
+      // headingLevels: [1, 2, 3],
       // alignment: {
       //   center: true,
       //   end: true,
       // },
-      // headingLevels: [1, 2, 3, 4, 5, 6],
       // blockTypes: {
       //   blockquote: true,
       //   code: true
       // },
       softBreaks: true,
     },
-    // layouts: [
-    //  [1, 1],
-    //  [1, 1, 1],
-    //  [2, 1],
-    //  [1, 2],
-    //  [1, 2, 1],
-    // ],
     links: true,
     dividers: true,
    }),
@@ -127,68 +118,6 @@ export const lists: Lists = {
     initialColumns: ["menuName", "url", "pos", "isPublished"],
     initialSort: { field: "pos", direction: "ASC" },
    },
-  },
- }),
- Post: list({
-  ui: {
-   isHidden: true,
-  },
-  fields: {
-   title: text(),
-   status: select({
-    options: [
-     { label: "Published", value: "published" },
-     { label: "Draft", value: "draft" },
-    ],
-    defaultValue: "draft",
-    ui: {
-     displayMode: "segmented-control",
-    },
-   }),
-   content: document({
-    formatting: true,
-    layouts: [
-     [1, 1],
-     [1, 1, 1],
-     [2, 1],
-     [1, 2],
-     [1, 2, 1],
-    ],
-    links: true,
-    dividers: true,
-   }),
-   publishDate: timestamp(),
-   author: relationship({
-    ref: "User.posts",
-    ui: {
-     displayMode: "cards",
-     cardFields: ["name", "email"],
-     inlineEdit: { fields: ["name", "email"] },
-     linkToItem: true,
-     inlineCreate: { fields: ["name", "email"] },
-    },
-   }),
-   tags: relationship({
-    ref: "Tag.posts",
-    ui: {
-     displayMode: "cards",
-     cardFields: ["name"],
-     inlineEdit: { fields: ["name"] },
-     linkToItem: true,
-     inlineConnect: true,
-     inlineCreate: { fields: ["name"] },
-    },
-    many: true,
-   }),
-  },
- }),
- Tag: list({
-  ui: {
-   isHidden: true,
-  },
-  fields: {
-   name: text(),
-   posts: relationship({ ref: "Post.tags", many: true }),
   },
  }),
 };

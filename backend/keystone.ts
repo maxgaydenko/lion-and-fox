@@ -21,8 +21,11 @@ const getProductionEnv = (envVariable: string, defaultValue: string): string => 
 //  }
 // }
 
+const packageJson = require('./package.json');
 const filesStoragePath = getProductionEnv("FILES_STORAGE_PATH", "../storage_files/");
-const filesBaseUrl = getProductionEnv("FILES_BASE_URL", "/static_files");
+const filesBaseUrl = getProductionEnv("FILES_BASE_URL", "/storage");
+const imagesStoragePath = getProductionEnv("IMAGES_STORAGE_PATH", "../storage_images/");
+const imagesBaseUrl = getProductionEnv("IMAGES_BASE_URL", "/imgs");
 
 export default withAuth(
  config({
@@ -30,6 +33,9 @@ export default withAuth(
    cors: true,
    extendExpressApp: (app, createContext) => {
     app.use(filesBaseUrl, express.static(filesStoragePath));
+    app.get("/api/version", async (req, res) => {
+     res.json({version: packageJson.version});
+    });
     // app.get("/api/users", async (req, res) => {
     //  const context = await createContext(req, res);
     //  const users = await context.query.User.findMany();
