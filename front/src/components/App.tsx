@@ -10,6 +10,7 @@ import { Page } from "./Page";
 import { PageHome } from "./PageHome";
 import { PageGallery } from "./PageGallery";
 import { PageError } from "./PageError";
+import { AppError } from "./AppError";
 // import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 interface IStructResult {
@@ -26,7 +27,8 @@ function AppLoader() {
  if (loading) return <div>@loading</div>;
  if (error) {
   console.log("Loading error", error);
-  return <div>{error.message}</div>;
+  return <AppError title={error.name} message={error.message} />
+  // return <div>{error.message}</div>;
  }
 
  return data ? (
@@ -34,7 +36,7 @@ function AppLoader() {
    <App menu={combineMenu(data.pages!, [])} />
   </Router>
  ) : (
-  <div>No data</div>
+  <AppError title="Data error" message="Unable to load data" />
  );
 }
 
@@ -67,11 +69,12 @@ const App: React.FC<IProps> = (props: IProps) => {
       <div className="content-wrapper">
        <Routes>
         <Route path="/" element={<PageHome onPageReady={homePageLoaded} />} />
-        {props.menu.items
-         .filter(f => f.type === EMenuItemType.Page)
+        {props.menu.menuItems
+         // .filter(f => f.type === EMenuItemType.Page)
          .map((f, i) => (
           <Route key={i} path={f.url} element={<Page url={f.url} menu={props.menu} onPageReady={pageLoaded} />} />
          ))}
+        {props.menu.galleriesRoutes.map((galleryRoute,i) => <Route key={`galleryRoute-${i}`} path={galleryRoute} element={<PageError onPageReady={pageLoaded} title={'Not ready yet'} message="Try to visit this page later." />} />)}
         <Route path="dev/gallery" element={<PageGallery />} />
         <Route path="*" element={<PageError onPageReady={pageLoaded} title="Ooops" message="Page not found" />} />
        </Routes>

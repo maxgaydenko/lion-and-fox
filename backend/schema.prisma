@@ -20,13 +20,34 @@ model User {
 }
 
 model Page {
-  id          String  @id @default(cuid())
-  menuName    String  @default("")
-  menuSection String  @default("")
-  url         String  @unique @default("")
-  pos         Int     @default(0)
-  isPublished Boolean @default(false)
-  title       String  @default("")
-  hasBlazon   Boolean @default(false)
-  content     String  @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  id          String    @id @default(cuid())
+  menuName    String    @default("")
+  menuSection String    @default("")
+  url         String    @unique @default("")
+  pos         Int       @default(0)
+  isPublished Boolean   @default(false)
+  title       String    @default("")
+  hasBlazon   Boolean   @default(false)
+  content     String    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  projects    Project[] @relation("Project_page")
+}
+
+model Project {
+  id            String  @id @default(cuid())
+  page          Page?   @relation("Project_page", fields: [pageId], references: [id])
+  pageId        String? @map("page")
+  url           String  @unique @default("")
+  pos           Int     @default(0)
+  isPublished   Boolean @default(false)
+  title         String  @default("")
+  hasBlazon     Boolean @default(false)
+  img_filesize  Int?
+  img_extension String?
+  img_width     Int?
+  img_height    Int?
+  img_mode      String?
+  img_id        String?
+  content       String  @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+
+  @@index([pageId])
 }

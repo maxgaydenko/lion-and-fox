@@ -7,6 +7,10 @@ export const GET_STRUCT = gql`
    pos
    menuName
    menuSection
+   projectsCount(where: { isPublished: { equals: true } })
+   projects(where: { isPublished: { equals: true } }) {
+    url
+   }
   }
  }
 `;
@@ -18,6 +22,13 @@ export const GET_PAGE_BODY = gql`
    hasBlazon
    content {
     document
+   }
+   projects {
+    url
+    title
+    img {
+     url
+    }
    }
   }
  }

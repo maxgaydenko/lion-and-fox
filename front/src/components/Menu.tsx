@@ -16,7 +16,7 @@ export const Menu: React.FC<IProps> = (props: IProps) => {
  const [listItems, setListItems] = React.useState<IMenuListItem[]>();
  React.useEffect(() => {
   let prevSection = "";
-  const _listItems: IMenuListItem[] = props.menu.items.reduce((p, c) => {
+  const _listItems: IMenuListItem[] = props.menu.menuItems.reduce((p, c) => {
    if (c.section && prevSection !== c.section)
     p.push({ title: c.section, url: `${c.url}`, isSection: true });
    p.push({ title: c.title, url: `${c.url}`, isSection: false });
