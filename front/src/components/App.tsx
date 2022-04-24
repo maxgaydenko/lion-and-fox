@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 // import { PageCars } from "./PageCars";
 import { Sidebar } from "./Sidebar";
@@ -44,7 +44,7 @@ interface IProps {
 
 const App: React.FC<IProps> = (props: IProps) => {
 //  const location = useLocation();
- const [homeMarker, setHomeMarker] = React.useState<boolean>(true);
+ const [homeMarker, setHomeMarker] = React.useState<boolean>(false);
  const [menuShown, setMenuShown] = React.useState<boolean>(false);
 
  const pageLoaded = () => {

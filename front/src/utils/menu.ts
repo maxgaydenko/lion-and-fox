@@ -1,5 +1,3 @@
-import { isConstValueNode } from "graphql";
-
 export enum EMenuItemType {
  Page = "Page",
  Gallery = "Gallery",

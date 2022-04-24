@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { EMenuItemType, IMenu, IMenuItem } from "../utils/menu";
+import { EMenuItemType, IMenu } from "../utils/menu";
 
 interface IProps {
  readonly url: string;
@@ -27,7 +27,7 @@ export const Header:React.FC<IProps> = (props: IProps) => {
    const neighbors: IHeaderMenuItem[] = (selectedItem.section)? props.menu.items.filter(f => f.section===selectedItem.section).map(f => ({title: f.title, url: f.url})): [];
    setHeaderMenu({section, neighbors});
   }
- }, []);
+ }, [props.url, props.menu]);
 
  return (
   <div className="head">

@@ -17,10 +17,13 @@ const _stub: IStubProject[] = [
 ]
 
 export const PageGallery: React.FC<IProps> = (props: IProps) => {
+ const [sel, setSel] = React.useState<boolean>(false);
+
  return (
   <div className="Page">
    <div className="head">
     <div className="bc"><a href="#1">_cars</a></div>
+    <div className="ac"><button disabled={!sel}>Copy link</button></div>
     <div className="blazon"></div>
    </div>
    <div className="body">
@@ -36,6 +39,14 @@ export const PageGallery: React.FC<IProps> = (props: IProps) => {
      <li>
       <div className="thumb"></div>
       <div className="name">Non exists</div>
+     </li>
+     <li>
+      <Link to="dev/only-img-link"><div className="thumb"><div className="thumb-img" style={{backgroundImage: `url(${_stub[_stub.length-1].img})`}}></div></div></Link>
+      <div className="name">Only img link</div>
+     </li>
+     <li className={sel? "selected": ""}>
+      <div className="thumb"></div>
+      <label className="checkbox"><input type="checkbox" checked={sel} onChange={() => setSel(!sel)} value={"abcd"} id="item-abcd" /> <span>Select item</span></label>
      </li>
     </ul>
     <h1>Lion and Fox</h1>

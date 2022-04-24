@@ -1,9 +1,8 @@
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import React from "react";
-import { Link } from "react-router-dom";
 import { GET_PAGE_BODY } from "../gqls/gqls";
 import { DocumentRenderer } from "../utils/document-renderer";
-import { EMenuItemType, IMenu, IMenuItem } from "../utils/menu";
+import { IMenu } from "../utils/menu";
 import { Header } from "./Header";
 import { PageError } from "./PageError";
 
@@ -39,20 +38,11 @@ interface ILoadedProps extends IProps {
 }
 
 export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
- const [selectedMenuSectionItem, setSelectedMenuSectionItem] = React.useState<IMenuItem>();
  React.useEffect(() => {
-  const _selectedMenuSectionItem = props.menu.items.find(f => (f.url===props.url && f.type===EMenuItemType.Section));
-  setSelectedMenuSectionItem(_selectedMenuSectionItem);
   props.onPageReady();
- }, [props.menu, props.url])
+ }, [])
  return (
-  <div className="Page PageCars">
-   {/* <div className="head">
-    <div className="bc">
-     {selectedMenuSectionItem && <Link to={selectedMenuSectionItem.url}>_{selectedMenuSectionItem.title}</Link>}
-    </div>
-    {props.page.hasBlazon && <div className="blazon"></div>}
-   </div> */}
+  <div className="Page">
    <Header url={props.url} menu={props.menu} hasBlazon={props.page.hasBlazon} />
    <div className="body">
     <h1>{props.page.title}</h1>

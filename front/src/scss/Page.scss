@@ -24,6 +24,29 @@
    a: hover {}
   }
 
+  .ac {
+   margin-top: -4px;
+   button {
+    font-size: 15px;
+    line-height: 38px;
+    color: #FFF;
+    padding: 0 24px;
+    background: none;
+    border: 1px #fff solid;
+    cursor: pointer;
+    transition: all $hover-duration linear;
+   }
+
+   button:hover {
+    opacity: .9;
+   }
+
+   button:disabled {
+    cursor: not-allowed;
+    opacity: .4;
+   }
+  }
+
   .neighbors {
    display: none;
 
@@ -112,7 +135,8 @@
    line-height: 28px;
   }
 
-  ul, ol {
+  ul,
+  ol {
    margin: 0 0 0 32px;
    padding: 28px 0 0;
   }
@@ -133,6 +157,7 @@
 
   .wideImg {
    padding: 28px 0 0;
+
    img {
     max-width: 100%;
    }
@@ -144,17 +169,17 @@
   margin: 0;
   padding: 0;
 
-  @media (min-width: $gallery-2cols-width) {
-  }
-
   li {
    padding: 0 0 32px;
    margin: 0;
+
    a {
     display: block;
    }
+
    a:hover {
     opacity: 1;
+
     // div.thumb {
     //  background-position: left top;
     // }
@@ -166,22 +191,25 @@
       bottom: -16px;
      }
     }
+
     div.name {
      opacity: 1;
     }
    }
+
    div.thumb {
     position: relative;
     overflow: hidden;
     height: 0;
     width: 100%;
     padding-bottom: 100%;
-    background-color: rgba(255,255,255,.2);
+    background-color: rgba(255, 255, 255, .2);
     @extend %svg-logo40;
     background-size: 13px;
     background-repeat: no-repeat;
     background-position: center center;
     transition: all $hover-duration linear;
+
     .thumb-img {
      position: absolute;
      left: 0;
@@ -194,6 +222,7 @@
      transition: all $hover-duration ease-in-out;
     }
    }
+
    div.name {
     padding-top: 8px;
     font-size: 15px;
@@ -202,13 +231,39 @@
     opacity: .6;
     transition: all $hover-duration linear;
    }
+
+   label.checkbox {
+    display: inline-block;
+    padding-top: 8px;
+    font-size: 15px;
+    line-height: 27px;
+    color: #fff;
+    opacity: .6;
+
+    input {
+     vertical-align: middle;
+    }
+
+    span {
+     vertical-align: middle;
+     margin-left: 4px;
+    }
+   }
+  }
+
+  li.selected {
+   .thumb {
+    background-color: #0000ff66;
+   }
   }
  }
+
  @media (min-width: $gallery-2cols-width) {
   ul.gallery {
    margin-left: -40px;
    display: flex;
    flex-wrap: wrap;
+
    li {
     box-sizing: border-box;
     width: 50%;
@@ -216,6 +271,7 @@
    }
   }
  }
+
  @media (min-width: $gallery-3cols-width) {
   ul.gallery {
    li {
@@ -229,14 +285,17 @@
  opacity: 0;
  transform: scale(0.9);
 }
+
 .PageFade-enter-active {
  opacity: 1;
  transform: translateX(0);
  transition: opacity 400ms;
 }
+
 .PageFade-exit {
  opacity: 1;
 }
+
 .PageFade-exit-active {
  opacity: 0;
  transform: scale(0.9);

@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { EMenuItemType, IMenu } from "../utils/menu";
-// import {Link} from "react-router-dom"
+import { IMenu } from "../utils/menu";
 
 interface IProps {
  menu: IMenu;
