@@ -8,6 +8,8 @@ import { GET_STRUCT } from "../gqls/gqls";
 import { combineMenu, EMenuItemType, IMenu, IMenuDataItem } from "../utils/menu";
 import { Page } from "./Page";
 import { PageHome } from "./PageHome";
+import { PageGallery } from "./PageGallery";
+import { PageError } from "./PageError";
 
 interface IStructResult {
   pages: IMenuDataItem[]
@@ -57,20 +59,9 @@ const App: React.FC<IProps> = (props: IProps) => {
        <Routes>
         <Route path="/" element={<PageHome onPageReady={homePageLoaded} />} />
         {props.menu.items.filter(f => f.type===EMenuItemType.Page).map((f,i) => <Route key={i} path={f.url} element={<Page url={f.url} menu={props.menu} onPageReady={pageLoaded} />} />)}
-        <Route path="*" element={<div>@notFound</div>} />
+        <Route path="dev/gallery" element={<PageGallery />} />
+        <Route path="*" element={<PageError onPageReady={pageLoaded} title="Ooops" message="Page not found" />} />
        </Routes>
-       {/* <Router>
-            <Routes>
-             <Route path='/'>
-               <React.Fragment>@home</React.Fragment>
-             </Route>
-             <Route path='/page'>
-               <React.Fragment><PageCars /></React.Fragment>
-             </Route>
-            </Routes>
-          </Router> */}
- 
-       {/* <PageCars /> */}
       </div>
      </div>
      <Sidebar onMenuClick={() => setMenuShown(!menuShown)} />
