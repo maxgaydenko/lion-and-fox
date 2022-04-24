@@ -224,3 +224,21 @@
   }
  }
 }
+
+.PageFade-enter {
+ opacity: 0;
+ transform: scale(0.9);
+}
+.PageFade-enter-active {
+ opacity: 1;
+ transform: translateX(0);
+ transition: opacity 400ms;
+}
+.PageFade-exit {
+ opacity: 1;
+}
+.PageFade-exit-active {
+ opacity: 0;
+ transform: scale(0.9);
+ transition: opacity 400ms;
+}
