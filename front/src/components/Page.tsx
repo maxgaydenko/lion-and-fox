@@ -20,7 +20,7 @@ interface IPageProjectResult {
 }
 
 interface IPageResult {
- readonly title: string;
+ // readonly title: string;
  readonly hasBlazon: boolean;
  readonly content: {
   readonly document: any
@@ -69,7 +69,7 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
       ))}
      </ul>
     )}
-    {props.page.title && <h1>{props.page.title}</h1>}
+    {/* {props.page.title && <h1>{props.page.title}</h1>} */}
 
     <DocumentRenderer document={props.page.content.document} />
    </div>

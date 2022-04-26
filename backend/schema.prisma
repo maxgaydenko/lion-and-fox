@@ -26,10 +26,9 @@ model Page {
   url         String    @unique @default("")
   pos         Int       @default(0)
   isPublished Boolean   @default(false)
-  title       String    @default("")
   hasBlazon   Boolean   @default(false)
-  content     String    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
   projects    Project[] @relation("Project_page")
+  content     String    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
 }
 
 model Project {

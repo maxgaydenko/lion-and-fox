@@ -45,7 +45,7 @@
      // background: #F0F6;
     }
     li {
-     opacity: 0.6;
+     opacity: 0.4;
      color: #FFFFFF;
      font-size: 15px;
      letter-spacing: 0;
@@ -62,11 +62,17 @@
      }
     }
     .section {
+     font-weight: 300;
+     letter-spacing: 2px;
      opacity: 1;
      padding-top: 32px;
+     text-transform: uppercase;
     } 
     .section:first-child {
      padding-top: 0;
+    }
+    .sub {
+     padding-left: 16px;
     }
    } 
   }

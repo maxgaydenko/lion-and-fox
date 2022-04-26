@@ -75,10 +75,17 @@ export const lists: Lists = {
    }),
    pos: integer({ validation: { isRequired: true }, defaultValue: 0 }),
    isPublished: checkbox({}),
-   title: text(),
    hasBlazon: checkbox(),
+   projects: relationship({
+    ref: "Project.page",
+    many: true,
+    // label: "Gallery",
+    ui: {
+    },
+   }),
    content: document({
     formatting: {
+     headingLevels: [1, 2, 3],
      inlineMarks: {
       bold: true,
       italic: true,
@@ -97,13 +104,6 @@ export const lists: Lists = {
     },
     links: true,
     dividers: true,
-   }),
-   projects: relationship({
-    ref: "Project.page",
-    many: true,
-    // label: "Gallery",
-    ui: {
-    },
    }),
   },
   access: {

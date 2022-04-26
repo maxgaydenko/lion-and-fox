@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/client";
 import { Sidebar } from "./Sidebar";
 import { Menu } from "./Menu";
 import { GET_STRUCT } from "../gqls/gqls";
-import { combineMenu, EMenuItemType, IMenu, IMenuDataItem } from "../utils/menu";
+import { combineMenu, IMenu, IMenuDataItem } from "../utils/menu";
 import { Page } from "./Page";
 import { PageHome } from "./PageHome";
 import { PageGallery } from "./PageGallery";

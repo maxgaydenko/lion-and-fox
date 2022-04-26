@@ -44,28 +44,20 @@
   .layer-content {
     z-index: 100;
     position: relative;
-    // margin: 24px 16px 24px 64px;
     margin-left: 64px;
     margin-right: 16px;
-    padding: 24px 0;
+    padding: 16px 0;
     transition: opacity $menu-duration linear;
     @media (min-width: $tablet-min-width) {
       margin-left: 164px;
       padding-top: 56px;
     }
     @media (min-width: $desktop-min-width) {
-      margin-left: 224px; // TODO change to layout spec!
+      margin-left: 224px;
     }
     .content-wrapper {
       margin: 0 auto;
       max-width: 800px;
-      // background: #dd01;
-      // @media (min-width: $tablet-min-width) {
-      //   background: #d0d1;
-      // }
-      // @media (min-width: $desktop-min-width) {
-      //   background: #0dd1;
-      // }
     }
   }
 }

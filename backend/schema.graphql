@@ -110,9 +110,7 @@ type Page {
   url: String
   pos: Int
   isPublished: Boolean
-  title: String
   hasBlazon: Boolean
-  content: Page_content_Document
   projects(
     where: ProjectWhereInput! = {}
     orderBy: [ProjectOrderByInput!]! = []
@@ -120,6 +118,7 @@ type Page {
     skip: Int! = 0
   ): [Project!]
   projectsCount(where: ProjectWhereInput! = {}): Int
+  content: Page_content_Document
 }
 
 type Page_content_Document {
@@ -141,7 +140,6 @@ input PageWhereInput {
   url: StringFilter
   pos: IntFilter
   isPublished: BooleanFilter
-  title: StringFilter
   hasBlazon: BooleanFilter
   projects: ProjectManyRelationFilter
 }
@@ -170,7 +168,6 @@ input PageOrderByInput {
   url: OrderDirection
   pos: OrderDirection
   isPublished: OrderDirection
-  title: OrderDirection
   hasBlazon: OrderDirection
 }
 
@@ -180,10 +177,9 @@ input PageUpdateInput {
   url: String
   pos: Int
   isPublished: Boolean
-  title: String
   hasBlazon: Boolean
-  content: JSON
   projects: ProjectRelateToManyForUpdateInput
+  content: JSON
 }
 
 input ProjectRelateToManyForUpdateInput {
@@ -204,10 +200,9 @@ input PageCreateInput {
   url: String
   pos: Int
   isPublished: Boolean
-  title: String
   hasBlazon: Boolean
-  content: JSON
   projects: ProjectRelateToManyForCreateInput
+  content: JSON
 }
 
 input ProjectRelateToManyForCreateInput {

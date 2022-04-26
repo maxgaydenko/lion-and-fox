@@ -18,14 +18,12 @@ export const GET_STRUCT = gql`
 export const GET_PAGE_BODY = gql`
  query GetPage($url: String!) {
   page(where: { url: $url }) {
-   title
    hasBlazon
    content {
     document
    }
    projects {
     url
-    title
     img {
      url
     }
