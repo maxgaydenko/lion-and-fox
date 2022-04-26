@@ -11,6 +11,7 @@ import { PageHome } from "./PageHome";
 import { PageGallery } from "./PageGallery";
 import { PageError } from "./PageError";
 import { AppError } from "./AppError";
+import { PageLogin } from "./PageLogin";
 // import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 interface IStructResult {
@@ -76,6 +77,7 @@ const App: React.FC<IProps> = (props: IProps) => {
          ))}
         {props.menu.galleriesRoutes.map((galleryRoute,i) => <Route key={`galleryRoute-${i}`} path={galleryRoute} element={<PageError onPageReady={pageLoaded} title={'Not ready yet'} message="Try to visit this page later." />} />)}
         <Route path="dev/gallery" element={<PageGallery />} />
+        <Route path="dev/login" element={<PageLogin />} />
         <Route path="*" element={<PageError onPageReady={pageLoaded} title="Ooops" message="Page not found" />} />
        </Routes>
       </div>
