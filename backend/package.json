@@ -1,6 +1,6 @@
 {
   "name": "keystone-app",
-  "version": "0.6.1",
+  "version": "0.7.1",
   "private": true,
   "scripts": {
     "dev": "keystone dev",
@@ -16,6 +16,7 @@
     "@keystone-6/fields-document": "^1.0.1",
     "@types/formidable": "^2.0.4",
     "axios": "^0.27.2",
+    "dotenv": "^16.0.0",
     "formidable": "^2.0.1",
     "typescript": "^4.5.4"
   },
