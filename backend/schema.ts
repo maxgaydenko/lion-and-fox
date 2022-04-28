@@ -2,10 +2,10 @@ import fs from "fs/promises";
 import { list } from "@keystone-6/core";
 // import { unlink } from "fs";
 
-import { text, password, integer, checkbox, relationship, image, json } from "@keystone-6/core/fields";
+import { text, password, integer, checkbox, relationship, image, json, file } from "@keystone-6/core/fields";
 import { document } from "@keystone-6/fields-document";
 import { Lists } from ".keystone/types";
-import { envImagesStoragePath } from "./env";
+import { envFilesStoragePath, envImagesStoragePath } from "./env";
 
 type Session = {
  data: {
@@ -149,7 +149,6 @@ export const lists: Lists = {
       } else if (width > 1800) {
        addValidationError("Image is too big");
        const file = `${envImagesStoragePath}${resolvedData[fieldKey]["id"]}.${resolvedData[fieldKey]["extension"]}`;
-       console.log("file", file);
        fs.unlink(file);
        //  unlink(file, err => {
        //   console.log(`File ${file} remove error`, err);
@@ -160,7 +159,6 @@ export const lists: Lists = {
       console.log("beforeOperation on " + operation, item);
       if (operation === "delete" && item && item["img_id"] && item["img_extension"]) {
        const file = `${envImagesStoragePath}${item["img_id"]}.${item["img_extension"]}`;
-       console.log("file", file);
        fs.unlink(file);
        //  unlink(file, err => {
        //   console.log(`File ${file} remove error`, err);
@@ -229,5 +227,38 @@ export const lists: Lists = {
     }
    },
   },
+ }),
+ Presentation: list({
+  fields: {
+   title: text({ validation: { isRequired: true } }),
+   pos: integer({ validation: { isRequired: true }, defaultValue: 0 }),
+   isPublished: checkbox({}),
+   file: file({
+    hooks: {
+     validateInput: ({ resolvedData, addValidationError, operation, fieldKey }) => {
+      if (operation === "create" && (!resolvedData[fieldKey] || !resolvedData[fieldKey]["filename"]))
+       addValidationError("File is required");
+     },
+    },
+   }),
+  },
+  hooks: {
+   beforeOperation: ({ item, operation }) => {
+    if (operation === "delete" && item && item["file_filename"]) fs.unlink(envFilesStoragePath + item["file_filename"]);
+   },
+  },
+  access: {
+    filter: {
+     query: ({ session }: { session: Session }) => {
+      return Boolean(session) ? true : { isPublished: { equals: true } };
+     },
+    },
+   },
+   ui: {
+    listView: {
+      initialColumns: ["title", "pos", "isPublished"],
+      initialSort: {field:"pos", direction: "ASC"}
+    }
+  }
  }),
 };
