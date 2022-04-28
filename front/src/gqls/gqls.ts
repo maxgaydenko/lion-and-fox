@@ -32,3 +32,20 @@ export const GET_PAGE_BODY = gql`
  }
 `;
 
+export const GET_PROJECT_BODY = gql`
+ query GetProject($projectUrl: String!) {
+  project(where: { url: $projectUrl }) {
+   hasBlazon
+   title
+   page {
+    url
+   }
+   gallery
+   content {
+    document
+   }
+  }
+ }
+`;
+
+

@@ -1,7 +1,8 @@
+import fs from "fs/promises";
 import { list } from "@keystone-6/core";
-import { unlink } from "fs";
+// import { unlink } from "fs";
 
-import { text, password, integer, checkbox, relationship, image } from "@keystone-6/core/fields";
+import { text, password, integer, checkbox, relationship, image, json } from "@keystone-6/core/fields";
 import { document } from "@keystone-6/fields-document";
 import { Lists } from ".keystone/types";
 import { envImagesStoragePath } from "./env";
@@ -80,8 +81,7 @@ export const lists: Lists = {
     ref: "Project.page",
     many: true,
     // label: "Gallery",
-    ui: {
-    },
+    ui: {},
    }),
    content: document({
     formatting: {
@@ -137,13 +137,9 @@ export const lists: Lists = {
    pos: integer({ validation: { isRequired: true }, defaultValue: 0 }),
    isPublished: checkbox({}),
    title: text({ validation: { isRequired: true } }),
-   hasBlazon: checkbox(),
    img: image({
+    label: "Thumb",
     hooks: {
-     // resolveInput: ({resolvedData}) => {
-     //   console.log('resolveInput', resolvedData)
-     //   return resolvedData;
-     // },
      validateInput: ({ resolvedData, addValidationError, operation, fieldKey }) => {
       console.log("validateInput on " + operation, resolvedData);
       const width = resolvedData[fieldKey]["width"];
@@ -154,9 +150,10 @@ export const lists: Lists = {
        addValidationError("Image is too big");
        const file = `${envImagesStoragePath}${resolvedData[fieldKey]["id"]}.${resolvedData[fieldKey]["extension"]}`;
        console.log("file", file);
-       unlink(file, err => {
-        console.log(`File ${file} remove error`, err);
-       });
+       fs.unlink(file);
+       //  unlink(file, err => {
+       //   console.log(`File ${file} remove error`, err);
+       //  });
       }
      },
      beforeOperation: ({ item, operation, fieldKey }) => {
@@ -164,9 +161,10 @@ export const lists: Lists = {
       if (operation === "delete" && item && item["img_id"] && item["img_extension"]) {
        const file = `${envImagesStoragePath}${item["img_id"]}.${item["img_extension"]}`;
        console.log("file", file);
-       unlink(file, err => {
-        console.log(`File ${file} remove error`, err);
-       });
+       fs.unlink(file);
+       //  unlink(file, err => {
+       //   console.log(`File ${file} remove error`, err);
+       //  });
       }
      },
     },
@@ -176,8 +174,19 @@ export const lists: Lists = {
      },
     },
    }),
+   hasBlazon: checkbox(),
+   gallery: json({
+    label: "Gallery",
+    ui: {
+     views: require.resolve("./fields/gallery/components.tsx"),
+     createView: { fieldMode: "hidden" },
+     listView: { fieldMode: "hidden" },
+     itemView: { fieldMode: "edit" },
+    },
+   }),
    content: document({
     formatting: {
+     headingLevels: [1, 2, 3],
      inlineMarks: {
       bold: true,
       italic: true,
@@ -211,7 +220,14 @@ export const lists: Lists = {
     initialColumns: ["title", "url", "pos", "isPublished", "page"],
     initialSort: { field: "pos", direction: "ASC" },
    },
-
+  },
+  hooks: {
+   beforeOperation: ({ item, operation }) => {
+    if (operation === "delete" && item) {
+     const path = envImagesStoragePath + "/projects/" + item.id;
+     fs.rm(path, { recursive: true, force: true });
+    }
+   },
   },
  }),
 };

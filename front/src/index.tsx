@@ -5,7 +5,7 @@ import AppLoader from "./components/App";
 
 import "./scss/index.scss";
 
-const backend = process.env.REACT_APP_BACKEND_URL || "localhost:8080";
+const backend = process.env.REACT_APP_BACKEND_URL;
 if (process.env.NODE_ENV === "development") console.log("Backend url", backend);
 console.log("App version:", process.env.REACT_APP_VERSION);
 

@@ -217,8 +217,9 @@ type Project {
   pos: Int
   isPublished: Boolean
   title: String
-  hasBlazon: Boolean
   img: ImageFieldOutput
+  hasBlazon: Boolean
+  gallery: JSON
   content: Project_content_Document
 }
 
@@ -296,8 +297,9 @@ input ProjectUpdateInput {
   pos: Int
   isPublished: Boolean
   title: String
-  hasBlazon: Boolean
   img: ImageFieldInput
+  hasBlazon: Boolean
+  gallery: JSON
   content: JSON
 }
 
@@ -328,8 +330,9 @@ input ProjectCreateInput {
   pos: Int
   isPublished: Boolean
   title: String
-  hasBlazon: Boolean
   img: ImageFieldInput
+  hasBlazon: Boolean
+  gallery: JSON
   content: JSON
 }
 

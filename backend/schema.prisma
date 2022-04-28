@@ -39,13 +39,14 @@ model Project {
   pos           Int     @default(0)
   isPublished   Boolean @default(false)
   title         String  @default("")
-  hasBlazon     Boolean @default(false)
   img_filesize  Int?
   img_extension String?
   img_width     Int?
   img_height    Int?
   img_mode      String?
   img_id        String?
+  hasBlazon     Boolean @default(false)
+  gallery       String?
   content       String  @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
 
   @@index([pageId])

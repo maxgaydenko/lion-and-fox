@@ -11,3 +11,6 @@ export const envFilesStoragePath = getProductionEnv("FILES_STORAGE_PATH", "../st
 export const envFilesBaseUrl = getProductionEnv("FILES_BASE_URL", "/storage");
 export const envImagesStoragePath = getProductionEnv("IMAGES_STORAGE_PATH", "../storage/images/");
 export const envImagesBaseUrl = getProductionEnv("IMAGES_BASE_URL", "/images");
+export const envImagesGalleryFormUrl = '/gallery-upload';
+export const envImagesGalleryFormFile = 'file';
+export const envImagesGalleryFormPath = 'path';

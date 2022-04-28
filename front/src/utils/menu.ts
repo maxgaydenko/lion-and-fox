@@ -11,9 +11,14 @@ export interface IMenuItem {
  readonly type: EMenuItemType;
 }
 
+export interface IMenuProjectItem {
+ readonly pageUrl: string;
+ readonly projectUrl: string;
+}
+
 export interface IMenu {
  readonly menuItems: IMenuItem[];
- readonly galleriesRoutes: string[];
+ readonly projectItems: IMenuProjectItem[];
 }
 
 interface IMenuDataItemProject {
@@ -34,32 +39,12 @@ export interface IMenuDataItem {
 //  readonly type: EMenuItemType;
 // }
 
-export const combineMenu = (pages: IMenuDataItem[], galleries: IMenuDataItem[]): IMenu => {
- const galleriesRoutes: string[] = [];
- // const _pages: IMenuHandlingDataItem[] = pages.map(f => {
- //  return {
- //   ...f,
- //   level: f.url.split("/").length,
- //   type: EMenuItemType.Page,
- //  };
- // });
- // const _galleries: IMenuHandlingDataItem[] = galleries.map(f => {
- //  galleriesRoutes.push(f.url);
- //  return {
- //   ...f,
- //   level: f.url.split("/").length,
- //   type: EMenuItemType.Gallery,
- //  };
- // });
- // const _allItems: IMenuHandlingDataItem[] = [..._pages, ..._galleries].sort((a, b) => a.pos - b.pos);
- // .sort((a,b) => (a.level===b.level)? a.pos-b.pos: a.level - b.level)
- // .sort((a,b) => (a.url < b.url)? 1: - 1)
-
- // const items: IMenuItem[] = _allItems.map(f => ({ url: f.url, title: f.menuName, section: f.menuSection, type: f.type }));
+export const combineMenu = (pages: IMenuDataItem[]): IMenu => {
+ const projectItems: IMenuProjectItem[] = [];
  const menuItems: IMenuItem[] = pages.sort((a,b) => a.pos-b.pos).map((page,pageIdx) => {
   if(page.projects.length > 0) {
    page.projects.forEach(project => {
-    galleriesRoutes.push(`${page.url}/${project.url}`)
+    projectItems.push({pageUrl: page.url, projectUrl: project.url})
    }) 
   }
   return {
@@ -72,6 +57,6 @@ export const combineMenu = (pages: IMenuDataItem[], galleries: IMenuDataItem[]):
 
  return {
   menuItems,
-  galleriesRoutes,
+  projectItems,
  };
 };
