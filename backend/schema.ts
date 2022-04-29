@@ -1,11 +1,11 @@
 import fs from "fs/promises";
-import { list } from "@keystone-6/core";
+import { graphql, list } from "@keystone-6/core";
 // import { unlink } from "fs";
 
-import { text, password, integer, checkbox, relationship, image, json, file } from "@keystone-6/core/fields";
+import { text, password, integer, checkbox, relationship, image, json, file, virtual } from "@keystone-6/core/fields";
 import { document } from "@keystone-6/fields-document";
 import { Lists } from ".keystone/types";
-import { envFilesStoragePath, envImagesStoragePath } from "./env";
+import { envFilesBaseUrl, envFilesStoragePath, envImagesStoragePath } from "./env";
 
 type Session = {
  data: {
@@ -141,35 +141,34 @@ export const lists: Lists = {
     label: "Thumb",
     hooks: {
      validateInput: ({ resolvedData, addValidationError, operation, fieldKey }) => {
-      console.log("validateInput on " + operation, resolvedData);
-      const width = resolvedData[fieldKey]["width"];
-      console.log("width", width);
-      if (operation === "create" && !width) {
-       addValidationError("Image is required");
-      } else if (width > 1800) {
-       addValidationError("Image is too big");
-       const file = `${envImagesStoragePath}${resolvedData[fieldKey]["id"]}.${resolvedData[fieldKey]["extension"]}`;
-       fs.unlink(file);
-       //  unlink(file, err => {
-       //   console.log(`File ${file} remove error`, err);
-       //  });
-      }
+      // console.log("validateInput on " + operation, resolvedData);
+      // const width = resolvedData[fieldKey]["width"];
+      // console.log("width", width);
+      // // if (operation === "create" && !width) {
+      // if (!width) {
+      //  addValidationError("Image is required");
+      // } else if (width > 1800) {
+      //  addValidationError("Image is too big");
+      // //  const file = `${envImagesStoragePath}${resolvedData[fieldKey]["id"]}.${resolvedData[fieldKey]["extension"]}`;
+      // //  fs.unlink(file);
+      //  //  unlink(file, err => {
+      //  //   console.log(`File ${file} remove error`, err);
+      //  //  });
+      // }
      },
      beforeOperation: ({ item, operation, fieldKey }) => {
-      console.log("beforeOperation on " + operation, item);
-      if (operation === "delete" && item && item["img_id"] && item["img_extension"]) {
-       const file = `${envImagesStoragePath}${item["img_id"]}.${item["img_extension"]}`;
-       fs.unlink(file);
-       //  unlink(file, err => {
-       //   console.log(`File ${file} remove error`, err);
-       //  });
-      }
+      // console.log("beforeOperation on " + operation, item);
+      // if (operation === "delete" && item && item["img_id"] && item["img_extension"]) {
+      //  const file = `${envImagesStoragePath}${item["img_id"]}.${item["img_extension"]}`;
+      //  fs.unlink(file);
+      //  unlink(file, err => {
+      //   console.log(`File ${file} remove error`, err);
+      //  });
+      // }
      },
     },
     ui: {
-     itemView: {
-      fieldMode: "read",
-     },
+     itemView: { fieldMode: "edit" },
     },
    }),
    hasBlazon: checkbox(),
@@ -220,6 +219,11 @@ export const lists: Lists = {
    },
   },
   hooks: {
+   validateInput: ({ resolvedData, addValidationError, operation, inputData, item }) => {
+    console.log("validateInput.resolvedData:", resolvedData);
+    console.log("validateInput.inputData:", inputData);
+    console.log("validateInput.item:", item);
+   },
    beforeOperation: ({ item, operation }) => {
     if (operation === "delete" && item) {
      const path = envImagesStoragePath + "/projects/" + item.id;
@@ -232,13 +236,52 @@ export const lists: Lists = {
   fields: {
    title: text({ validation: { isRequired: true } }),
    pos: integer({ validation: { isRequired: true }, defaultValue: 0 }),
-   isPublished: checkbox({}),
    file: file({
+    ui: {
+     createView: { fieldMode: "edit" },
+     itemView: { fieldMode: "hidden" },
+     listView: { fieldMode: "hidden" },
+    },
     hooks: {
      validateInput: ({ resolvedData, addValidationError, operation, fieldKey }) => {
       if (operation === "create" && (!resolvedData[fieldKey] || !resolvedData[fieldKey]["filename"]))
        addValidationError("File is required");
      },
+    },
+   }),
+   uploadedFile: virtual({
+    field: graphql.field({
+     type: graphql.object<{
+      fileName: string;
+      fileSize: number;
+     }>()({
+      name: "PresentationFile",
+      fields: {
+       fileName: graphql.field({ type: graphql.String }),
+       fileSize: graphql.field({ type: graphql.Int }),
+      },
+     }),
+     resolve(item: any) {
+      console.log("Resolve item", item);
+      const fileName = item.file_filename || "";
+      const fileSize = item.file_filesize || 0;
+      return {
+       fileName: fileName ? `${envFilesBaseUrl}/${fileName}` : "",
+       fileSize,
+      };
+     },
+    }),
+    ui: {
+     query: "{ fileName fileSize }",
+     views: require.resolve("./fields/file/components.tsx"),
+     createView: { fieldMode: "hidden" },
+     itemView: { fieldMode: "edit" },
+     listView: { fieldMode: "hidden" },
+    },
+   }),
+   isPublished: checkbox({
+    ui: {
+     listView: { fieldMode: "read" },
     },
    }),
   },
@@ -248,17 +291,17 @@ export const lists: Lists = {
    },
   },
   access: {
-    filter: {
-     query: ({ session }: { session: Session }) => {
-      return Boolean(session) ? true : { isPublished: { equals: true } };
-     },
+   filter: {
+    query: ({ session }: { session: Session }) => {
+     return Boolean(session) ? true : { isPublished: { equals: true } };
     },
    },
-   ui: {
-    listView: {
-      initialColumns: ["title", "pos", "isPublished"],
-      initialSort: {field:"pos", direction: "ASC"}
-    }
-  }
+  },
+  ui: {
+   listView: {
+    initialColumns: ["title", "pos", "isPublished"],
+    initialSort: { field: "pos", direction: "ASC" },
+   },
+  },
  }),
 };

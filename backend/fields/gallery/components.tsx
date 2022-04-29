@@ -24,8 +24,8 @@ const SortableItem = (props: { img: string; idx: number; onDeleteClick: (idx: nu
    <div style={{ position: "relative", border: '1px #ddd dashed', margin: '4px', backgroundImage:`url('${props.img}')`, backgroundPosition:'center center', backgroundSize:'cover', width:'200px', height:'160px', overflow:'hidden' }}>
     {/* <img src={props.img} style={{ maxHeight: "160px", width: "auto" }} /> */}
     <div style={{ position: "absolute", zIndex: 100, right: 0, top: 0 }}>
-     <Button size="small">
-      <MinusCircleIcon size="small" color="red" onClick={() => props.onDeleteClick(props.idx)} />
+     <Button size="small" onPointerUp={() => props.onDeleteClick(props.idx)}>
+      <MinusCircleIcon size="small" color="red" />
      </Button>
     </div>
    </div>

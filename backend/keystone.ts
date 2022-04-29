@@ -10,6 +10,9 @@ export default withAuth(
   server: server,
   files: {
    upload: "local",
+   transformFilename: (original: string): string => {
+    return `${(new Date().getTime())}/${original}`
+   },
    local: {
     storagePath: envFilesStoragePath,
     baseUrl: envFilesBaseUrl,

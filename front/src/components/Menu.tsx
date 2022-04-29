@@ -4,6 +4,7 @@ import { IMenu } from "../utils/menu";
 
 interface IProps {
  menu: IMenu;
+ onMenuHide: () => void
 }
 
 interface IMenuListItem {
@@ -33,7 +34,7 @@ export const Menu: React.FC<IProps> = (props: IProps) => {
      <ul>
       {listItems && listItems.map((f, i) => (
        <li key={i} className={f.isSection ? "section" : ""}>
-        <Link to={f.url}>{f.title}</Link>
+        <Link onClick={props.onMenuHide} to={f.url}>{f.title}</Link>
        </li>
       ))}
       {/* <li>-</li>
@@ -56,7 +57,7 @@ export const Menu: React.FC<IProps> = (props: IProps) => {
       </li> */}
       <li className="section">contact</li>
       <li>
-       <a href="mailto:mail@lionandfox.co.uk">mail@lionandfox.co.uk</a>
+       <a onClick={props.onMenuHide} href="mailto:mail@lionandfox.co.uk">mail@lionandfox.co.uk</a>
       </li>
       {/* <li className="section">presentations</li>
       <li>

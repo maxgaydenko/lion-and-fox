@@ -345,8 +345,9 @@ type Presentation {
   id: ID!
   title: String
   pos: Int
-  isPublished: Boolean
   file: FileFieldOutput
+  uploadedFile: PresentationFile
+  isPublished: Boolean
 }
 
 interface FileFieldOutput {
@@ -354,6 +355,11 @@ interface FileFieldOutput {
   filesize: Int!
   ref: String!
   url: String!
+}
+
+type PresentationFile {
+  fileName: String
+  fileSize: Int
 }
 
 input PresentationWhereUniqueInput {
@@ -394,8 +400,8 @@ input PresentationOrderByInput {
 input PresentationUpdateInput {
   title: String
   pos: Int
-  isPublished: Boolean
   file: FileFieldInput
+  isPublished: Boolean
 }
 
 input FileFieldInput {
@@ -411,8 +417,8 @@ input PresentationUpdateArgs {
 input PresentationCreateInput {
   title: String
   pos: Int
-  isPublished: Boolean
   file: FileFieldInput
+  isPublished: Boolean
 }
 
 """

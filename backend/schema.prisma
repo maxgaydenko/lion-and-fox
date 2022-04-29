@@ -56,8 +56,8 @@ model Presentation {
   id            String  @id @default(cuid())
   title         String  @default("")
   pos           Int     @default(0)
-  isPublished   Boolean @default(false)
   file_filesize Int?
   file_mode     String?
   file_filename String?
+  isPublished   Boolean @default(false)
 }

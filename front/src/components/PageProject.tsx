@@ -64,7 +64,7 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
      <ImageGallery
       items={props.project.gallery.map(f => ({ original: `${process.env.REACT_APP_BACKEND_URL}${f}` }))}
       autoPlay={false}
-      showBullets={true}
+      showBullets={props.project.gallery.length > 1}
       showPlayButton={false}
       showNav={true}
      />

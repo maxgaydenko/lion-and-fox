@@ -91,8 +91,8 @@ const App: React.FC<IProps> = (props: IProps) => {
    </div>
    {/* </CSSTransition>
    </TransitionGroup> */}
-   <Sidebar onMenuClick={() => setMenuShown(!menuShown)} />
-   <Menu menu={props.menu} />
+   <Sidebar onMenuHide={() => setMenuShown(false)} onMenuClick={() => setMenuShown(!menuShown)} />
+   <Menu onMenuHide={() => setMenuShown(false)} menu={props.menu} />
   </div>
  );
 };
