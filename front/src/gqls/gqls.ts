@@ -24,6 +24,7 @@ export const GET_PAGE_BODY = gql`
    }
    projects {
     url
+    title
     img {
      url
     }
