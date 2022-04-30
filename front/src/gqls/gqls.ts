@@ -1,7 +1,14 @@
 import { gql } from "@apollo/client";
 
 export const GET_STRUCT = gql`
+ fragment AuthFragment on User {
+  id
+  name
+ }
  query GetStruct {
+  authenticatedItem {
+   ...AuthFragment
+  }
   pages {
    url
    pos
@@ -65,3 +72,15 @@ export const LOGIN = gql`
  }
 `;
 
+export const GET_ALL_PRESENTATIONS = gql`
+ query GetAllPresentations {
+  presentations {
+   title
+   pos
+   uploadedFile {
+    fileName
+    fileSize
+   }
+  }
+ }
+`;

@@ -13,10 +13,17 @@ import { PageError } from "./PageError";
 import { AppError } from "./AppError";
 import { PageLogin } from "./PageLogin";
 import { PageProject } from "./PageProject";
+import { PagePresentations } from "./PagePresentations";
 // import { TransitionGroup, CSSTransition } from "react-transition-group";
 
+interface IAuthUser {
+ readonly id: string
+ readonly name: string
+}
+
 interface IStructResult {
- pages: IMenuDataItem[];
+ readonly authenticatedItem: IAuthUser | null
+ readonly pages: IMenuDataItem[];
 }
 
 function AppLoader() {
@@ -35,7 +42,7 @@ function AppLoader() {
 
  return data ? (
   <Router>
-   <App menu={combineMenu(data.pages!)} />
+   <App menu={combineMenu(data.pages!)} user={data.authenticatedItem} />
   </Router>
  ) : (
   <AppError title="Data error" message="Unable to load data" />
@@ -43,7 +50,8 @@ function AppLoader() {
 }
 
 interface IProps {
- menu: IMenu;
+ readonly user: IAuthUser | null;
+ readonly menu: IMenu;
 }
 
 const App: React.FC<IProps> = (props: IProps) => {
@@ -83,16 +91,16 @@ const App: React.FC<IProps> = (props: IProps) => {
         element={<PageProject pageUrl={route.pageUrl} projectUrl={route.projectUrl} menu={props.menu} onPageReady={pageLoaded} />}
        />
       ))}
-      <Route path="dev/gallery" element={<PageGallery />} />
-      <Route path="login" element={<PageLogin />} />
+      {props.user && <Route path="presentations" element={<PagePresentations onPageReady={pageLoaded} />} />}
+      {!props.user && <Route path="login" element={<PageLogin onPageReady={homePageLoaded} />} />}
       <Route path="*" element={<PageError onPageReady={pageLoaded} title="Ooops" message="Page not found" />} />
      </Routes>
     </div>
    </div>
    {/* </CSSTransition>
    </TransitionGroup> */}
-   <Sidebar onMenuHide={() => setMenuShown(false)} onMenuClick={() => setMenuShown(!menuShown)} />
-   <Menu onMenuHide={() => setMenuShown(false)} menu={props.menu} />
+   <Sidebar userName={props.user? props.user.name: undefined} onMenuHide={() => setMenuShown(false)} onMenuClick={() => setMenuShown(!menuShown)} />
+   <Menu userName={props.user? props.user.name: undefined} onMenuHide={() => setMenuShown(false)} menu={props.menu} />
   </div>
  );
 };

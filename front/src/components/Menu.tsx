@@ -4,7 +4,8 @@ import { IMenu } from "../utils/menu";
 
 interface IProps {
  menu: IMenu;
- onMenuHide: () => void
+ userName?: string;
+ onMenuHide: () => void;
 }
 
 interface IMenuListItem {
@@ -18,14 +19,20 @@ export const Menu: React.FC<IProps> = (props: IProps) => {
  React.useEffect(() => {
   let prevSection = "";
   const _listItems: IMenuListItem[] = props.menu.menuItems.reduce((p, c) => {
-   if (c.section && prevSection !== c.section)
-    p.push({ title: c.section, url: `${c.url}`, isSection: true });
+   if (c.section && prevSection !== c.section) p.push({ title: c.section, url: `${c.url}`, isSection: true });
    p.push({ title: c.title, url: `${c.url}`, isSection: false });
    prevSection = c.section;
    return p;
   }, [] as IMenuListItem[]);
   setListItems(_listItems);
  }, []);
+
+ const onLogout = () => {
+    window.localStorage.removeItem("a");
+    setTimeout(() => {
+     window.location.href = "/";
+    }, 10); 
+ }
 
  return (
   <div className="Menu">
@@ -40,71 +47,28 @@ export const Menu: React.FC<IProps> = (props: IProps) => {
          </Link>
         </li>
        ))}
-      {/* <li>-</li>
-      <li className="section">
-       <Link to="/">future</Link>
-      </li>
-      <li>
-       <Link to={"page1"}>future model</Link>
-      </li>
-      <li className="section">autonomouse robots</li>
-      <li>
-       <Link to="page2">robots of lion and fox</Link>
-      </li>
-      <li className="section">cars</li>
-      <li>
-       <Link to="page1/sub1">about</Link>
-      </li>
-      <li>
-       <Link to="page1/sub3">projects</Link>
-      </li> */}
       <li className="section">contact</li>
       <li>
        <a onClick={props.onMenuHide} href="mailto:mail@lionandfox.co.uk">
         mail@lionandfox.co.uk
        </a>
       </li>
-      <li className="section">
-       <Link onClick={props.onMenuHide} to="/login">Log in</Link>
-      </li>
-      {/* <li className="section">presentations</li>
-      <li>
-       <a href="#6">832F-4816-12.05.2022</a>
-      </li>
-      <li>–</li>
-      <li>
-       <a href="#7">logout</a>
-      </li> */}
-
-      {/*
-      <li className="section"><a href="#1">2-future</a></li>
-      <li><a href="#2">2-future model</a></li>
-      <li className="section">2-autonomouse robots</li>
-      <li><a href="#3">2-robots of lion and fox</a></li>
-      <li className="section">2-cars</li>
-      <li><a href="#4">2-about</a></li>
-      <li><a href="#5">2-projects</a></li>
-      <li className="section">2-contact</li>
-      <li><a href="mailto:mail@lionandfox.co.uk">2-mail@lionandfox.co.uk</a></li>
-      <li className="section">2-presentations</li>
-      <li><a href="#6">2-832F-4816-12.05.2022</a></li>
-      <li>–</li>
-      <li><a href="#7">3-logout</a></li>
-
-      <li className="section"><a href="#1">3-future</a></li>
-      <li><a href="#2">3-future model</a></li>
-      <li className="section">3-autonomouse robots</li>
-      <li><a href="#3">3-robots of lion and fox</a></li>
-      <li className="section">3-cars</li>
-      <li><a href="#4">3-about</a></li>
-      <li><a href="#5">3-projects</a></li>
-      <li className="section">3-contact</li>
-      <li><a href="mailto:mail@lionandfox.co.uk">3-mail@lionandfox.co.uk</a></li>
-      <li className="section">3-presentations</li>
-      <li><a href="#6">3-832F-4816-12.05.2022</a></li>
-      <li>–</li>
-      <li><a href="#7">3-logout</a></li>
- */}
+      {props.userName ? (
+       <React.Fragment>
+        <li className="section">Presentations</li>
+        <li><Link onClick={props.onMenuHide} to="/presentations">{props.userName}</Link></li>
+        <li>&mdash;</li>
+        <li>
+         <a href="#logout" onClick={onLogout}>logout</a>
+        </li>
+       </React.Fragment>
+      ) : (
+       <li className="section">
+        <Link onClick={props.onMenuHide} to="/login">
+         Log in
+        </Link>
+       </li>
+      )}
      </ul>
     </div>
    </div>

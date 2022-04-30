@@ -11,6 +11,7 @@
   box-sizing: border-box;
   border: 1px solid rgba(255, 255, 255, .2);
   border-radius: 24px;
+  backdrop-filter: blur(6px);
 
   form {
    padding: 0;
@@ -19,7 +20,7 @@
 
   .title {
    color: #fff;
-   opacity: .4;
+   opacity: .8;
    letter-spacing: 2px;
    line-height: 27px;
    text-transform: uppercase;
@@ -112,7 +113,7 @@
     background: none;
     border: 1px solid #FFFFFF;
     color: #fff;
-    opacity: 0.6;
+    opacity: 0.8;
     transition: all $hover-duration linear;
     cursor: pointer;
    }

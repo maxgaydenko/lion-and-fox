@@ -4,33 +4,73 @@ import { LOGIN } from "../gqls/gqls";
 
 interface IResult {
  readonly authenticate: {
-  readonly sessionToken: string
- }
+  readonly sessionToken: string;
+  readonly __typename: string;
+ };
 }
 
 // UserAuthenticationWithPasswordSuccess
 // UserAuthenticationWithPasswordFailure
 
-interface IProps {}
+interface IPageLoginProps {
+ onPageReady: () => void
+}
 
-export const PageLogin: React.FC<IProps> = (props: IProps) => {
- const [loginHandler, {data, error, loading}] = useMutation<IResult>(LOGIN)
+export const PageLogin: React.FC<IPageLoginProps> = ({onPageReady}: IPageLoginProps) => {
+ React.useEffect(() => {
+  onPageReady();
+ }, [])
+ const [loginHandler, { data, error, loading }] = useMutation<IResult>(LOGIN);
+
+ console.log("data", data);
+
+ const onFormSubmit = (login: string, passwd: string) => {
+  loginHandler({ variables: { login, passwd } });
+ };
+
+ if (data && data.authenticate) {
+  console.log('Data', data);
+  if (data.authenticate.__typename === "UserAuthenticationWithPasswordSuccess") {
+   console.log("success auth with data", data);
+   window.localStorage["a"] = data.authenticate.sessionToken;
+   setTimeout(() => {
+    window.location.href = "/"; // TODO change to presentations here
+   }, 10);
+  }
+ }
+
+ return (
+  <PageLoginWrapper
+   onSubmit={(login, passwd) => onFormSubmit(login, passwd)}
+   loading={loading}
+   error={error ? error.message : ((data && data.authenticate && data.authenticate.__typename !== "UserAuthenticationWithPasswordSuccess")? "Invalid login or password": undefined)}
+  />
+ );
+};
+
+interface IPageLoginWrapperProps {
+ loading: boolean;
+ error?: string;
+ onSubmit: (login: string, passwd: string) => void;
+}
+
+const PageLoginWrapper: React.FC<IPageLoginWrapperProps> = ({ onSubmit, loading, error }: IPageLoginWrapperProps) => {
+ // const [loginHandler, {data, error, loading}] = useMutation<IResult>(LOGIN)
  const [login, setLogin] = React.useState<string>("");
  const [passwd, setPasswd] = React.useState<string>("");
 
- const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+ const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
-  loginHandler({ variables: { login, passwd } })
- }
-
-
- console.log('Login data', data);
+  console.log('submit', login, passwd);
+  onSubmit(login, passwd);
+  // loginHandler({ variables: { login, passwd } })
+ };
 
  return (
   <div className="Page PageLogin">
    <div className="loginFormWrapper">
     <div className="loginFormCard">
-     <form onSubmit={onSubmit}>
+     <form onSubmit={onFormSubmit}>
       <div className="title">Log in</div>
       <div className="inputs">
        <div className="input-login">
@@ -45,9 +85,15 @@ export const PageLogin: React.FC<IProps> = (props: IProps) => {
         </div>
        </div>
       </div>
-      {error && <div className="err">{error.message}</div>}
+      {error && !loading && <div className="err">{error}</div>}
       <div className="buttons">
-       {loading? <button disabled>Wait...</button>: <button type="submit" disabled={!(login && passwd)}>Log in</button>}
+       {loading ? (
+        <button disabled>Wait...</button>
+       ) : (
+        <button type="submit" disabled={!(login && passwd)}>
+         Log in
+        </button>
+       )}
       </div>
      </form>
     </div>
