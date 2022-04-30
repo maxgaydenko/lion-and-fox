@@ -49,4 +49,19 @@ export const GET_PROJECT_BODY = gql`
  }
 `;
 
+export const LOGIN = gql`
+ fragment AuthFragment on UserAuthenticationWithPasswordSuccess {
+  item {
+   id
+   name
+  }
+  sessionToken
+ }
+ mutation LoginQuery($login: String!, $passwd: String!) {
+  authenticate: authenticateUserWithPassword(email: $login, password: $passwd) {
+   __typename
+   ...AuthFragment
+  }
+ }
+`;
 

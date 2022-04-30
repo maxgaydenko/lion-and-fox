@@ -48,6 +48,7 @@
     margin-left: 64px;
     margin-right: 16px;
     padding: 16px 0;
+    box-sizing: border-box;
     transition: opacity $menu-duration linear;
     @media (min-width: $tablet-min-width) {
       margin-left: 164px;
@@ -59,7 +60,6 @@
     }
     .content-wrapper {
       margin: 0 auto;
-      max-width: 800px;
     }
   }
 }

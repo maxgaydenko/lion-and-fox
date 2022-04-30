@@ -84,7 +84,7 @@ const App: React.FC<IProps> = (props: IProps) => {
        />
       ))}
       <Route path="dev/gallery" element={<PageGallery />} />
-      <Route path="dev/login" element={<PageLogin />} />
+      <Route path="login" element={<PageLogin />} />
       <Route path="*" element={<PageError onPageReady={pageLoaded} title="Ooops" message="Page not found" />} />
      </Routes>
     </div>

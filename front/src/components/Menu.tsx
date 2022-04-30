@@ -32,11 +32,14 @@ export const Menu: React.FC<IProps> = (props: IProps) => {
    <div className="menu-wrapper">
     <div className="menu-box">
      <ul>
-      {listItems && listItems.map((f, i) => (
-       <li key={i} className={f.isSection ? "section" : ""}>
-        <Link onClick={props.onMenuHide} to={f.url}>{f.title}</Link>
-       </li>
-      ))}
+      {listItems &&
+       listItems.map((f, i) => (
+        <li key={i} className={f.isSection ? "section" : ""}>
+         <Link onClick={props.onMenuHide} to={f.url}>
+          {f.title}
+         </Link>
+        </li>
+       ))}
       {/* <li>-</li>
       <li className="section">
        <Link to="/">future</Link>
@@ -57,7 +60,12 @@ export const Menu: React.FC<IProps> = (props: IProps) => {
       </li> */}
       <li className="section">contact</li>
       <li>
-       <a onClick={props.onMenuHide} href="mailto:mail@lionandfox.co.uk">mail@lionandfox.co.uk</a>
+       <a onClick={props.onMenuHide} href="mailto:mail@lionandfox.co.uk">
+        mail@lionandfox.co.uk
+       </a>
+      </li>
+      <li className="section">
+       <Link onClick={props.onMenuHide} to="/login">Log in</Link>
       </li>
       {/* <li className="section">presentations</li>
       <li>
