@@ -15,18 +15,21 @@
     transition: transform $menu-duration linear;
     transform-origin: center center;
   }
+
   @media (min-width: $tablet-min-width) {
     .layer-conic {
-     left: calc(-100vw - 100vh + 100px);
-     top: calc(-100vw - 50vh - 56px);
+      left: calc(-100vw - 100vh + 100px);
+      top: calc(-100vw - 50vh - 56px);
     }
   }
+
   @media (min-width: $desktop-min-width) {
     .layer-conic {
       left: calc(-100vw - 100vh + 200px);
       // top: calc(-100vw - 50vh - 56px);
-     }
-   }
+    }
+  }
+
   .layer-ameba {
     z-index: 20;
     position: fixed;
@@ -40,8 +43,9 @@
     // transition: opacity 500ms linear;
     // transition: background-position 1000ms cubic-bezier(0, 0.99, 0.99, 1);
     // transition: background-position 5000ms cubic-bezier(0.3, 0.99, 0.99, 1) 0ms, opacity $menu-duration cubic-bezier(0.3, 0.99) 0ms;
-    transition: all 900ms cubic-bezier(.12,.98,.87,1) 0ms;
+    transition: all 900ms cubic-bezier(.12, .98, .87, 1) 0ms;
   }
+
   .layer-content {
     z-index: 100;
     position: relative;
@@ -50,36 +54,45 @@
     padding: 16px 0;
     box-sizing: border-box;
     transition: opacity $menu-duration linear;
+
     @media (min-width: $tablet-min-width) {
       margin-left: 164px;
       padding-top: 56px;
       padding-bottom: 56px;
     }
+
     @media (min-width: $desktop-min-width) {
       margin-left: 224px;
     }
+
     .content-wrapper {
       margin: 0 auto;
+      max-width: 800px;
     }
   }
 }
+
 .App-home {
   .layer-ameba {
     opacity: 1;
   }
 }
+
 .App-page {
   .layer-ameba {
     background-position-y: bottom;
   }
 }
+
 .App-menu-shown {
   .layer-conic {
     transform: rotate(90deg);
   }
+
   .layer-ameba {
     opacity: 0.1;
   }
+
   .layer-content {
     opacity: 0;
   }
