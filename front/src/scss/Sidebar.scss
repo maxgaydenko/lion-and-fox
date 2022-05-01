@@ -98,7 +98,8 @@
         }
 
         .icon-menu {
-          @extend %svg-menu24;
+          @extend %svg-burger;
+          // @extend %svg-menu24;
           transition: transform $menu-duration linear;
         }
 

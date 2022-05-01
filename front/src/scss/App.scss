@@ -1,6 +1,6 @@
 .App {
   .layer-conic {
-    z-index: 10;
+    z-index: 30;
     position: fixed;
     // left: calc(-100vw - 100vh + 50px);
     // top: calc(-100vw - 50vh - 66px);
@@ -9,7 +9,9 @@
     width: calc(200vw + 200vh);
     height: calc(200vw + 200vh);
     // background: conic-gradient(from 355deg, #010510, #6E727D 76deg, #1B1E29 136deg, #333742 204deg, #5F636E 280deg, #ABAFBA 320deg, #010510);
-    background: conic-gradient(from 355deg, #010510, #6E727D 76deg, #1B1E29 136deg, #333742 204deg, #5F636E 280deg, #ABAFBA 320deg, #010510);
+    // background: conic-gradient(from 355deg, rgba(255,255,255,0), #6E727D 76deg, #1B1E29 136deg, #333742 204deg, #5F636E 280deg, #ABAFBA 320deg, #010510);
+    background: conic-gradient(from -80deg, rgba(255, 255, 255, 0.60), rgba(255, 255, 255, 0.00) 76deg, rgba(255, 255, 255, 0.40) 137deg, rgba(255, 255, 255, 0.10) 204deg, rgba(255, 255, 255, 0.20) 280deg, rgba(255, 255, 255, 0.30) 320deg, rgba(255, 255, 255, 0.60));
+    // background: conic-gradient(from 355deg, #010510, #6E727D 76deg, #1B1E29 136deg, #333742 204deg, #5F636E 280deg, #ABAFBA 320deg, #010510);
     background-repeat: no-repeat;
     background-size: contain;
     transition: transform $menu-duration linear;
