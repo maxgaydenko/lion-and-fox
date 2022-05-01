@@ -147,47 +147,76 @@
   .wideImg {
    padding: 28px 0 0;
 
-   .image-gallery-icon {
-    opacity: .6;
-    transition: all $menu-duration linear;
+   // .image-gallery-icon {
+   //  opacity: .6;
+   //  transition: all $menu-duration linear;
 
-    .image-gallery-svg {
-     width: 30px;
-     height: 60px;
-    }
-   }
+   //  .image-gallery-svg {
+   //   width: 30px;
+   //   height: 60px;
+   //  }
+   // }
 
-   .image-gallery-icon:hover {
-    color: #00FB99;
-   }
+   // .image-gallery-icon:hover {
+   //  color: #00FB99;
+   // }
 
-   .image-gallery-bullets .image-gallery-bullet {
-    opacity: .6;
-   }
+   // .image-gallery-bullets .image-gallery-bullet {
+   //  opacity: .6;
+   // }
 
-   .image-gallery-bullets .image-gallery-bullet:hover {
-    opacity: 1;
-    background: #00FB99;
-    border: 1px solid #00FB99;
-   }
+   // .image-gallery-bullets .image-gallery-bullet:hover {
+   //  opacity: 1;
+   //  background: #00FB99;
+   //  border: 1px solid #00FB99;
+   // }
 
-   .gallery-nav {
-    color: #fff;
-    transition: all 0.3s ease-out;
-    appearance: none;
-    background-color: transparent;
-    border: 0;
-    cursor: pointer;
-    outline: none;
+   button.gallery-button {
     position: absolute;
     z-index: 4;
-    // filter: drop-shadow(0 2px 2px #1a1a1a);
+    top: 50%;
+    margin-top: -20px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(0,0,0,.4);
+    background-position: center center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+   }
+   button.gallery-button-prev {
+    @extend %svg-shevron;
+    left: 8px;
+    transform: rotate(180deg);
+   }
+   button.gallery-button-next {
+    @extend %svg-shevron;
+    right: 8px;
    }
 
-   .gallery-nav-left {
+   .image-gallery-bullets {
+    top: 100%;
     left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    right: 0;
+    width: 100%;
+    margin: 8px 0 0;
+    .image-gallery-bullets-container {
+     text-align: left;
+
+     .image-gallery-bullet {
+      border: none;
+      background: #fff;
+      opacity: .2;
+      transition: all $menu-duration linear;
+      box-shadow: none;
+      margin: 0 16px 0 0;
+      padding: 3px;
+     }
+     .active {
+      opacity: 1;
+     }
+    }
    }
 
    // img {

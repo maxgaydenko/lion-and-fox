@@ -67,6 +67,9 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
       showBullets={props.project.gallery.length > 1}
       showPlayButton={false}
       showNav={true}
+      showFullscreenButton={false}
+      renderLeftNav={(onClick, disabled) => <button onClick={onClick} disabled={disabled} className={'gallery-button gallery-button-prev'} />}
+      renderRightNav={(onClick, disabled) => <button onClick={onClick} disabled={disabled} className={'gallery-button gallery-button-next'} />}
      />
     </div>)}
 
