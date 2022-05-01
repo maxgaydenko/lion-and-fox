@@ -18,7 +18,7 @@ export const Sidebar: React.FC<IProps> = (props: IProps) => {
     <ul>
      <li className="menu-item"><button className="icon icon-menu" onClick={props.onMenuClick} /></li>
      <li className="other-item"><a className="icon icon-instagram" href="https://instagram.com/lionandfoxrobotics" target="_blank" rel="noreferrer"><span>@lionandfoxrobotics</span></a></li>
-     <li className="other-item"><a className="icon icon-mail" href="mailto:mail@lionandfox.co.uk"><span>mail@lionandfox.co.uk</span></a></li>
+     <li className="other-item"><a className="icon icon-mail" href="mailto:alive@lionandfox.co.uk"><span>alive@lionandfox.co.uk</span></a></li>
     </ul>
    </div>
   </div>
