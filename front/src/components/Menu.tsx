@@ -49,8 +49,8 @@ export const Menu: React.FC<IProps> = (props: IProps) => {
        ))}
       <li className="section">contact</li>
       <li>
-       <a onClick={props.onMenuHide} href="mailto:mail@lionandfox.co.uk">
-        mail@lionandfox.co.uk
+       <a onClick={props.onMenuHide} href="mailto:alive@lionandfox.co.uk">
+       alive@lionandfox.co.uk
        </a>
       </li>
       {props.userName ? (

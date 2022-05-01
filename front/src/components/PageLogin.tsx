@@ -34,7 +34,7 @@ export const PageLogin: React.FC<IPageLoginProps> = ({onPageReady}: IPageLoginPr
    console.log("success auth with data", data);
    window.localStorage["a"] = data.authenticate.sessionToken;
    setTimeout(() => {
-    window.location.href = "/"; // TODO change to presentations here
+    window.location.href = "/presentations/"; // TODO change to presentations here
    }, 10);
   }
  }
