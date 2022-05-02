@@ -1,3 +1,6 @@
+@use "sass:math";
+// math.div in sass
+
 $tablet-min-width: 640px;
 $desktop-min-width: 1280px;
 
@@ -6,3 +9,7 @@ $menu-duration: 350ms;
 
 $gallery-2cols-width: 440px;
 $gallery-3cols-width: 800px;
+
+$video-w: 720;
+$video-h: 1280;
+$video-aspect: math.div(720, 1280);

@@ -52,7 +52,6 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
   props.onPageReady();
  }, [])
 
- console.log('projects', props.page.projects);
  return (
   <div className="Page">
    <Header url={props.url} menu={props.menu} hasBlazon={props.page.hasBlazon} />

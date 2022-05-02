@@ -1,4 +1,49 @@
 .App {
+  .layer-bg {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+  }
+
+  .layer-bg-video {
+    transition: all 2000ms cubic-bezier(.12, .98, .87, 1) 0ms;
+
+    video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    @supports (object-fit: cover) {
+      video {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .layer-bg-img {
+    background: url('../assets/png/ameba.jpg') center center no-repeat;
+    background-size: cover;
+  }
+
+  .layer-bg-home {
+    z-index: 15;
+  }
+
+  .layer-bg-base {
+    z-index: 13;
+  }
+
+
   .layer-conic {
     z-index: 30;
     position: fixed;
@@ -77,6 +122,41 @@
     }
   }
 
+  .layer-background-video {
+    z-index: 10;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+
+    video {
+      position: absolute;
+      top: 0;
+      // opacity: .4;
+      transition: all 1600ms cubic-bezier(.12, .98, .87, 1) 0ms;
+    }
+
+    @media (min-aspect-ratio: 720/1280) {
+      // background: pink;
+      video {
+        left: 0;
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    @media (max-aspect-ratio: 720/1280) {
+      // background: lime;
+      video {
+        height: 100%;
+        width: auto;
+        left: calc((720/1280 * 100vh - 100vw) / -2);
+      }
+    }
+
+  }
+
   .layer-ameba {
     z-index: 10;
     position: fixed;
@@ -120,15 +200,47 @@
 }
 
 .App-home {
-  .layer-ameba {
+  .layer-bg-base {
+    opacity: 0;
+  }
+
+  .layer-bg-home {
     opacity: 1;
   }
+
+  .layer-background-video {
+    video {
+      opacity: 1;
+      top: 0;
+    }
+  }
+
+  // .layer-ameba {
+  //   opacity: 1;
+  // }
 }
 
 .App-page {
-  .layer-ameba {
-    background-position-y: bottom;
+  .layer-bg-base {
+    opacity: 0.2;
   }
+
+  .layer-bg-home {
+    opacity: 0;
+  }
+
+  .layer-background-video {
+    video {
+      opacity: .4;
+      @media (min-aspect-ratio: 720/1280) {
+        top: calc(100vh - 1280/720 * 100vw);
+      }
+    }
+  }
+
+  // .layer-ameba {
+  //   background-position-y: bottom;
+  // }
 }
 
 .App-menu-shown {
@@ -136,9 +248,23 @@
     transform: rotate(90deg);
   }
 
-  .layer-ameba {
-    opacity: 0.1;
+  .layer-bg-base {
+    opacity: 0;
   }
+
+  .layer-bg-home {
+    opacity: .3;
+  }
+
+  .layer-background-video {
+    video {
+      opacity: .1;
+    }
+  }
+
+  // .layer-ameba {
+  //   opacity: 0.1;
+  // }
 
   .layer-content {
     opacity: 0;

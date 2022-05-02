@@ -20,7 +20,7 @@
    }
 
   .title {
-   color: #fff;
+   color: #000;
    // opacity: .8;
    letter-spacing: 2px;
    line-height: 27px;
@@ -112,8 +112,8 @@
     line-height: 38px;
     padding: 0 32px;
     background: none;
-    border: 1px solid #FFFFFF;
-    color: #fff;
+    border: 1px solid #000;
+    color: #000;
     opacity: 0.8;
     transition: all $hover-duration linear;
     cursor: pointer;

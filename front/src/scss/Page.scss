@@ -86,6 +86,7 @@
    height: 140px;
    background: url("../assets/png/LF_logo.png") 0 0 no-repeat;
    background-size: contain;
+   opacity: .8;
 
    @media (min-width: $tablet-min-width) {
     width: 64px;

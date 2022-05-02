@@ -1,20 +1,17 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-// import { PageCars } from "./PageCars";
 import { Sidebar } from "./Sidebar";
 import { Menu } from "./Menu";
 import { GET_STRUCT } from "../gqls/gqls";
 import { combineMenu, IMenu, IMenuDataItem } from "../utils/menu";
 import { Page } from "./Page";
 import { PageHome } from "./PageHome";
-import { PageGallery } from "./PageGallery";
 import { PageError } from "./PageError";
 import { AppError } from "./AppError";
 import { PageLogin } from "./PageLogin";
 import { PageProject } from "./PageProject";
 import { PagePresentations } from "./PagePresentations";
-// import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 interface IAuthUser {
  readonly id: string
@@ -71,17 +68,28 @@ const App: React.FC<IProps> = (props: IProps) => {
 
  return (
   <div className={"App" + (homeMarker ? " App-home" : " App-page") + (menuShown ? " App-menu-shown" : "")}>
-   <div className="layer-ameba"></div>
+   <div className="layer-background-video">
+    <video id="video-home" muted loop autoPlay playsInline>
+     <source type="video/webm" src="/video/LF_1-2.webm" />
+    </video>
+   </div>
+   {/* <div className="layer-ameba"></div> */}
    {/* <div className="layer-video">
     <video id="vi1" loop autoPlay={true}>
      <source type="video/webm" src='/video/LF.webm' />
     </video>
    </div> */}
-   <div className="layer-video">
-    <video id="vi2" loop autoPlay={true}>
-     <source type="video/webm" src='/video/LF_1.webm' />
+   {/* <div className="layer-bg layer-bg-video layer-bg-home">
+    <video id="video-home" muted loop autoPlay playsInline>
+     <source type="video/webm" src="/video/LF.webm" />
     </video>
-   </div>
+   </div> */}
+   {/* <div className="layer-bg layer-bg-video layer-bg-base">
+    <video id="video-base" muted loop autoPlay>
+     <source type="video/webm" src="/video/LF_1.webm" />
+    </video>
+   </div> */}
+   {/* <div className="layer-bg layer-bg-img layer-bg-base"></div> */}
    <div className="layer-conic"></div>
    {/* <TransitionGroup component={null}>
     <CSSTransition key={location.key} classNames="PageFade" timeout={400}> */}
@@ -109,8 +117,12 @@ const App: React.FC<IProps> = (props: IProps) => {
    </div>
    {/* </CSSTransition>
    </TransitionGroup> */}
-   <Sidebar userName={props.user? props.user.name: undefined} onMenuHide={() => setMenuShown(false)} onMenuClick={() => setMenuShown(!menuShown)} />
-   <Menu userName={props.user? props.user.name: undefined} onMenuHide={() => setMenuShown(false)} menu={props.menu} />
+   <Sidebar
+    userName={props.user ? props.user.name : undefined}
+    onMenuHide={() => setMenuShown(false)}
+    onMenuClick={() => setMenuShown(!menuShown)}
+   />
+   <Menu userName={props.user ? props.user.name : undefined} onMenuHide={() => setMenuShown(false)} menu={props.menu} />
   </div>
  );
 };
