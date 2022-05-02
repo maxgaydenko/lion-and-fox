@@ -10,60 +10,23 @@ interface IStubProject {
 }
 
 const _stub: IStubProject[] = [
- { name: "Jeep Wrangler", img: "/_stub_cars/jeep_wrangler.jpg" },
- { name: "Bmw x6 active hybrid 403 hp - ", img: "/_stub_cars/bmw_x6.jpg" },
- { name: "Mazda cx-5", img: "/_stub_cars/mazda_cx5.jpg" },
- { name: "Lexus nx200t", img: "/_stub_cars/lexus_nx.jpg" },
- { name: "Bmw gt6", img: "/_stub_cars/bmw_6gt.jpg" },
- { name: "External img", img: "https://www.freshnessmag.com/.image/t_share/MTM2NjMxOTAzMDc4OTgzMjY1/the-vehicles-from-mad-max-fury-road-0.jpg" },
+ { name: "Maket", img: "/_stub_cars/svg/Maket.svg" },
+ { name: "Maket 2", img: "/_stub_cars/svg/Maket_2.svg" },
+ { name: "Maket 3", img: "/_stub_cars/svg/Maket_3.svg" },
 ];
 
-export const PageGallery: React.FC<IProps> = (props: IProps) => {
+export const DevPageGallery: React.FC<IProps> = (props: IProps) => {
  const [sel, setSel] = React.useState<boolean>(false);
 
  return (
   <div className="Page">
    <div className="head">
     <div className="bc">
-     <a href="#1">_cars</a>
+     <div className="section">Presentations</div>
     </div>
-    <div className="ac">
-     <button disabled={!sel}>Copy link</button>
-    </div>
-    <div className="blazon"></div>
    </div>
    <div className="body">
-    <ul className="gallery">
-     {_stub.map((f, i) => (
-      <li key={i}>
-       <Link to="dev/project">
-        <div className="thumb">
-         <div className="thumb-img" style={{ backgroundImage: `url(${f.img})` }}></div>
-        </div>
-        <div className="name">{f.name}</div>
-       </Link>
-      </li>
-     ))}
-     <li>
-      <div className="thumb"></div>
-      <div className="name">Non exists</div>
-     </li>
-     <li>
-      <Link to="dev/only-img-link">
-       <div className="thumb">
-        <div className="thumb-img" style={{ backgroundImage: `url(${_stub[_stub.length - 1].img})` }}></div>
-       </div>
-      </Link>
-      <div className="name">Only img link</div>
-     </li>
-     <li className={sel ? "selected" : ""}>
-      <div className="thumb"></div>
-      <label className="checkbox">
-       <input type="checkbox" checked={sel} onChange={() => setSel(!sel)} value={"abcd"} id="item-abcd" /> <span>Select item</span>
-      </label>
-     </li>
-    </ul>
-    <h1>Lion and Fox</h1>
+    <h1>Svg gallery</h1>
     <div className="wideImg">
      <ImageGallery
       items={_stub.map(f => ({ original: f.img }))}
@@ -71,6 +34,9 @@ export const PageGallery: React.FC<IProps> = (props: IProps) => {
       showBullets={true}
       showPlayButton={false}
       showNav={true}
+      showFullscreenButton={false}
+      renderLeftNav={(onClick, disabled) => <button onClick={onClick} disabled={disabled} className={'gallery-button gallery-button-prev'} />}
+      renderRightNav={(onClick, disabled) => <button onClick={onClick} disabled={disabled} className={'gallery-button gallery-button-next'} />}
       // renderLeftNav={(onClick, disabled) => <GalleryNav className="gallery-nav-left" onClick={onClick} disabled={disabled} />}
       // renderRightNav={(onClick, disabled) => <GalleryNav className="gallery-nav-right" onClick={onClick} disabled={disabled} />}
      />

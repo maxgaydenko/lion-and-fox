@@ -12,6 +12,7 @@ import { AppError } from "./AppError";
 import { PageLogin } from "./PageLogin";
 import { PageProject } from "./PageProject";
 import { PagePresentations } from "./PagePresentations";
+import { DevPageGallery } from "./DevPageGallery";
 
 interface IAuthUser {
  readonly id: string
@@ -111,6 +112,7 @@ const App: React.FC<IProps> = (props: IProps) => {
       ))}
       {props.user && <Route path="presentations" element={<PagePresentations onPageReady={pageLoaded} />} />}
       {!props.user && <Route path="login" element={<PageLogin onPageReady={homePageLoaded} />} />}
+      <Route path="dev/gallery" element={<DevPageGallery />} />
       <Route path="*" element={<PageError onPageReady={pageLoaded} title="Ooops" message="Page not found" />} />
      </Routes>
     </div>
