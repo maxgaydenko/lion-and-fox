@@ -49,7 +49,7 @@ export const Menu: React.FC<IProps> = (props: IProps) => {
        ))}
       <li className="section">contact</li>
       <li>
-       <a onClick={props.onMenuHide} href="mailto:alive@lionandfox.co.uk">
+       <a href="mailto:alive@lionandfox.co.uk">
        alive@lionandfox.co.uk
        </a>
       </li>

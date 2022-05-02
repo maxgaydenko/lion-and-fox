@@ -9,7 +9,7 @@ export const GET_STRUCT = gql`
   authenticatedItem {
    ...AuthFragment
   }
-  pages {
+  pages(where:{isPublished:{equals:true}}) {
    url
    pos
    menuName
@@ -74,7 +74,7 @@ export const LOGIN = gql`
 
 export const GET_ALL_PRESENTATIONS = gql`
  query GetAllPresentations {
-  presentations {
+  presentations(where:{isPublished:{equals:true}}) {
    title
    pos
    uploadedFile {

@@ -71,8 +71,18 @@ const App: React.FC<IProps> = (props: IProps) => {
 
  return (
   <div className={"App" + (homeMarker ? " App-home" : " App-page") + (menuShown ? " App-menu-shown" : "")}>
-   <div className="layer-conic"></div>
    <div className="layer-ameba"></div>
+   {/* <div className="layer-video">
+    <video id="vi1" loop autoPlay={true}>
+     <source type="video/webm" src='/video/LF.webm' />
+    </video>
+   </div> */}
+   <div className="layer-video">
+    <video id="vi2" loop autoPlay={true}>
+     <source type="video/webm" src='/video/LF_1.webm' />
+    </video>
+   </div>
+   <div className="layer-conic"></div>
    {/* <TransitionGroup component={null}>
     <CSSTransition key={location.key} classNames="PageFade" timeout={400}> */}
    <div className="layer-content">
