@@ -1,129 +1,6 @@
 .App {
   position: relative;
 
-  .layer-bg {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    overflow: hidden;
-  }
-
-  .layer-bg-video {
-    transition: all 2000ms cubic-bezier(.12, .98, .87, 1) 0ms;
-
-    video {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    @supports (object-fit: cover) {
-      video {
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-  }
-
-  .layer-bg-img {
-    background: url('../assets/png/ameba.jpg') center center no-repeat;
-    background-size: cover;
-  }
-
-  .layer-bg-home {
-    z-index: 15;
-  }
-
-  .layer-bg-base {
-    z-index: 13;
-  }
-
-
-  .layer-conic {
-    position: fixed;
-    z-index: 20;
-    // left: calc(-100vw - 100vh + 50px);
-    // top: calc(-100vw - 50vh - 66px);
-    left: calc(-100vw - 100vh + 32px);
-    top: calc(-100vw - 100vh + 32px);
-    width: calc(200vw + 200vh);
-    height: calc(200vw + 200vh);
-    // background: conic-gradient(from 355deg, #010510, #6E727D 76deg, #1B1E29 136deg, #333742 204deg, #5F636E 280deg, #ABAFBA 320deg, #010510);
-    // background: conic-gradient(from 355deg, rgba(255,255,255,0), #6E727D 76deg, #1B1E29 136deg, #333742 204deg, #5F636E 280deg, #ABAFBA 320deg, #010510);
-    background: conic-gradient(from -80deg, rgba(255, 255, 255, 0.60), rgba(255, 255, 255, 0.00) 76deg, rgba(255, 255, 255, 0.40) 137deg, rgba(255, 255, 255, 0.10) 204deg, rgba(255, 255, 255, 0.20) 280deg, rgba(255, 255, 255, 0.30) 320deg, rgba(255, 255, 255, 0.60));
-    // background: conic-gradient(from 355deg, #010510, #6E727D 76deg, #1B1E29 136deg, #333742 204deg, #5F636E 280deg, #ABAFBA 320deg, #010510);
-    background-repeat: no-repeat;
-    background-size: contain;
-    transition: transform $menu-duration linear;
-    transform-origin: center center;
-  }
-
-  @media (min-width: $tablet-min-width) {
-    .layer-conic {
-      left: calc(-100vw - 100vh + 100px);
-      top: calc(-100vw - 50vh - 56px);
-    }
-  }
-
-  @media (min-width: $desktop-min-width) {
-    .layer-conic {
-      left: calc(-100vw - 100vh + 200px);
-      // top: calc(-100vw - 50vh - 56px);
-    }
-  }
-
-  .layer-video {
-    z-index: 10;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    overflow: hidden;
-    // opacity: .4;
-
-    video {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-  }
-
-  /* 1. No object-fit support: */
-  @media (min-aspect-ratio: 16/9) {
-    .layer-video>video {
-      height: 300%;
-      top: -100%;
-    }
-  }
-
-  @media (max-aspect-ratio: 16/9) {
-    .layer-video>video {
-      width: 300%;
-      left: -100%;
-    }
-  }
-
-  /* 2. If supporting object-fit, overriding (1): */
-  @supports (object-fit: cover) {
-    .layer-video>video {
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
-
   .layer-background-video {
     z-index: 10;
     position: fixed;
@@ -162,21 +39,159 @@
 
   }
 
-  .layer-ameba {
-    z-index: 10;
+  // .layer-bg {
+  //   position: fixed;
+  //   top: 0;
+  //   right: 0;
+  //   bottom: 0;
+  //   left: 0;
+  //   overflow: hidden;
+  // }
+
+  // .layer-bg-video {
+  //   transition: all 2000ms cubic-bezier(.12, .98, .87, 1) 0ms;
+
+  //   video {
+  //     position: absolute;
+  //     top: 0;
+  //     left: 0;
+  //     width: 100%;
+  //     height: 100%;
+  //   }
+
+  //   @supports (object-fit: cover) {
+  //     video {
+  //       top: 0;
+  //       left: 0;
+  //       width: 100%;
+  //       height: 100%;
+  //       object-fit: cover;
+  //     }
+  //   }
+  // }
+
+  // .layer-bg-img {
+  //   background: url('../assets/png/ameba.jpg') center center no-repeat;
+  //   background-size: cover;
+  // }
+
+  // .layer-bg-home {
+  //   z-index: 15;
+  // }
+
+  // .layer-bg-base {
+  //   z-index: 13;
+  // }
+
+  $radialSize: 100px;
+
+  .layer-radial {
     position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: url("../assets/png/cell_VERT.png") 0 0 no-repeat;
-    background-size: cover;
-    opacity: 0.2;
-    // transition: opacity 500ms linear;
-    // transition: background-position 1000ms cubic-bezier(0, 0.99, 0.99, 1);
-    // transition: background-position 5000ms cubic-bezier(0.3, 0.99, 0.99, 1) 0ms, opacity $menu-duration cubic-bezier(0.3, 0.99) 0ms;
-    transition: all 900ms cubic-bezier(.12, .98, .87, 1) 0ms;
+    z-index: 19;
+    left: calc(24px - $radialSize);
+    top: calc(24px - $radialSize);
+    width: $radialSize*2;
+    height: $radialSize*2;
+    background-image: radial-gradient(#000616aa 0%, #fff0 $radialSize);
   }
+  .layer-conic {
+    position: fixed;
+    z-index: 20;
+    left: calc(-100vw - 100vh + 32px);
+    top: calc(-100vw - 100vh + 32px);
+    width: calc(200vw + 200vh);
+    height: calc(200vw + 200vh);
+    // background: conic-gradient(from 355deg, #010510, #6E727D 76deg, #1B1E29 136deg, #333742 204deg, #5F636E 280deg, #ABAFBA 320deg, #010510);
+    // background: conic-gradient(from 355deg, rgba(255,255,255,0), #6E727D 76deg, #1B1E29 136deg, #333742 204deg, #5F636E 280deg, #ABAFBA 320deg, #010510);
+    background: conic-gradient(from -80deg, rgba(255, 255, 255, 0.60), rgba(255, 255, 255, 0.00) 76deg, rgba(255, 255, 255, 0.40) 137deg, rgba(255, 255, 255, 0.10) 204deg, rgba(255, 255, 255, 0.20) 280deg, rgba(255, 255, 255, 0.30) 320deg, rgba(255, 255, 255, 0.60));
+    // background: conic-gradient(from 355deg, #010510, #6E727D 76deg, #1B1E29 136deg, #333742 204deg, #5F636E 280deg, #ABAFBA 320deg, #010510);
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: transform $menu-duration linear;
+    transform-origin: center center;
+  }
+
+  @media (min-width: $tablet-min-width) {
+    .layer-radial {
+      left: calc(100px - $radialSize);
+      top: 50%;
+      margin-top: calc($radialSize * -1 - 56px);
+    }
+    .layer-conic {
+      left: calc(-100vw - 100vh + 100px);
+      top: calc(-100vw - 50vh - 56px);
+    }
+  }
+
+  @media (min-width: $desktop-min-width) {
+    .layer-radial {
+      left: calc(200px - $radialSize);
+    }
+    .layer-conic {
+      left: calc(-100vw - 100vh + 200px);
+    }
+  }
+
+  // .layer-video {
+  //   z-index: 10;
+  //   position: fixed;
+  //   top: 0;
+  //   right: 0;
+  //   bottom: 0;
+  //   left: 0;
+  //   overflow: hidden;
+  //   // opacity: .4;
+
+  //   video {
+  //     position: absolute;
+  //     top: 0;
+  //     left: 0;
+  //     width: 100%;
+  //     height: 100%;
+  //   }
+  // }
+
+  // /* 1. No object-fit support: */
+  // @media (min-aspect-ratio: 16/9) {
+  //   .layer-video>video {
+  //     height: 300%;
+  //     top: -100%;
+  //   }
+  // }
+
+  // @media (max-aspect-ratio: 16/9) {
+  //   .layer-video>video {
+  //     width: 300%;
+  //     left: -100%;
+  //   }
+  // }
+
+  // /* 2. If supporting object-fit, overriding (1): */
+  // @supports (object-fit: cover) {
+  //   .layer-video>video {
+  //     top: 0;
+  //     left: 0;
+  //     width: 100%;
+  //     height: 100%;
+  //     object-fit: cover;
+  //   }
+  // }
+
+  // .layer-ameba {
+  //   z-index: 10;
+  //   position: fixed;
+  //   left: 0;
+  //   top: 0;
+  //   width: 100%;
+  //   height: 100%;
+  //   background: url("../assets/png/cell_VERT.png") 0 0 no-repeat;
+  //   background-size: cover;
+  //   opacity: 0.2;
+  //   // transition: opacity 500ms linear;
+  //   // transition: background-position 1000ms cubic-bezier(0, 0.99, 0.99, 1);
+  //   // transition: background-position 5000ms cubic-bezier(0.3, 0.99, 0.99, 1) 0ms, opacity $menu-duration cubic-bezier(0.3, 0.99) 0ms;
+  //   transition: all 900ms cubic-bezier(.12, .98, .87, 1) 0ms;
+  // }
 
   .layer-content {
     margin-left: 64px;
@@ -205,13 +220,13 @@
 }
 
 .App-home {
-  .layer-bg-base {
-    opacity: 0;
-  }
+  // .layer-bg-base {
+  //   opacity: 0;
+  // }
 
-  .layer-bg-home {
-    opacity: 1;
-  }
+  // .layer-bg-home {
+  //   opacity: 1;
+  // }
 
   .layer-background-video {
     video {
@@ -226,13 +241,13 @@
 }
 
 .App-page {
-  .layer-bg-base {
-    opacity: 0.2;
-  }
+  // .layer-bg-base {
+  //   opacity: 0.2;
+  // }
 
-  .layer-bg-home {
-    opacity: 0;
-  }
+  // .layer-bg-home {
+  //   opacity: 0;
+  // }
 
   .layer-background-video {
     video {
@@ -254,13 +269,13 @@
     transform: rotate(90deg);
   }
 
-  .layer-bg-base {
-    opacity: 0;
-  }
+  // .layer-bg-base {
+  //   opacity: 0;
+  // }
 
-  .layer-bg-home {
-    opacity: .3;
-  }
+  // .layer-bg-home {
+  //   opacity: .3;
+  // }
 
   .layer-background-video {
     video {

@@ -72,6 +72,7 @@ const App: React.FC<IProps> = (props: IProps) => {
    <div className="layer-background-video">
     <video id="video-home" muted loop autoPlay playsInline>
      <source type="video/webm" src="/video/preview1.webm" />
+     <source type="video/mp4" src="/video/preview1.mp4" />
     </video>
    </div>
    {/* <div className="layer-ameba"></div> */}
@@ -91,6 +92,7 @@ const App: React.FC<IProps> = (props: IProps) => {
     </video>
    </div> */}
    {/* <div className="layer-bg layer-bg-img layer-bg-base"></div> */}
+   <div className="layer-radial"></div>
    <div className="layer-conic"></div>
    {/* <TransitionGroup component={null}>
     <CSSTransition key={location.key} classNames="PageFade" timeout={400}> */}
