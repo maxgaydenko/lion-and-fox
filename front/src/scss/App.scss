@@ -140,7 +140,7 @@
       // transition: all 1600ms ease-in-out 0ms;
     }
 
-    @media (min-aspect-ratio: 720/1280) {
+    @media (min-aspect-ratio: 960/1080) { // 720/1280
 
       // background: pink;
       video {
@@ -150,13 +150,13 @@
       }
     }
 
-    @media (max-aspect-ratio: 720/1280) {
+    @media (max-aspect-ratio: 960/1080) {
 
       // background: lime;
       video {
         height: 100%;
         width: auto;
-        left: calc((720/1280 * 100vh - 100vw) / -2);
+        left: calc((960/1080 * 100vh - 100vw) / -2);
       }
     }
 
@@ -238,8 +238,8 @@
     video {
       opacity: .4;
 
-      @media (min-aspect-ratio: 720/1280) {
-        top: calc(100vh - 1280/720 * 100vw);
+      @media (min-aspect-ratio: 960/1080) {
+        top: calc(100vh - 1080/960 * 100vw);
       }
     }
   }

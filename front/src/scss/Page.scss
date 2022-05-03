@@ -373,9 +373,6 @@
       bottom: -16px;
      }
     }
-    div.thumb-hov {
-     cursor: pointer;
-    }
 
     div.name {
      opacity: 1;
@@ -407,6 +404,10 @@
      transition: all $hover-duration ease-in-out;
     }
    }
+   div.thumb-hov {
+    cursor: pointer;
+   }
+
 
    div.name {
     padding-top: 8px;

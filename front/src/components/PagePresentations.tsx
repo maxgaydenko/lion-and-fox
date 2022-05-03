@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import React from "react";
 import { GET_ALL_PRESENTATIONS } from "../gqls/gqls";
 import { PageError } from "./PageError";
-import ImageGallery from "react-image-gallery";
+import { PopupPresentation } from "./PopupPresentation";
 
 interface IPresentationFile {
  readonly fileName: string;
@@ -68,6 +68,7 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
     props.showcases[selectedShowcaseIdx].gallery &&
     props.showcases[selectedShowcaseIdx].gallery!.length > 0 && (
      <PopupPresentation
+      key={`showcase-${selectedShowcaseIdx}`}
       title={props.showcases[selectedShowcaseIdx].title}
       gallery={props.showcases[selectedShowcaseIdx].gallery!}
       onClose={onHideShowcase}
@@ -100,39 +101,3 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
  );
 };
 
-interface IPopupPresentationProps {
- title: string;
- gallery: string[];
- onClose: () => void;
-}
-
-const PopupPresentation: React.FC<IPopupPresentationProps> = (props: IPopupPresentationProps) => {
- return (
-  <div className="Popup">
-   <div className="popup-head">
-    <div className="title">{props.title}</div>
-    <div className="close">
-     <button onClick={props.onClose} />
-    </div>
-   </div>
-   <div className="popup-body">
-    <div className="popup-body-vbox">
-     <ImageGallery
-      items={props.gallery.map(f => ({ original: `${process.env.REACT_APP_BACKEND_URL}${f}` }))}
-      autoPlay={false}
-      showBullets={props.gallery.length > 1}
-      showPlayButton={false}
-      showNav={true}
-      showFullscreenButton={false}
-      renderLeftNav={(onClick, disabled) => (
-       <button onClick={onClick} disabled={disabled} className={"gallery-button gallery-button-prev"} />
-      )}
-      renderRightNav={(onClick, disabled) => (
-       <button onClick={onClick} disabled={disabled} className={"gallery-button gallery-button-next"} />
-      )}
-     />
-    </div>
-   </div>
-  </div>
- );
-};

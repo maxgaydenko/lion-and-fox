@@ -71,7 +71,7 @@ const App: React.FC<IProps> = (props: IProps) => {
   <div className={"App" + (homeMarker ? " App-home" : " App-page") + (menuShown ? " App-menu-shown" : "")}>
    <div className="layer-background-video">
     <video id="video-home" muted loop autoPlay playsInline>
-     <source type="video/webm" src="/video/LF_1-2.webm" />
+     <source type="video/webm" src="/video/preview1.webm" />
     </video>
    </div>
    {/* <div className="layer-ameba"></div> */}
