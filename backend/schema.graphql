@@ -249,26 +249,6 @@ input ProjectWhereUniqueInput {
   url: String
 }
 
-type LocalImageFieldOutput implements ImageFieldOutput {
-  id: ID!
-  filesize: Int!
-  width: Int!
-  height: Int!
-  extension: ImageExtension!
-  ref: String!
-  url: String!
-}
-
-type CloudImageFieldOutput implements ImageFieldOutput {
-  id: ID!
-  filesize: Int!
-  width: Int!
-  height: Int!
-  extension: ImageExtension!
-  ref: String!
-  url: String!
-}
-
 input ProjectWhereInput {
   AND: [ProjectWhereInput!]
   OR: [ProjectWhereInput!]
@@ -341,84 +321,75 @@ input PageRelateToOneForCreateInput {
   connect: PageWhereUniqueInput
 }
 
-type Presentation {
+type Showcase {
   id: ID!
-  title: String
   pos: Int
-  file: FileFieldOutput
-  uploadedFile: PresentationFile
   isPublished: Boolean
+  title: String
+  img: ImageFieldOutput
+  gallery: JSON
 }
 
-interface FileFieldOutput {
-  filename: String!
-  filesize: Int!
-  ref: String!
-  url: String!
-}
-
-type PresentationFile {
-  fileName: String
-  fileSize: Int
-}
-
-input PresentationWhereUniqueInput {
+input ShowcaseWhereUniqueInput {
   id: ID
 }
 
-type LocalFileFieldOutput implements FileFieldOutput {
-  filename: String!
+type LocalImageFieldOutput implements ImageFieldOutput {
+  id: ID!
   filesize: Int!
+  width: Int!
+  height: Int!
+  extension: ImageExtension!
   ref: String!
   url: String!
 }
 
-type CloudFileFieldOutput implements FileFieldOutput {
-  filename: String!
+type CloudImageFieldOutput implements ImageFieldOutput {
+  id: ID!
   filesize: Int!
+  width: Int!
+  height: Int!
+  extension: ImageExtension!
   ref: String!
   url: String!
 }
 
-input PresentationWhereInput {
-  AND: [PresentationWhereInput!]
-  OR: [PresentationWhereInput!]
-  NOT: [PresentationWhereInput!]
+input ShowcaseWhereInput {
+  AND: [ShowcaseWhereInput!]
+  OR: [ShowcaseWhereInput!]
+  NOT: [ShowcaseWhereInput!]
   id: IDFilter
-  title: StringFilter
   pos: IntFilter
   isPublished: BooleanFilter
+  title: StringFilter
 }
 
-input PresentationOrderByInput {
+input ShowcaseOrderByInput {
   id: OrderDirection
-  title: OrderDirection
   pos: OrderDirection
   isPublished: OrderDirection
+  title: OrderDirection
 }
 
-input PresentationUpdateInput {
-  title: String
+input ShowcaseUpdateInput {
   pos: Int
-  file: FileFieldInput
   isPublished: Boolean
-}
-
-input FileFieldInput {
-  upload: Upload
-  ref: String
-}
-
-input PresentationUpdateArgs {
-  where: PresentationWhereUniqueInput!
-  data: PresentationUpdateInput!
-}
-
-input PresentationCreateInput {
   title: String
+  img: ImageFieldInput
+  gallery: JSON
+}
+
+input ShowcaseUpdateArgs {
+  where: ShowcaseWhereUniqueInput!
+  data: ShowcaseUpdateInput!
+}
+
+input ShowcaseCreateInput {
   pos: Int
-  file: FileFieldInput
   isPublished: Boolean
+  title: String
+  img: ImageFieldInput
+  gallery: JSON
 }
 
 """
@@ -451,15 +422,15 @@ type Mutation {
   updateProjects(data: [ProjectUpdateArgs!]!): [Project]
   deleteProject(where: ProjectWhereUniqueInput!): Project
   deleteProjects(where: [ProjectWhereUniqueInput!]!): [Project]
-  createPresentation(data: PresentationCreateInput!): Presentation
-  createPresentations(data: [PresentationCreateInput!]!): [Presentation]
-  updatePresentation(
-    where: PresentationWhereUniqueInput!
-    data: PresentationUpdateInput!
-  ): Presentation
-  updatePresentations(data: [PresentationUpdateArgs!]!): [Presentation]
-  deletePresentation(where: PresentationWhereUniqueInput!): Presentation
-  deletePresentations(where: [PresentationWhereUniqueInput!]!): [Presentation]
+  createShowcase(data: ShowcaseCreateInput!): Showcase
+  createShowcases(data: [ShowcaseCreateInput!]!): [Showcase]
+  updateShowcase(
+    where: ShowcaseWhereUniqueInput!
+    data: ShowcaseUpdateInput!
+  ): Showcase
+  updateShowcases(data: [ShowcaseUpdateArgs!]!): [Showcase]
+  deleteShowcase(where: ShowcaseWhereUniqueInput!): Showcase
+  deleteShowcases(where: [ShowcaseWhereUniqueInput!]!): [Showcase]
   endSession: Boolean!
   authenticateUserWithPassword(
     email: String!
@@ -515,14 +486,14 @@ type Query {
   ): [Project!]
   project(where: ProjectWhereUniqueInput!): Project
   projectsCount(where: ProjectWhereInput! = {}): Int
-  presentations(
-    where: PresentationWhereInput! = {}
-    orderBy: [PresentationOrderByInput!]! = []
+  showcases(
+    where: ShowcaseWhereInput! = {}
+    orderBy: [ShowcaseOrderByInput!]! = []
     take: Int
     skip: Int! = 0
-  ): [Presentation!]
-  presentation(where: PresentationWhereUniqueInput!): Presentation
-  presentationsCount(where: PresentationWhereInput! = {}): Int
+  ): [Showcase!]
+  showcase(where: ShowcaseWhereUniqueInput!): Showcase
+  showcasesCount(where: ShowcaseWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

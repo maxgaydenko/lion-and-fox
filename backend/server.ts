@@ -23,12 +23,11 @@ export const server: ServerConfig<BaseKeystoneTypeInfo> = {
      if (!fields[envImagesGalleryFormPath]) throw Error("There are no path param");
      const path = (<string>fields[envImagesGalleryFormPath]).replace(/\./g, "");
      const fileParts = file.originalFilename.split(".");
-     if (["jpg", "jpeg", "png", "gif"].indexOf(fileParts[fileParts.length - 1].toLowerCase()) < 0) throw Error("Invalid file format");
+     if (["jpg", "jpeg", "png", "gif", "svg"].indexOf(fileParts[fileParts.length - 1].toLowerCase()) < 0) throw Error("Invalid image format");
 
-     const filePath = `${path}/${new Date().getTime()}/`; //${file.originalFilename}`
+     const filePath = `${path}/${new Date().getTime()}/`;
      await fs.mkdir(envImagesStoragePath + filePath, { recursive: true });
      await fs.rename(file.filepath, envImagesStoragePath + filePath + file.originalFilename);
-     // const json = { files, fields };
      res.json({ imgUrl: envImagesBaseUrl + filePath + file.originalFilename });
     } catch (_err) {
      const err = _err as Error;

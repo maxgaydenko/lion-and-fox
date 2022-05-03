@@ -232,63 +232,36 @@ export const lists: Lists = {
    },
   },
  }),
- Presentation: list({
+ Showcase: list({
   fields: {
-   title: text({ validation: { isRequired: true } }),
    pos: integer({ validation: { isRequired: true }, defaultValue: 0 }),
-   file: file({
-    ui: {
-     createView: { fieldMode: "edit" },
-     itemView: { fieldMode: "hidden" },
-     listView: { fieldMode: "hidden" },
-    },
+   isPublished: checkbox({
+     ui: {
+       createView: {fieldMode: 'hidden'}
+     },
+   }),
+   title: text({ validation: { isRequired: true } }),
+   img: image({
+    label: "Thumb",
     hooks: {
      validateInput: ({ resolvedData, addValidationError, operation, fieldKey }) => {
-      if (operation === "create" && (!resolvedData[fieldKey] || !resolvedData[fieldKey]["filename"]))
-       addValidationError("File is required");
+     },
+     beforeOperation: ({ item, operation, fieldKey }) => {
      },
     },
-   }),
-   uploadedFile: virtual({
-    field: graphql.field({
-     type: graphql.object<{
-      fileName: string;
-      fileSize: number;
-     }>()({
-      name: "PresentationFile",
-      fields: {
-       fileName: graphql.field({ type: graphql.String }),
-       fileSize: graphql.field({ type: graphql.Int }),
-      },
-     }),
-     resolve(item: any) {
-      console.log("Resolve item", item);
-      const fileName = item.file_filename || "";
-      const fileSize = item.file_filesize || 0;
-      return {
-       fileName: fileName ? `${envFilesBaseUrl}/${fileName}` : "",
-       fileSize,
-      };
-     },
-    }),
     ui: {
-     query: "{ fileName fileSize }",
-     views: require.resolve("./fields/file/components.tsx"),
-     createView: { fieldMode: "hidden" },
      itemView: { fieldMode: "edit" },
-     listView: { fieldMode: "hidden" },
     },
    }),
-   isPublished: checkbox({
+   gallery: json({
+    label: "Slides",
     ui: {
-     listView: { fieldMode: "read" },
+     views: require.resolve("./fields/gallery/components.tsx"),
+     createView: { fieldMode: "hidden" },
+     listView: { fieldMode: "hidden" },
+     itemView: { fieldMode: "edit" },
     },
    }),
-  },
-  hooks: {
-   beforeOperation: ({ item, operation }) => {
-    if (operation === "delete" && item && item["file_filename"]) fs.unlink(envFilesStoragePath + item["file_filename"]);
-   },
   },
   access: {
    filter: {
@@ -298,10 +271,96 @@ export const lists: Lists = {
    },
   },
   ui: {
+   labelField: "title",
    listView: {
-    initialColumns: ["title", "pos", "isPublished"],
+    initialColumns: ["title", "url", "pos", "isPublished", "page"],
     initialSort: { field: "pos", direction: "ASC" },
    },
   },
+  hooks: {
+   validateInput: ({ resolvedData, addValidationError, operation, inputData, item }) => {
+    console.log("validateInput.resolvedData:", resolvedData);
+    console.log("validateInput.inputData:", inputData);
+    console.log("validateInput.item:", item);
+   },
+   beforeOperation: ({ item, operation }) => {
+    if (operation === "delete" && item) {
+     const path = envImagesStoragePath + "/projects/" + item.id;
+     fs.rm(path, { recursive: true, force: true });
+    }
+   },
+  },
  }),
+//  PresentationFile: list({
+//   fields: {
+//    title: text({ validation: { isRequired: true } }),
+//    pos: integer({ validation: { isRequired: true }, defaultValue: 0 }),
+//    file: file({
+//     ui: {
+//      createView: { fieldMode: "edit" },
+//      itemView: { fieldMode: "hidden" },
+//      listView: { fieldMode: "hidden" },
+//     },
+//     hooks: {
+//      validateInput: ({ resolvedData, addValidationError, operation, fieldKey }) => {
+//       if (operation === "create" && (!resolvedData[fieldKey] || !resolvedData[fieldKey]["filename"]))
+//        addValidationError("File is required");
+//      },
+//     },
+//    }),
+//    uploadedFile: virtual({
+//     field: graphql.field({
+//      type: graphql.object<{
+//       fileName: string;
+//       fileSize: number;
+//      }>()({
+//       name: "PresentationFile",
+//       fields: {
+//        fileName: graphql.field({ type: graphql.String }),
+//        fileSize: graphql.field({ type: graphql.Int }),
+//       },
+//      }),
+//      resolve(item: any) {
+//       console.log("Resolve item", item);
+//       const fileName = item.file_filename || "";
+//       const fileSize = item.file_filesize || 0;
+//       return {
+//        fileName: fileName ? `${envFilesBaseUrl}/${fileName}` : "",
+//        fileSize,
+//       };
+//      },
+//     }),
+//     ui: {
+//      query: "{ fileName fileSize }",
+//      views: require.resolve("./fields/file/components.tsx"),
+//      createView: { fieldMode: "hidden" },
+//      itemView: { fieldMode: "edit" },
+//      listView: { fieldMode: "hidden" },
+//     },
+//    }),
+//    isPublished: checkbox({
+//     ui: {
+//      listView: { fieldMode: "read" },
+//     },
+//    }),
+//   },
+//   hooks: {
+//    beforeOperation: ({ item, operation }) => {
+//     if (operation === "delete" && item && item["file_filename"]) fs.unlink(envFilesStoragePath + item["file_filename"]);
+//    },
+//   },
+//   access: {
+//    filter: {
+//     query: ({ session }: { session: Session }) => {
+//      return Boolean(session) ? true : { isPublished: { equals: true } };
+//     },
+//    },
+//   },
+//   ui: {
+//    listView: {
+//     initialColumns: ["title", "pos", "isPublished"],
+//     initialSort: { field: "pos", direction: "ASC" },
+//    },
+//   },
+//  }),
 };

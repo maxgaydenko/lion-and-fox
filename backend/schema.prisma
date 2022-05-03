@@ -52,12 +52,16 @@ model Project {
   @@index([pageId])
 }
 
-model Presentation {
+model Showcase {
   id            String  @id @default(cuid())
-  title         String  @default("")
   pos           Int     @default(0)
-  file_filesize Int?
-  file_mode     String?
-  file_filename String?
   isPublished   Boolean @default(false)
+  title         String  @default("")
+  img_filesize  Int?
+  img_extension String?
+  img_width     Int?
+  img_height    Int?
+  img_mode      String?
+  img_id        String?
+  gallery       String?
 }

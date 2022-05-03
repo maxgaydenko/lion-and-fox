@@ -1,6 +1,6 @@
 {
   "name": "front",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.5.10",

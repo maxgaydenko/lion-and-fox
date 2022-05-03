@@ -1,4 +1,6 @@
 .App {
+  position: relative;
+
   .layer-bg {
     position: fixed;
     top: 0;
@@ -45,8 +47,8 @@
 
 
   .layer-conic {
-    z-index: 30;
     position: fixed;
+    z-index: 20;
     // left: calc(-100vw - 100vh + 50px);
     // top: calc(-100vw - 50vh - 66px);
     left: calc(-100vw - 100vh + 32px);
@@ -134,11 +136,12 @@
       position: absolute;
       top: 0;
       // opacity: .4;
-      transition: all 1600ms cubic-bezier(.4,0,.4,1) 0ms;
+      transition: all 1600ms cubic-bezier(.4, 0, .4, 1) 0ms;
       // transition: all 1600ms ease-in-out 0ms;
     }
 
     @media (min-aspect-ratio: 720/1280) {
+
       // background: pink;
       video {
         left: 0;
@@ -148,6 +151,7 @@
     }
 
     @media (max-aspect-ratio: 720/1280) {
+
       // background: lime;
       video {
         height: 100%;
@@ -175,8 +179,6 @@
   }
 
   .layer-content {
-    z-index: 100;
-    position: relative;
     margin-left: 64px;
     margin-right: 16px;
     padding: 16px 0;
@@ -196,6 +198,8 @@
     .content-wrapper {
       margin: 0 auto;
       max-width: 800px;
+      z-index: 80;
+      position: relative;
     }
   }
 }
@@ -233,6 +237,7 @@
   .layer-background-video {
     video {
       opacity: .4;
+
       @media (min-aspect-ratio: 720/1280) {
         top: calc(100vh - 1280/720 * 100vw);
       }

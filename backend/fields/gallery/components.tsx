@@ -34,13 +34,13 @@ const SortableItem = (props: { img: string; idx: number; onDeleteClick: (idx: nu
 };
 
 export const Field = ({ field, value, onChange }: FieldProps<typeof controller>) => {
+ console.log('Field.field', field);
+ console.log('Field.value', value);
+
  const [err, setErr] = useState<string | null>(null);
  const images: string[] = value ? JSON.parse(value) : [];
  const sensors = useSensors(
   useSensor(PointerSensor)
-  // useSensor(KeyboardSensor, {
-  //  coordinateGetter: sortableKeyboardCoordinates,
-  // })
  );
 
  const onShowError = (error: string) => {
@@ -99,6 +99,7 @@ export const Field = ({ field, value, onChange }: FieldProps<typeof controller>)
     ) : (
      <input
       type="file"
+      accept=".jpg, .jpeg, .png, .svg"
       onChange={e => {
        const files = e.target.files;
        if (files !== null && files.length > 0) {

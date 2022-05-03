@@ -74,13 +74,15 @@ export const LOGIN = gql`
 
 export const GET_ALL_PRESENTATIONS = gql`
  query GetAllPresentations {
-  presentations(where:{isPublished:{equals:true}}) {
+  showcases(
+   where: { isPublished: { equals: true } }
+   orderBy: { pos: asc }
+  ){
    title
-   pos
-   uploadedFile {
-    fileName
-    fileSize
+   img {
+    url
    }
+   gallery
   }
  }
 `;
