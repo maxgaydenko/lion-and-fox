@@ -53,9 +53,15 @@ interface IProps {
 }
 
 const App: React.FC<IProps> = (props: IProps) => {
- //  const location = useLocation();
+ const [video, setVideo] = React.useState<string>("OUT111");
  const [homeMarker, setHomeMarker] = React.useState<boolean>(false);
  const [menuShown, setMenuShown] = React.useState<boolean>(false);
+
+ React.useEffect(() => {
+  const hash = window.location.hash;
+  if(hash.substring(0, 7) === '#video_')
+   setVideo(hash.substring(7));
+ }, []);
 
  const pageLoaded = () => {
   setHomeMarker(false);
@@ -71,8 +77,8 @@ const App: React.FC<IProps> = (props: IProps) => {
   <div className={"App" + (homeMarker ? " App-home" : " App-page") + (menuShown ? " App-menu-shown" : "")}>
    <div className="layer-background-video">
     <video id="video-home" muted loop autoPlay playsInline>
-     <source type="video/webm" src="/video/OUT_1.webm" />
-     <source type="video/mp4" src="/video/OUT_1.mp4" />
+    <source type="video/mp4" src={`/video/${video}.mp4`} />
+     <source type="video/webm" src={`/video/${video}.webm`} />
     </video>
    </div>
    {/* <div className="layer-ameba"></div> */}
