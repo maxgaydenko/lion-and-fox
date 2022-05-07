@@ -4,7 +4,9 @@
 [ ] Add auth by code
 
 ##Backend
+
 [x] Access to user
+
 [ ] Access to page/project
 [ ] Access to showcase
 [ ] Add moderator users
