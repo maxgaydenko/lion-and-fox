@@ -1,17 +1,23 @@
-#Todo list
+# Todo list
 
-##Common
+## Common
+
 [ ] Add auth by code
 
-##Backend
+## Backend
 
 [x] Access to user
 
-[ ] Access to page/project
-[ ] Access to showcase
-[ ] Add moderator users
+[] Access to page/project
 
-##Frontend
+[] Access to showcase
+
+[] Add moderator users
+
+## Frontend
+
 [ ] Fix mobile safari burger / conic point
+
 [ ] Add video placeholder
+
 [ ] Upload OUT111_1.webm
