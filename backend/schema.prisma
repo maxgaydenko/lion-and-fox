@@ -12,11 +12,14 @@ generator client {
 }
 
 model User {
-  id       String  @id @default(cuid())
-  name     String  @default("")
-  email    String  @unique @default("")
-  isAdmin  Boolean @default(false)
-  password String
+  id             String     @id @default(cuid())
+  name           String     @default("")
+  email          String     @unique @default("")
+  lastAccessDate DateTime?
+  expirationDate DateTime?
+  role           String     @default("moderator")
+  password       String
+  showcases      Showcase[] @relation("Showcase_users")
 }
 
 model Page {
@@ -54,9 +57,9 @@ model Project {
 
 model Showcase {
   id            String  @id @default(cuid())
+  title         String  @default("")
   pos           Int     @default(0)
   isPublished   Boolean @default(false)
-  title         String  @default("")
   img_filesize  Int?
   img_extension String?
   img_width     Int?
@@ -64,4 +67,5 @@ model Showcase {
   img_mode      String?
   img_id        String?
   gallery       String?
+  users         User[]  @relation("Showcase_users")
 }

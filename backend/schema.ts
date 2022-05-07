@@ -1,65 +1,140 @@
 import fs from "fs/promises";
-import { graphql, list } from "@keystone-6/core";
-// import { unlink } from "fs";
+import { list } from "@keystone-6/core";
+import { v4 as uuidv4 } from "uuid";
 
-import { text, password, integer, checkbox, relationship, image, json, file, virtual } from "@keystone-6/core/fields";
+import { text, password, integer, checkbox, relationship, image, json, select, timestamp } from "@keystone-6/core/fields";
 import { document } from "@keystone-6/fields-document";
 import { Lists } from ".keystone/types";
-import { envFilesBaseUrl, envFilesStoragePath, envImagesStoragePath } from "./env";
+import { envImagesStoragePath } from "./env";
+import { RoleAdmin, RoleDemo, RoleModerator } from "./roles";
+import { BaseItem } from "@keystone-6/core/types";
 
 type Session = {
  data: {
   id: string;
   name: string;
-  isAdmin: boolean;
+  role: string;
+  expirationDate?: string;
  };
 };
 
-// const isAuth = ({ session }: { session: Session }) => Boolean(session.data)
+// type UserData = {
+//  id: string;
+// //  name: string;
+// //  role: string;
+// };
+
+const isUser = ({ session }: { session: Session }) => Boolean(session && session.data && session.data.id);
 
 const isAdmin = ({ session }: { session: Session }) => {
- return session?.data.isAdmin;
+ return Boolean(session && session.data && session.data.role === RoleAdmin);
+};
+
+const isIam = ({ session, item }: { session: Session; item: BaseItem }) => {
+ return Boolean(session?.data.id === item.id);
+};
+
+const isAdminOrIamUser = ({ session, item }: { session: Session; item: BaseItem }) => {
+ return isAdmin({ session }) || isIam({ session, item });
 };
 
 export const lists: Lists = {
  User: list({
-  fields: {
-   name: text({ validation: { isRequired: true } }),
-   email: text({
-    validation: { isRequired: true },
-    isIndexed: "unique",
-    isFilterable: true,
-    access: {
-     update: isAdmin,
-    },
-   }),
-   isAdmin: checkbox({ access: { update: isAdmin } }),
-   password: password({ validation: { isRequired: true } }),
-  },
   access: {
    item: {
-    update: isAdmin,
-    delete: isAdmin,
+    update: isAdminOrIamUser,
+    // update: isAdmin,
+    // delete: isAdmin,
    },
    operation: {
-    update: isAdmin,
+    create: isAdmin,
+    // update: isAdmin,
     delete: isAdmin,
    },
    filter: {
-    query: ({ session }: { session: Session }) => {
-     // return session.data.isAdmin? true: {id: {equals: null}};
-     if (session.data.isAdmin) return true;
-     return session && session.data && session.data.name // && session.data.isAdmin)
-      ? { name: { equals: session?.data?.name } }
-      : { id: { equals: null } };
+    // query: ({ session }: { session: Session }) => {
+    //  // return session.data.isAdmin? true: {id: {equals: null}};
+    //  if (session.data.isAdmin) return true;
+    //  return session && session.data && session.data.name // && session.data.isAdmin)
+    //   ? { name: { equals: session?.data?.name } }
+    //   : { id: { equals: null } };
+    // },
+    // delete: isAdmin,
+    // update: isAdmin,
+   },
+  },
+  fields: {
+   name: text({
+    access: { update: isAdmin },
+    validation: { isRequired: true },
+   }),
+   email: text({
+    access: { update: isAdmin },
+    label: "Login",
+    validation: { isRequired: true },
+    isIndexed: "unique",
+    isFilterable: true,
+   }),
+   lastAccessDate: timestamp({
+    access: { update: isIam },
+   }),
+   expirationDate: timestamp({
+    access: { update: isAdminOrIamUser },
+    isFilterable: true,
+   }),
+   role: select({
+    access: {
+     update: isAdmin,
     },
-    delete: isAdmin,
-    update: isAdmin,
+    type: "string",
+    options: [
+     { label: "Admin", value: RoleAdmin },
+     { label: "Moderator", value: RoleModerator },
+     { label: "Demo", value: RoleDemo },
+    ],
+    defaultValue: RoleModerator,
+    validation: { isRequired: true },
+    ui: {
+     displayMode: "segmented-control",
+    },
+   }),
+   password: password({
+    access: { update: isAdmin },
+    validation: { isRequired: true },
+   }),
+   showcases: relationship({
+    access: { update: isAdmin },
+    ref: "Showcase.users",
+    many: true,
+   }),
+  },
+  hooks: {
+   resolveInput: ({ resolvedData, operation, item, context }) => {
+    if (operation === "create" && !resolvedData.name && !resolvedData.email) {
+     const uuid = uuidv4();
+     return { ...resolvedData, name: uuid, email: uuid, role: RoleDemo };
+    }
+    if (
+     operation === "update" &&
+     item &&
+     item.role === RoleDemo &&
+     !item.lastAccessDate &&
+     context.session &&
+     context.session.data &&
+     context.session.data.id === item.id
+    ) {
+     if (!item.expirationDate) {
+      const now = new Date();
+      now.setDate(now.getDate() + 7);
+      return { ...resolvedData, expirationDate: now.toISOString() };
+     }
+    }
+    return resolvedData;
    },
   },
   ui: {
    listView: {
-    initialColumns: ["name", "email", "isAdmin"],
+    initialColumns: ["name", "role", "lastAccessDate", "expirationDate"],
    },
   },
  }),
@@ -234,20 +309,18 @@ export const lists: Lists = {
  }),
  Showcase: list({
   fields: {
+   title: text({ validation: { isRequired: true } }),
    pos: integer({ validation: { isRequired: true }, defaultValue: 0 }),
    isPublished: checkbox({
-     ui: {
-       createView: {fieldMode: 'hidden'}
-     },
+    ui: {
+     createView: { fieldMode: "hidden" },
+    },
    }),
-   title: text({ validation: { isRequired: true } }),
    img: image({
     label: "Thumb",
     hooks: {
-     validateInput: ({ resolvedData, addValidationError, operation, fieldKey }) => {
-     },
-     beforeOperation: ({ item, operation, fieldKey }) => {
-     },
+     validateInput: ({ resolvedData, addValidationError, operation, fieldKey }) => {},
+     beforeOperation: ({ item, operation, fieldKey }) => {},
     },
     ui: {
      itemView: { fieldMode: "edit" },
@@ -262,18 +335,49 @@ export const lists: Lists = {
      itemView: { fieldMode: "edit" },
     },
    }),
+   users: relationship({
+    ref: "User.showcases",
+    many: true,
+   }),
   },
   access: {
    filter: {
     query: ({ session }: { session: Session }) => {
-     return Boolean(session) ? true : { isPublished: { equals: true } };
+     if (session && session.data) {
+      switch (session.data.role) {
+       case RoleAdmin:
+        return true;
+       case RoleModerator: {
+        return {
+          users: { some: { id: { equals: session.data.id } } },
+         };
+        }
+       case RoleDemo: {
+        console.log("Filter query session", session.data);
+        if (session.data.expirationDate) {
+         const expirationDate = new Date(session.data.expirationDate);
+         const now = new Date();
+         if (expirationDate.getTime() < now.getTime()) {
+          throw Error("You have expired access date");
+          // return false;
+         }
+        }
+        return {
+         users: { some: { id: { equals: session.data.id } } },
+         isPublished: { equals: true },
+        };
+       }
+      }
+     }
+     return false;
+     //  return Boolean(session) ? true : { isPublished: { equals: true } };
     },
    },
   },
   ui: {
    labelField: "title",
    listView: {
-    initialColumns: ["title", "url", "pos", "isPublished", "page"],
+    initialColumns: ["title", "pos", "isPublished"],
     initialSort: { field: "pos", direction: "ASC" },
    },
   },
@@ -291,76 +395,4 @@ export const lists: Lists = {
    },
   },
  }),
-//  PresentationFile: list({
-//   fields: {
-//    title: text({ validation: { isRequired: true } }),
-//    pos: integer({ validation: { isRequired: true }, defaultValue: 0 }),
-//    file: file({
-//     ui: {
-//      createView: { fieldMode: "edit" },
-//      itemView: { fieldMode: "hidden" },
-//      listView: { fieldMode: "hidden" },
-//     },
-//     hooks: {
-//      validateInput: ({ resolvedData, addValidationError, operation, fieldKey }) => {
-//       if (operation === "create" && (!resolvedData[fieldKey] || !resolvedData[fieldKey]["filename"]))
-//        addValidationError("File is required");
-//      },
-//     },
-//    }),
-//    uploadedFile: virtual({
-//     field: graphql.field({
-//      type: graphql.object<{
-//       fileName: string;
-//       fileSize: number;
-//      }>()({
-//       name: "PresentationFile",
-//       fields: {
-//        fileName: graphql.field({ type: graphql.String }),
-//        fileSize: graphql.field({ type: graphql.Int }),
-//       },
-//      }),
-//      resolve(item: any) {
-//       console.log("Resolve item", item);
-//       const fileName = item.file_filename || "";
-//       const fileSize = item.file_filesize || 0;
-//       return {
-//        fileName: fileName ? `${envFilesBaseUrl}/${fileName}` : "",
-//        fileSize,
-//       };
-//      },
-//     }),
-//     ui: {
-//      query: "{ fileName fileSize }",
-//      views: require.resolve("./fields/file/components.tsx"),
-//      createView: { fieldMode: "hidden" },
-//      itemView: { fieldMode: "edit" },
-//      listView: { fieldMode: "hidden" },
-//     },
-//    }),
-//    isPublished: checkbox({
-//     ui: {
-//      listView: { fieldMode: "read" },
-//     },
-//    }),
-//   },
-//   hooks: {
-//    beforeOperation: ({ item, operation }) => {
-//     if (operation === "delete" && item && item["file_filename"]) fs.unlink(envFilesStoragePath + item["file_filename"]);
-//    },
-//   },
-//   access: {
-//    filter: {
-//     query: ({ session }: { session: Session }) => {
-//      return Boolean(session) ? true : { isPublished: { equals: true } };
-//     },
-//    },
-//   },
-//   ui: {
-//    listView: {
-//     initialColumns: ["title", "pos", "isPublished"],
-//     initialSort: { field: "pos", direction: "ASC" },
-//    },
-//   },
-//  }),
 };

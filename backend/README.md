@@ -5,6 +5,10 @@
 ```
 PORT=3030
 SESSION_SECRET=SomeSecrectStringForSessionMin32Chars
-FILES_STORAGE_PATH=/path/to/files/storage/dir
-FILES_BASE_URL=/files/url/prefix
 ```
+
+## user roles
+
+512 - admin
+8 - moderator
+1 - demo

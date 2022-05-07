@@ -5,9 +5,21 @@ type User {
   id: ID!
   name: String
   email: String
-  isAdmin: Boolean
+  lastAccessDate: DateTime
+  expirationDate: DateTime
+  role: String
   password: PasswordState
+  showcases(
+    where: ShowcaseWhereInput! = {}
+    orderBy: [ShowcaseOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Showcase!]
+  showcasesCount(where: ShowcaseWhereInput! = {}): Int
 }
+
+scalar DateTime
+  @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
 
 type PasswordState {
   isSet: Boolean!
@@ -25,7 +37,10 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
-  isAdmin: BooleanFilter
+  lastAccessDate: DateTimeNullableFilter
+  expirationDate: DateTimeNullableFilter
+  role: StringFilter
+  showcases: ShowcaseManyRelationFilter
 }
 
 input IDFilter {
@@ -67,16 +82,30 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
-input BooleanFilter {
-  equals: Boolean
-  not: BooleanFilter
+input DateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: DateTimeNullableFilter
+}
+
+input ShowcaseManyRelationFilter {
+  every: ShowcaseWhereInput
+  some: ShowcaseWhereInput
+  none: ShowcaseWhereInput
 }
 
 input UserOrderByInput {
   id: OrderDirection
   name: OrderDirection
   email: OrderDirection
-  isAdmin: OrderDirection
+  lastAccessDate: OrderDirection
+  expirationDate: OrderDirection
+  role: OrderDirection
 }
 
 enum OrderDirection {
@@ -87,8 +116,18 @@ enum OrderDirection {
 input UserUpdateInput {
   name: String
   email: String
-  isAdmin: Boolean
+  lastAccessDate: DateTime
+  expirationDate: DateTime
+  role: String
   password: String
+  showcases: ShowcaseRelateToManyForUpdateInput
+}
+
+input ShowcaseRelateToManyForUpdateInput {
+  disconnect: [ShowcaseWhereUniqueInput!]
+  set: [ShowcaseWhereUniqueInput!]
+  create: [ShowcaseCreateInput!]
+  connect: [ShowcaseWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -99,8 +138,16 @@ input UserUpdateArgs {
 input UserCreateInput {
   name: String
   email: String
-  isAdmin: Boolean
+  lastAccessDate: DateTime
+  expirationDate: DateTime
+  role: String
   password: String
+  showcases: ShowcaseRelateToManyForCreateInput
+}
+
+input ShowcaseRelateToManyForCreateInput {
+  create: [ShowcaseCreateInput!]
+  connect: [ShowcaseWhereUniqueInput!]
 }
 
 type Page {
@@ -153,6 +200,11 @@ input IntFilter {
   gt: Int
   gte: Int
   not: IntFilter
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
 }
 
 input ProjectManyRelationFilter {
@@ -323,11 +375,18 @@ input PageRelateToOneForCreateInput {
 
 type Showcase {
   id: ID!
+  title: String
   pos: Int
   isPublished: Boolean
-  title: String
   img: ImageFieldOutput
   gallery: JSON
+  users(
+    where: UserWhereInput! = {}
+    orderBy: [UserOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [User!]
+  usersCount(where: UserWhereInput! = {}): Int
 }
 
 input ShowcaseWhereUniqueInput {
@@ -359,24 +418,39 @@ input ShowcaseWhereInput {
   OR: [ShowcaseWhereInput!]
   NOT: [ShowcaseWhereInput!]
   id: IDFilter
+  title: StringFilter
   pos: IntFilter
   isPublished: BooleanFilter
-  title: StringFilter
+  users: UserManyRelationFilter
+}
+
+input UserManyRelationFilter {
+  every: UserWhereInput
+  some: UserWhereInput
+  none: UserWhereInput
 }
 
 input ShowcaseOrderByInput {
   id: OrderDirection
+  title: OrderDirection
   pos: OrderDirection
   isPublished: OrderDirection
-  title: OrderDirection
 }
 
 input ShowcaseUpdateInput {
+  title: String
   pos: Int
   isPublished: Boolean
-  title: String
   img: ImageFieldInput
   gallery: JSON
+  users: UserRelateToManyForUpdateInput
+}
+
+input UserRelateToManyForUpdateInput {
+  disconnect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
 }
 
 input ShowcaseUpdateArgs {
@@ -385,11 +459,17 @@ input ShowcaseUpdateArgs {
 }
 
 input ShowcaseCreateInput {
+  title: String
   pos: Int
   isPublished: Boolean
-  title: String
   img: ImageFieldInput
   gallery: JSON
+  users: UserRelateToManyForCreateInput
+}
+
+input UserRelateToManyForCreateInput {
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
 }
 
 """
@@ -457,7 +537,7 @@ type UserAuthenticationWithPasswordFailure {
 input CreateInitialUserInput {
   name: String
   email: String
-  isAdmin: Boolean
+  role: String
   password: String
 }
 

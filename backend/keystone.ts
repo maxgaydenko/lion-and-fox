@@ -28,6 +28,7 @@ export default withAuth(
   db: {
    provider: "sqlite",
    url: "file:../db/app.db",
+   // url: "file:../xxx_1/app.db",
    useMigrations: true,
   },
   ui: {

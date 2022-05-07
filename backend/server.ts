@@ -2,7 +2,15 @@ import fs from "fs/promises";
 import express from "express";
 import formidable from "formidable";
 import { BaseKeystoneTypeInfo, ServerConfig } from "@keystone-6/core/types";
-import { envFilesBaseUrl, envFilesStoragePath, envImagesBaseUrl, envImagesGalleryFormFile, envImagesGalleryFormPath, envImagesGalleryFormUrl, envImagesStoragePath } from "./env";
+import {
+ envFilesBaseUrl,
+ envFilesStoragePath,
+ envImagesBaseUrl,
+ envImagesGalleryFormFile,
+ envImagesGalleryFormPath,
+ envImagesGalleryFormUrl,
+ envImagesStoragePath,
+} from "./env";
 
 export const server: ServerConfig<BaseKeystoneTypeInfo> = {
  cors: true,
@@ -23,7 +31,8 @@ export const server: ServerConfig<BaseKeystoneTypeInfo> = {
      if (!fields[envImagesGalleryFormPath]) throw Error("There are no path param");
      const path = (<string>fields[envImagesGalleryFormPath]).replace(/\./g, "");
      const fileParts = file.originalFilename.split(".");
-     if (["jpg", "jpeg", "png", "gif", "svg"].indexOf(fileParts[fileParts.length - 1].toLowerCase()) < 0) throw Error("Invalid image format");
+     if (["jpg", "jpeg", "png", "gif", "svg"].indexOf(fileParts[fileParts.length - 1].toLowerCase()) < 0)
+      throw Error("Invalid image format");
 
      const filePath = `${path}/${new Date().getTime()}/`;
      await fs.mkdir(envImagesStoragePath + filePath, { recursive: true });
