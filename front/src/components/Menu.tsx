@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { onAppLogout } from "../utils/auth";
 import { IMenu } from "../utils/menu";
 
 interface IProps {
@@ -28,10 +29,11 @@ export const Menu: React.FC<IProps> = (props: IProps) => {
  }, []);
 
  const onLogout = () => {
-    window.localStorage.removeItem("a");
-    setTimeout(() => {
-     window.location.href = "/";
-    }, 10); 
+   onAppLogout();
+   //  window.localStorage.removeItem("a");
+   //  setTimeout(() => {
+   //   window.location.href = "/";
+   //  }, 10); 
  }
 
  return (

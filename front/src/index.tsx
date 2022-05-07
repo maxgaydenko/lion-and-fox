@@ -4,6 +4,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import AppLoader from "./components/App";
 
 import "./scss/index.scss";
+import { appGetToken } from "./utils/auth";
 
 const backend = process.env.REACT_APP_BACKEND_URL;
 if (process.env.NODE_ENV === "development") console.log("Backend url", backend);
@@ -16,7 +17,7 @@ const client = new ApolloClient({
  cache: new InMemoryCache(),
  credentials: "include",
  headers: {
-  authorization: window.localStorage.getItem("a") ?? "",
+  authorization: appGetToken(), //window.localStorage.getItem("a") ?? "",
  },
 });
 

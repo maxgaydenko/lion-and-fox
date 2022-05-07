@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ImageGallery from "react-image-gallery";
 
 interface IProps {}
@@ -16,7 +16,9 @@ const _stub: IStubProject[] = [
 ];
 
 export const DevPageGallery: React.FC<IProps> = (props: IProps) => {
- const [sel, setSel] = React.useState<boolean>(false);
+ let { code } = useParams();
+ console.log('Code', code);
+ // const [sel, setSel] = React.useState<boolean>(false);
 
  return (
   <div className="Page">
@@ -35,8 +37,12 @@ export const DevPageGallery: React.FC<IProps> = (props: IProps) => {
       showPlayButton={false}
       showNav={true}
       showFullscreenButton={false}
-      renderLeftNav={(onClick, disabled) => <button onClick={onClick} disabled={disabled} className={'gallery-button gallery-button-prev'} />}
-      renderRightNav={(onClick, disabled) => <button onClick={onClick} disabled={disabled} className={'gallery-button gallery-button-next'} />}
+      renderLeftNav={(onClick, disabled) => (
+       <button onClick={onClick} disabled={disabled} className={"gallery-button gallery-button-prev"} />
+      )}
+      renderRightNav={(onClick, disabled) => (
+       <button onClick={onClick} disabled={disabled} className={"gallery-button gallery-button-next"} />
+      )}
       // renderLeftNav={(onClick, disabled) => <GalleryNav className="gallery-nav-left" onClick={onClick} disabled={disabled} />}
       // renderRightNav={(onClick, disabled) => <GalleryNav className="gallery-nav-right" onClick={onClick} disabled={disabled} />}
      />
@@ -80,13 +86,15 @@ export const DevPageGallery: React.FC<IProps> = (props: IProps) => {
 };
 
 interface IGalleryNavProps {
- onClick: React.MouseEventHandler<HTMLElement>
- disabled: boolean
- className: string
+ onClick: React.MouseEventHandler<HTMLElement>;
+ disabled: boolean;
+ className: string;
 }
 
 const GalleryNav: React.FC<IGalleryNavProps> = (props: IGalleryNavProps) => {
  return (
-  <button onClick={props.onClick} className={`gallery-nav ${props.className}`} disabled={props.disabled}>@nav</button>
- )
-}
+  <button onClick={props.onClick} className={`gallery-nav ${props.className}`} disabled={props.disabled}>
+   @nav
+  </button>
+ );
+};

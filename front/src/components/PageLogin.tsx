@@ -1,6 +1,7 @@
 import { useMutation } from "@apollo/client";
 import React from "react";
 import { LOGIN } from "../gqls/gqls";
+import { onAppLogin } from "../utils/auth";
 
 interface IResult {
  readonly authenticate: {
@@ -32,10 +33,11 @@ export const PageLogin: React.FC<IPageLoginProps> = ({onPageReady}: IPageLoginPr
   console.log('Data', data);
   if (data.authenticate.__typename === "UserAuthenticationWithPasswordSuccess") {
    console.log("success auth with data", data);
-   window.localStorage["a"] = data.authenticate.sessionToken;
-   setTimeout(() => {
-    window.location.href = "/presentations/"; // TODO change to presentations here
-   }, 10);
+   onAppLogin(data.authenticate.sessionToken);
+   // window.localStorage["a"] = data.authenticate.sessionToken;
+   // setTimeout(() => {
+   //  window.location.href = "/presentations/";
+   // }, 10);
   }
  }
 

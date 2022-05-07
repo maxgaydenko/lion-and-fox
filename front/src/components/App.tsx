@@ -13,11 +13,7 @@ import { PageLogin } from "./PageLogin";
 import { PageProject } from "./PageProject";
 import { PagePresentations } from "./PagePresentations";
 import { DevPageGallery } from "./DevPageGallery";
-
-interface IAuthUser {
- readonly id: string
- readonly name: string
-}
+import { IAuthUser } from "../utils/auth";
 
 interface IStructResult {
  readonly authenticatedItem: IAuthUser | null
@@ -81,33 +77,13 @@ const App: React.FC<IProps> = (props: IProps) => {
      <source type="video/webm" src={`/video/${video}.webm`} />
     </video>
    </div>
-   {/* <div className="layer-ameba"></div> */}
-   {/* <div className="layer-video">
-    <video id="vi1" loop autoPlay={true}>
-     <source type="video/webm" src='/video/LF.webm' />
-    </video>
-   </div> */}
-   {/* <div className="layer-bg layer-bg-video layer-bg-home">
-    <video id="video-home" muted loop autoPlay playsInline>
-     <source type="video/webm" src="/video/LF.webm" />
-    </video>
-   </div> */}
-   {/* <div className="layer-bg layer-bg-video layer-bg-base">
-    <video id="video-base" muted loop autoPlay>
-     <source type="video/webm" src="/video/LF_1.webm" />
-    </video>
-   </div> */}
-   {/* <div className="layer-bg layer-bg-img layer-bg-base"></div> */}
    <div className="layer-radial"></div>
    <div className="layer-conic"></div>
-   {/* <TransitionGroup component={null}>
-    <CSSTransition key={location.key} classNames="PageFade" timeout={400}> */}
    <div className="layer-content">
     <div className="content-wrapper">
      <Routes>
       <Route path="/" element={<PageHome onPageReady={homePageLoaded} />} />
       {props.menu.menuItems
-       // .filter(f => f.type === EMenuItemType.Page)
        .map((f, i) => (
         <Route key={`pageRoute-${i}`} path={f.url} element={<Page url={f.url} menu={props.menu} onPageReady={pageLoaded} />} />
        ))}
@@ -118,15 +94,13 @@ const App: React.FC<IProps> = (props: IProps) => {
         element={<PageProject pageUrl={route.pageUrl} projectUrl={route.projectUrl} menu={props.menu} onPageReady={pageLoaded} />}
        />
       ))}
-      {props.user && <Route path="presentations" element={<PagePresentations onPageReady={pageLoaded} />} />}
+      {props.user && <Route path="presentations" element={<PagePresentations user={props.user} onPageReady={pageLoaded} />} />}
       {!props.user && <Route path="login" element={<PageLogin onPageReady={homePageLoaded} />} />}
-      <Route path="dev/gallery" element={<DevPageGallery />} />
+      <Route path="dev/demo/:code" element={<DevPageGallery />} />
       <Route path="*" element={<PageError onPageReady={pageLoaded} title="Ooops" message="Page not found" />} />
      </Routes>
     </div>
    </div>
-   {/* </CSSTransition>
-   </TransitionGroup> */}
    <Sidebar
     userName={props.user ? props.user.name : undefined}
     onMenuHide={() => setMenuShown(false)}

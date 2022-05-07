@@ -1,6 +1,7 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import React from "react";
-import { GET_ALL_PRESENTATIONS } from "../gqls/gqls";
+import { ADD_DEMO_USER, GET_ALL_PRESENTATIONS } from "../gqls/gqls";
+import { appDemoPasswd, IAuthUser } from "../utils/auth";
 import { PageError } from "./PageError";
 import { PopupPresentation } from "./PopupPresentation";
 
@@ -14,6 +15,7 @@ interface IPresentationThumb {
 }
 
 interface IPresentation {
+ readonly id: string;
  readonly title: string;
  readonly img: IPresentationThumb | null;
  readonly gallery: string[] | null;
@@ -25,8 +27,18 @@ interface IResult {
 }
 
 interface IProps {
+ user: IAuthUser;
  onPageReady: () => void;
 }
+
+interface IAddDemoResult {
+  readonly createUser: {
+   readonly id: string;
+   readonly name: string;
+   readonly role: string;
+  };
+ }
+ 
 
 export const PagePresentations: React.FC<IProps> = (props: IProps) => {
  const { data, loading, error } = useQuery<IResult>(GET_ALL_PRESENTATIONS);
@@ -36,7 +48,7 @@ export const PagePresentations: React.FC<IProps> = (props: IProps) => {
 
  //  return <PageError title="Page not loaded" onPageReady={props.onPageReady} />
  return data ? (
-  <LoadedPage showcases={data.showcases} onPageReady={props.onPageReady} />
+  <LoadedPage showcases={data.showcases} user={props.user} onPageReady={props.onPageReady} />
  ) : (
   <PageError title="Page not loaded" onPageReady={props.onPageReady} />
  );
@@ -48,9 +60,13 @@ interface ILoadedProps extends IProps {
 
 export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
  const [selectedShowcaseIdx, setSelectedShowcaseIdx] = React.useState<number | null>(null);
+ const [checkedShowcases, setCheckedShowcases] = React.useState<string[]>([]);
+ const [addDemoUser, { loading }] = useMutation<IAddDemoResult>(ADD_DEMO_USER);
  React.useEffect(() => {
   props.onPageReady();
  }, []);
+
+ const isAdmin = Boolean(props.user.role === "admin");
 
  const onSelectShowcase = (showcaseIdx: number) => {
   if (props.showcases[showcaseIdx] && props.showcases[showcaseIdx].gallery && props.showcases[showcaseIdx].gallery!.length > 0)
@@ -60,6 +76,36 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
  const onHideShowcase = () => {
   setSelectedShowcaseIdx(null);
  };
+
+ const onToggleChecked = (id: string) => {
+  setCheckedShowcases(checkedShowcases.indexOf(id) >= 0 ? checkedShowcases.filter(f => f !== id) : [...checkedShowcases, id]);
+ };
+
+ const onBu = async () => {
+  if (checkedShowcases.length > 0) {
+   try {
+    const demo = {
+     password: appDemoPasswd,
+     showcases: {
+      connect: checkedShowcases.map(id => ({ id: id })),
+     },
+    };
+    console.log("demo", demo);
+    const res = await addDemoUser({ variables: { demo } });
+    console.log("result", res);
+    console.log("name", res.data?.createUser.name);
+    setCheckedShowcases([]);
+   } catch (err) {
+    console.log("err", err);
+   }
+  }
+ };
+
+ //  console.group("Add demo user");
+ //  console.log("Error", error);
+ //  console.log("Loading", loading);
+ //  console.log("Data", data);
+ //  console.groupEnd();
 
  return (
   <div className="Page">
@@ -84,20 +130,42 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
      <ul className="gallery">
       {props.showcases.map((f, i) => (
        <li key={i}>
-        <div className={"thumb"+((f.gallery && f.gallery.length > 0)? ' thumb-hov': '')} onClick={() => onSelectShowcase(i)}>
+        <div className={"thumb" + (f.gallery && f.gallery.length > 0 ? " thumb-hov" : "")} onClick={() => onSelectShowcase(i)}>
          {f.img && f.img.url && (
           <div className={"thumb-img"} style={{ backgroundImage: `url(${process.env.REACT_APP_BACKEND_URL + f.img.url})` }}></div>
          )}
         </div>
-        <div className="name">{f.title}</div>
+        {isAdmin ? (
+         <label className="checkbox">
+          <input
+           type="checkbox"
+           disabled={loading}
+           checked={checkedShowcases.indexOf(f.id) >= 0}
+           onChange={() => onToggleChecked(f.id)}
+           value={f.id}
+          />{" "}
+          <span>{f.title}</span>
+         </label>
+        ) : (
+         <div className="name">{f.title}</div>
+        )}
        </li>
       ))}
      </ul>
     ) : (
      <div>No presentations yet</div>
     )}
+    <div>
+     user: {props.user.name} /{" "}
+     {isAdmin && (
+      <button onClick={onBu} disabled={loading || checkedShowcases.length === 0}>
+       add demo
+      </button>
+     )}
+     <hr />
+     checked: [{checkedShowcases.join(",")}]
+    </div>
    </div>
   </div>
  );
 };
-
