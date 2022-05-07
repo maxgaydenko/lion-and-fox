@@ -1,6 +1,5 @@
 import { gql } from "@apollo/client";
 
-// TODO add role to authenticatedItem
 export const GET_STRUCT = gql`
  fragment AuthFragment on User {
   id
@@ -106,8 +105,8 @@ export const ADD_DEMO_USER = gql`
 
 // TODO use it
 export const LAST_ACCESS_UPDATE = gql`
- mutation UpdateLastAccessTime($login: String!, $date: String!) {
-  updateUser(where: { email: $login }, data: { lastAccessDate: $date }) {
+ mutation UpdateLastAccessTime($id: ID!, $date: DateTime!) {
+  updateUser(where: { id: $id }, data: { lastAccessDate: $date }) {
    lastAccessDate
    expirationDate
   }

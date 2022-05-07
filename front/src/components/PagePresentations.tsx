@@ -44,7 +44,7 @@ export const PagePresentations: React.FC<IProps> = (props: IProps) => {
  const { data, loading, error } = useQuery<IResult>(GET_ALL_PRESENTATIONS);
 
  if (loading) return <div>...</div>;
- if (error) return <PageError title={error.name} message={error.message} onPageReady={props.onPageReady} />;
+ if (error) return <PageError title={error.name} message={error.message.indexOf('expired access date')>=0? 'Expired access date': error.message} onPageReady={props.onPageReady} />;
 
  //  return <PageError title="Page not loaded" onPageReady={props.onPageReady} />
  return data ? (
@@ -81,7 +81,7 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
   setCheckedShowcases(checkedShowcases.indexOf(id) >= 0 ? checkedShowcases.filter(f => f !== id) : [...checkedShowcases, id]);
  };
 
- const onBu = async () => {
+ const onCreateDemo = async () => {
   if (checkedShowcases.length > 0) {
    try {
     const demo = {
@@ -90,10 +90,10 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
       connect: checkedShowcases.map(id => ({ id: id })),
      },
     };
-    console.log("demo", demo);
     const res = await addDemoUser({ variables: { demo } });
-    console.log("result", res);
-    console.log("name", res.data?.createUser.name);
+    const code = res.data?.createUser.name;
+    const url = `${window.location.protocol}//${window.location.host}/demo/${code}`
+    console.log('Copy this url: ', url);
     setCheckedShowcases([]);
    } catch (err) {
     console.log("err", err);
@@ -156,14 +156,11 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
      <div>No presentations yet</div>
     )}
     <div>
-     user: {props.user.name} /{" "}
      {isAdmin && (
-      <button onClick={onBu} disabled={loading || checkedShowcases.length === 0}>
+      <button onClick={onCreateDemo} disabled={loading || checkedShowcases.length === 0}>
        add demo
       </button>
      )}
-     <hr />
-     checked: [{checkedShowcases.join(",")}]
     </div>
    </div>
   </div>

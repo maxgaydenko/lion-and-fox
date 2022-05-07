@@ -4,6 +4,14 @@ export interface IAuthUser {
  readonly role: string
 }
 
+export interface IAuthResult {
+ readonly authenticate: {
+  readonly sessionToken: string;
+  readonly __typename: string;
+ };
+}
+
+
 export const onAppLogout = () => {
  window.localStorage.removeItem("a");
  setTimeout(() => {

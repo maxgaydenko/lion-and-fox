@@ -1,17 +1,7 @@
 import { useMutation } from "@apollo/client";
 import React from "react";
 import { LOGIN } from "../gqls/gqls";
-import { onAppLogin } from "../utils/auth";
-
-interface IResult {
- readonly authenticate: {
-  readonly sessionToken: string;
-  readonly __typename: string;
- };
-}
-
-// UserAuthenticationWithPasswordSuccess
-// UserAuthenticationWithPasswordFailure
+import { IAuthResult, onAppLogin } from "../utils/auth";
 
 interface IPageLoginProps {
  onPageReady: () => void
@@ -21,9 +11,7 @@ export const PageLogin: React.FC<IPageLoginProps> = ({onPageReady}: IPageLoginPr
  React.useEffect(() => {
   onPageReady();
  }, [])
- const [loginHandler, { data, error, loading }] = useMutation<IResult>(LOGIN);
-
- console.log("data", data);
+ const [loginHandler, { data, error, loading }] = useMutation<IAuthResult>(LOGIN);
 
  const onFormSubmit = (login: string, passwd: string) => {
   loginHandler({ variables: { login, passwd } });
@@ -32,12 +20,7 @@ export const PageLogin: React.FC<IPageLoginProps> = ({onPageReady}: IPageLoginPr
  if (data && data.authenticate) {
   console.log('Data', data);
   if (data.authenticate.__typename === "UserAuthenticationWithPasswordSuccess") {
-   console.log("success auth with data", data);
    onAppLogin(data.authenticate.sessionToken);
-   // window.localStorage["a"] = data.authenticate.sessionToken;
-   // setTimeout(() => {
-   //  window.location.href = "/presentations/";
-   // }, 10);
   }
  }
 
