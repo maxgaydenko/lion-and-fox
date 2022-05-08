@@ -4,7 +4,6 @@ import { ADD_DEMO_USER, GET_ALL_PRESENTATIONS } from "../gqls/gqls";
 import { appDemoPasswd, IAuthUser } from "../utils/auth";
 import { PageError } from "./PageError";
 import { PopupPresentation } from "./PopupPresentation";
-import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 interface IPresentationFile {
  readonly fileName: string;
