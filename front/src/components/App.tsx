@@ -66,6 +66,13 @@ const App: React.FC<IProps> = (props: IProps) => {
   setMenuShown(false);
  };
 
+ const sidebarUserName = (): string | undefined => {
+  if(props.user) {
+   return props.user.role==="demo"? props.user.name.substring(0, 18): props.user.name;
+  }
+  return undefined;
+ }
+
  return (
   <div className={"App" + (homeMarker ? " App-home" : " App-page") + (menuShown ? " App-menu-shown" : "")}>
    <div className="layer-background-video">
@@ -98,7 +105,7 @@ const App: React.FC<IProps> = (props: IProps) => {
     </div>
    </div>
    <Sidebar
-    userName={props.user ? props.user.name : undefined}
+    userName={sidebarUserName()}
     onMenuHide={() => setMenuShown(false)}
     onMenuClick={() => setMenuShown(!menuShown)}
    />

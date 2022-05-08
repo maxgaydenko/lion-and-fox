@@ -4,6 +4,7 @@ import { ADD_DEMO_USER, GET_ALL_PRESENTATIONS } from "../gqls/gqls";
 import { appDemoPasswd, IAuthUser } from "../utils/auth";
 import { PageError } from "./PageError";
 import { PopupPresentation } from "./PopupPresentation";
+import copy from 'copy-to-clipboard';
 
 interface IPresentationFile {
  readonly fileName: string;
@@ -66,7 +67,7 @@ interface ILoadedProps extends IProps {
 
 export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
  const [selectedShowcaseIdx, setSelectedShowcaseIdx] = React.useState<number | null>(null);
- const [checkedShowcases, setCheckedShowcases] = React.useState<string[] | "copyMessage">("copyMessage"); //[]);
+ const [checkedShowcases, setCheckedShowcases] = React.useState<string[] | "copyMessage">([]);
  const [addDemoUser, { loading }] = useMutation<IAddDemoResult>(ADD_DEMO_USER);
  React.useEffect(() => {
   props.onPageReady();
@@ -97,12 +98,12 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
       connect: checkedShowcases.map(id => ({ id: id })),
      },
     };
-    // const res = await addDemoUser({ variables: { demo } });
-    // const code = res.data?.createUser.name;
-    // const url = `${window.location.protocol}//${window.location.host}/demo/${code}`;
+    const res = await addDemoUser({ variables: { demo } });
+    const code = res.data?.createUser.name;
+    const url = `${window.location.protocol}//${window.location.host}/demo/${code}`;
     // TODO copy url here
-    const url = "Uncomment code above -- " + new Date();
-    console.log("Copy this url: ", url);
+    const done = copy(url);
+    console.log("Copy this url: ", url, done);
     setCheckedShowcases("copyMessage");
    } catch (err) {
     console.log("err", err);

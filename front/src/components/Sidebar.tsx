@@ -13,7 +13,7 @@ export const Sidebar: React.FC<IProps> = (props: IProps) => {
    <div className="logo"><Link onClick={props.onMenuHide} to="/"><span>lion and fox</span></Link></div>
    {/* <div className="title"><Link to="/">lion</Link> <Link to="/future">and</Link> fox <span>alive</span>&copy; 2022</div> */}
    <div className="title">lion and fox <span>alive</span>&copy; 2022</div>
-   {props.userName && <div className="username">{props.userName}</div>}
+   {props.userName && <div className="username"><Link onClick={props.onMenuHide} to="/presentations/">{props.userName}</Link></div>}
    <div className="icons">
     <ul>
      <li className="menu-item"><button className="icon icon-menu" onClick={props.onMenuClick} /></li>
