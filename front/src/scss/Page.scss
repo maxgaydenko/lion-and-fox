@@ -452,6 +452,10 @@
     cursor: pointer;
    }
 
+   div.thumb-wout-logo {
+    background-image: none !important;
+   }
+
    div.thumb-hov:hover {
     .thumb-img {
      left: -16px;

@@ -148,7 +148,7 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
      <ul className="gallery">
       {props.showcases.map((f, i) => (
        <li key={i}>
-        <div className={"thumb" + (f.gallery && f.gallery.length > 0 ? " thumb-hov" : "")} onClick={() => onSelectShowcase(i)}>
+        <div className={"thumb" + ((f.img && f.img.url)? " thumb-wout-logo": "") + (f.gallery && f.gallery.length > 0 ? " thumb-hov" : "")} onClick={() => onSelectShowcase(i)}>
          {f.img && f.img.url && (
           <div className={"thumb-img"} style={{ backgroundImage: `url(${process.env.REACT_APP_BACKEND_URL + f.img.url})` }}></div>
          )}
