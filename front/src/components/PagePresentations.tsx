@@ -32,19 +32,25 @@ interface IProps {
 }
 
 interface IAddDemoResult {
-  readonly createUser: {
-   readonly id: string;
-   readonly name: string;
-   readonly role: string;
-  };
- }
- 
+ readonly createUser: {
+  readonly id: string;
+  readonly name: string;
+  readonly role: string;
+ };
+}
 
 export const PagePresentations: React.FC<IProps> = (props: IProps) => {
  const { data, loading, error } = useQuery<IResult>(GET_ALL_PRESENTATIONS);
 
  if (loading) return <div>...</div>;
- if (error) return <PageError title={error.name} message={error.message.indexOf('expired access date')>=0? 'Expired access date': error.message} onPageReady={props.onPageReady} />;
+ if (error)
+  return (
+   <PageError
+    title={error.name}
+    message={error.message.indexOf("expired access date") >= 0 ? "Expired access date" : error.message}
+    onPageReady={props.onPageReady}
+   />
+  );
 
  //  return <PageError title="Page not loaded" onPageReady={props.onPageReady} />
  return data ? (
@@ -60,7 +66,7 @@ interface ILoadedProps extends IProps {
 
 export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
  const [selectedShowcaseIdx, setSelectedShowcaseIdx] = React.useState<number | null>(null);
- const [checkedShowcases, setCheckedShowcases] = React.useState<string[]>([]);
+ const [checkedShowcases, setCheckedShowcases] = React.useState<string[] | "copyMessage">("copyMessage"); //[]);
  const [addDemoUser, { loading }] = useMutation<IAddDemoResult>(ADD_DEMO_USER);
  React.useEffect(() => {
   props.onPageReady();
@@ -78,11 +84,12 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
  };
 
  const onToggleChecked = (id: string) => {
-  setCheckedShowcases(checkedShowcases.indexOf(id) >= 0 ? checkedShowcases.filter(f => f !== id) : [...checkedShowcases, id]);
+  if (checkedShowcases !== "copyMessage")
+   setCheckedShowcases(checkedShowcases.indexOf(id) >= 0 ? checkedShowcases.filter(f => f !== id) : [...checkedShowcases, id]);
  };
 
  const onCreateDemo = async () => {
-  if (checkedShowcases.length > 0) {
+  if (checkedShowcases !== "copyMessage" && checkedShowcases.length > 0) {
    try {
     const demo = {
      password: appDemoPasswd,
@@ -90,25 +97,21 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
       connect: checkedShowcases.map(id => ({ id: id })),
      },
     };
-    const res = await addDemoUser({ variables: { demo } });
-    const code = res.data?.createUser.name;
-    const url = `${window.location.protocol}//${window.location.host}/demo/${code}`
-    console.log('Copy this url: ', url);
-    setCheckedShowcases([]);
+    // const res = await addDemoUser({ variables: { demo } });
+    // const code = res.data?.createUser.name;
+    // const url = `${window.location.protocol}//${window.location.host}/demo/${code}`;
+    // TODO copy url here
+    const url = "Uncomment code above -- " + new Date();
+    console.log("Copy this url: ", url);
+    setCheckedShowcases("copyMessage");
    } catch (err) {
     console.log("err", err);
    }
   }
  };
 
- //  console.group("Add demo user");
- //  console.log("Error", error);
- //  console.log("Loading", loading);
- //  console.log("Data", data);
- //  console.groupEnd();
-
  return (
-  <div className="Page">
+  <div className={"Page" + (checkedShowcases === "copyMessage" ? " copyMessageShown" : "")}>
    {selectedShowcaseIdx !== null &&
     props.showcases[selectedShowcaseIdx] &&
     props.showcases[selectedShowcaseIdx].gallery &&
@@ -120,10 +123,24 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
       onClose={onHideShowcase}
      />
     )}
+   {isAdmin && (
+    <div className="messageBlock">
+     <button className="close" onClick={() => setCheckedShowcases([])}>
+      Link copied to clipboard
+     </button>
+    </div>
+   )}
    <div className="head">
     <div className="bc">
      <div className="section">Presentations</div>
     </div>
+    {isAdmin && (
+     <div className="ac">
+      <button onClick={onCreateDemo} disabled={loading || checkedShowcases.length === 0}>
+       copy link
+      </button>
+     </div>
+    )}
    </div>
    <div className="body">
     {props.showcases.length > 0 ? (
@@ -139,8 +156,8 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
          <label className="checkbox">
           <input
            type="checkbox"
-           disabled={loading}
-           checked={checkedShowcases.indexOf(f.id) >= 0}
+           disabled={loading || checkedShowcases === "copyMessage"}
+           checked={checkedShowcases !== "copyMessage" && checkedShowcases.indexOf(f.id) >= 0}
            onChange={() => onToggleChecked(f.id)}
            value={f.id}
           />{" "}
@@ -155,13 +172,6 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
     ) : (
      <div>No presentations yet</div>
     )}
-    <div>
-     {isAdmin && (
-      <button onClick={onCreateDemo} disabled={loading || checkedShowcases.length === 0}>
-       add demo
-      </button>
-     )}
-    </div>
    </div>
   </div>
  );

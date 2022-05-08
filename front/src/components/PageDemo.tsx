@@ -14,6 +14,7 @@ export const PageDemo: React.FC<IPageLoginProps> = ({ onPageReady }: IPageLoginP
  const [loginHandler, { data, error, loading }] = useMutation<IAuthResult>(LOGIN);
  React.useEffect(() => {
   loginHandler({ variables: { login: code, passwd: appDemoPasswd } });
+  onPageReady();
  }, []);
 
  if (data && data.authenticate) {
@@ -23,7 +24,7 @@ export const PageDemo: React.FC<IPageLoginProps> = ({ onPageReady }: IPageLoginP
   }
  }
 
- if (loading) return <PageError title="Demo loading" onPageReady={onPageReady} />;
+ // if (loading) return <PageError title="Demo loading" onPageReady={onPageReady} />;
 
  if (error) return <PageError title={error.name} onPageReady={onPageReady} message={error.message} />
 
