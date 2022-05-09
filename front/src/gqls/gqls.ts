@@ -30,7 +30,7 @@ export const GET_PAGE_BODY = gql`
    content {
     document
    }
-   projects {
+   projects(where: {isPublished: {equals: true}}) {
     url
     title
     img {
