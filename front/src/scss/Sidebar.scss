@@ -37,7 +37,9 @@
     line-height: 24px;
     color: #fff;
 
-    span,
+    span.alive {
+      color: #00FB99;
+    }
     a {
       color: #00FB99;
     }
@@ -143,6 +145,12 @@
     .title {
       left: 48px;
       top: calc(50% + (160px - 24px) / 2);
+      @media (max-height:$tablet-album-min-height) {
+        top: 220px;
+        .copyright {
+          display: none;
+        }
+      }
     }
 
     .username {

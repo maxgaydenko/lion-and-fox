@@ -253,6 +253,9 @@
     z-index: 201;
     left: 100px - 32px;
     top: 47px;
+    @media (max-height:$tablet-album-min-height) {
+     display: none;
+    }
    }
 
    @media (min-width: $desktop-min-width) {
