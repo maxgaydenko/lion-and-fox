@@ -43,7 +43,7 @@
   top: calc(24px - $radialSize);
   width: $radialSize * 2;
   height: $radialSize * 2;
-  background-image: radial-gradient(#000616aa 0%, #fff0 $radialSize);
+  background-image: radial-gradient(#000616aa 0%, #00061600 $radialSize);
  }
  .layer-conic {
   position: fixed;
