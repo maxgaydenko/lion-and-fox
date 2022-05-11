@@ -76,9 +76,9 @@ const App: React.FC<IProps> = (props: IProps) => {
  return (
   <div className={"App" + (homeMarker ? " App-home" : " App-page") + (menuShown ? " App-menu-shown" : "")}>
    <div className="layer-background-video">
-    <video id="video-home" muted loop autoPlay playsInline>
-     <source type="video/mp4" src={`/video/OUT111.mp4`} />
-     <source type="video/webm" src={`/video/OUT111_1.webm`} />
+    <video id="video-home" poster={`/video/V0512ABG.jpg`} muted loop autoPlay playsInline>
+     <source type="video/mp4" src={`/video/V0512AOUT111.mp4`} />
+     <source type="video/webm" src={`/video/V0512AOUT111.webm`} />
     </video>
    </div>
    <div className="layer-radial"></div>
