@@ -4,7 +4,8 @@ import { ADD_DEMO_USER, GET_ALL_PRESENTATIONS } from "../gqls/gqls";
 import { appDemoPasswd, IAuthUser } from "../utils/auth";
 import { PageError } from "./PageError";
 import { PopupPresentation } from "./PopupPresentation";
-import copy from 'copy-to-clipboard';
+import copy from "copy-to-clipboard";
+import { IPopupGallery } from "./PopupGallery";
 
 interface IPresentationFile {
  readonly fileName: string;
@@ -30,6 +31,7 @@ interface IResult {
 interface IProps {
  user: IAuthUser;
  onPageReady: () => void;
+ showPopupGallery: (popupGallery: IPopupGallery) => void;
 }
 
 interface IAddDemoResult {
@@ -55,7 +57,7 @@ export const PagePresentations: React.FC<IProps> = (props: IProps) => {
 
  //  return <PageError title="Page not loaded" onPageReady={props.onPageReady} />
  return data ? (
-  <LoadedPage showcases={data.showcases} user={props.user} onPageReady={props.onPageReady} />
+  <LoadedPage showcases={data.showcases} user={props.user} onPageReady={props.onPageReady} showPopupGallery={props.showPopupGallery} />
  ) : (
   <PageError title="Page not loaded" onPageReady={props.onPageReady} />
  );
@@ -66,7 +68,7 @@ interface ILoadedProps extends IProps {
 }
 
 export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
- const [selectedShowcaseIdx, setSelectedShowcaseIdx] = React.useState<number | null>(null);
+ //  const [selectedShowcaseIdx, setSelectedShowcaseIdx] = React.useState<number | null>(null);
  const [checkedShowcases, setCheckedShowcases] = React.useState<string[] | "copyMessage">([]);
  const [addDemoUser, { loading }] = useMutation<IAddDemoResult>(ADD_DEMO_USER);
  React.useEffect(() => {
@@ -75,13 +77,21 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
 
  const isAdmin = Boolean(props.user.role === "admin");
 
- const onSelectShowcase = (showcaseIdx: number) => {
-  if (props.showcases[showcaseIdx] && props.showcases[showcaseIdx].gallery && props.showcases[showcaseIdx].gallery!.length > 0)
-   setSelectedShowcaseIdx(showcaseIdx);
- };
+ //  const onSelectShowcase = (showcaseIdx: number) => {
+ //   if (props.showcases[showcaseIdx] && props.showcases[showcaseIdx].gallery && props.showcases[showcaseIdx].gallery!.length > 0)
+ //    setSelectedShowcaseIdx(showcaseIdx);
+ //  };
 
- const onHideShowcase = () => {
-  setSelectedShowcaseIdx(null);
+ //  const onHideShowcase = () => {
+ //   setSelectedShowcaseIdx(null);
+ //  };
+
+ const onSelectPresentation = (item: IPresentation, itemIdx: number) => {
+  props.showPopupGallery({
+   key: `showcase-${itemIdx}`,
+   title: item.title,
+   gallery: item.gallery ?? [],
+  });
  };
 
  const onToggleChecked = (id: string) => {
@@ -113,7 +123,7 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
 
  return (
   <div className={"Page" + (checkedShowcases === "copyMessage" ? " copyMessageShown" : "")}>
-   {selectedShowcaseIdx !== null &&
+   {/*selectedShowcaseIdx !== null &&
     props.showcases[selectedShowcaseIdx] &&
     props.showcases[selectedShowcaseIdx].gallery &&
     props.showcases[selectedShowcaseIdx].gallery!.length > 0 && (
@@ -123,7 +133,7 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
       gallery={props.showcases[selectedShowcaseIdx].gallery!}
       onClose={onHideShowcase}
      />
-    )}
+    )*/}
    {isAdmin && (
     <div className="messageBlock">
      <button className="close" onClick={() => setCheckedShowcases([])}>
@@ -148,7 +158,9 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
      <ul className="gallery">
       {props.showcases.map((f, i) => (
        <li key={i}>
-        <div className={"thumb" + ((f.img && f.img.url)? " thumb-wout-logo": "") + (f.gallery && f.gallery.length > 0 ? " thumb-hov" : "")} onClick={() => onSelectShowcase(i)}>
+        <div
+         className={"thumb" + (f.img && f.img.url ? " thumb-wout-logo" : "") + (f.gallery && f.gallery.length > 0 ? " thumb-hov" : "")}
+         onClick={() => onSelectPresentation(f, i)}>
          {f.img && f.img.url && (
           <div className={"thumb-img"} style={{ backgroundImage: `url(${process.env.REACT_APP_BACKEND_URL + f.img.url})` }}></div>
          )}

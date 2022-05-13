@@ -12,9 +12,9 @@ import { AppError } from "./AppError";
 import { PageLogin } from "./PageLogin";
 import { PageProject } from "./PageProject";
 import { PagePresentations } from "./PagePresentations";
-import { DevPageGallery } from "./DevPageGallery";
 import { IAuthUser } from "../utils/auth";
 import { PageDemo } from "./PageDemo";
+import { IPopupGallery, PopupGallery } from "./PopupGallery";
 
 interface IStructResult {
  readonly authenticatedItem: IAuthUser | null;
@@ -55,6 +55,7 @@ interface IProps {
 const App: React.FC<IProps> = (props: IProps) => {
  const [homeMarker, setHomeMarker] = React.useState<boolean>(false);
  const [menuShown, setMenuShown] = React.useState<boolean>(false);
+ const [popupGallery, setPopupGallery] = React.useState<IPopupGallery>();
 
  const pageLoaded = () => {
   setHomeMarker(false);
@@ -67,49 +68,48 @@ const App: React.FC<IProps> = (props: IProps) => {
  };
 
  const sidebarUserName = (): string | undefined => {
-  if(props.user) {
-   return props.user.role==="demo"? props.user.name.substring(0, 18): props.user.name;
+  if (props.user) {
+   return props.user.role === "demo" ? props.user.name.substring(0, 18) : props.user.name;
   }
   return undefined;
- }
+ };
 
  return (
-  <div className={"App" + (homeMarker ? " App-home" : " App-page") + (menuShown ? " App-menu-shown" : "")}>
-   <div className="layer-background-video">
-    <video id="video-home" poster={`/video/lf0513a.jpg`} muted loop autoPlay playsInline>
-     <source type="video/mp4" src={`/video/lf0513a.mp4`} />
-     <source type="video/webm" src={`/video/lf0513a.webm`} />
-    </video>
-   </div>
-   <div className="layer-radial"></div>
-   <div className="layer-conic"></div>
-   <div className="layer-content">
-    <div className="content-wrapper">
-     <Routes>
-      <Route path="/" element={<PageHome onPageReady={homePageLoaded} />} />
-      {props.menu.menuItems.map((f, i) => (
-       <Route key={`pageRoute-${i}`} path={f.url} element={<Page url={f.url} menu={props.menu} onPageReady={pageLoaded} />} />
-      ))}
-      {props.menu.projectItems.map((route, i) => (
-       <Route
-        key={`projectRoute-${i}`}
-        path={`${route.pageUrl}/${route.projectUrl}`}
-        element={<PageProject pageUrl={route.pageUrl} projectUrl={route.projectUrl} menu={props.menu} onPageReady={pageLoaded} />}
-       />
-      ))}
-      {props.user && <Route path="presentations" element={<PagePresentations user={props.user} onPageReady={pageLoaded} />} />}
-      {!props.user && <Route path="login" element={<PageLogin onPageReady={homePageLoaded} />} />}
-      <Route path="demo/:code" element={<PageDemo onPageReady={homePageLoaded} />} />
-      <Route path="*" element={<PageError onPageReady={pageLoaded} title="Ooops" message="Page not found" />} />
-     </Routes>
+  <div className="AppBox">
+   {popupGallery && <PopupGallery popupGallery={popupGallery} onClose={() => setPopupGallery(undefined)} />}
+   <div className={"App" + (homeMarker ? " App-home" : " App-page") + (menuShown ? " App-menu-shown" : "")}>
+    <div className="layer-background-video">
+     <video id="video-home" poster={`/video/lf0513a.jpg`} muted loop autoPlay playsInline>
+      <source type="video/mp4" src={`/video/lf0513a.mp4`} />
+      <source type="video/webm" src={`/video/lf0513a.webm`} />
+     </video>
     </div>
+    <div className="layer-radial"></div>
+    <div className="layer-conic"></div>
+    <div className="layer-content">
+     <div className="content-wrapper">
+      <Routes>
+       <Route path="/" element={<PageHome onPageReady={homePageLoaded} />} />
+       {props.menu.menuItems.map((f, i) => (
+        <Route key={`pageRoute-${i}`} path={f.url} element={<Page url={f.url} menu={props.menu} onPageReady={pageLoaded} />} />
+       ))}
+       {props.menu.projectItems.map((route, i) => (
+        <Route
+         key={`projectRoute-${i}`}
+         path={`${route.pageUrl}/${route.projectUrl}`}
+         element={<PageProject pageUrl={route.pageUrl} projectUrl={route.projectUrl} menu={props.menu} onPageReady={pageLoaded} />}
+        />
+       ))}
+       {props.user && <Route path="presentations" element={<PagePresentations user={props.user} onPageReady={pageLoaded} showPopupGallery={f => setPopupGallery(f)} />} />}
+       {!props.user && <Route path="login" element={<PageLogin onPageReady={homePageLoaded} />} />}
+       <Route path="demo/:code" element={<PageDemo onPageReady={homePageLoaded} />} />
+       <Route path="*" element={<PageError onPageReady={pageLoaded} title="Ooops" message="Page not found" />} />
+      </Routes>
+     </div>
+    </div>
+    <Sidebar userName={sidebarUserName()} onMenuHide={() => setMenuShown(false)} onMenuClick={() => setMenuShown(!menuShown)} />
+    <Menu userName={props.user ? props.user.name : undefined} onMenuHide={() => setMenuShown(false)} menu={props.menu} />
    </div>
-   <Sidebar
-    userName={sidebarUserName()}
-    onMenuHide={() => setMenuShown(false)}
-    onMenuClick={() => setMenuShown(!menuShown)}
-   />
-   <Menu userName={props.user ? props.user.name : undefined} onMenuHide={() => setMenuShown(false)} menu={props.menu} />
   </div>
  );
 };
