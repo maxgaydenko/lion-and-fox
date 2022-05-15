@@ -30,6 +30,7 @@ export const PopupGallery: React.FC<IPopupGalleryProps> = ({popupGallery,onClose
       autoPlay={false}
       showBullets={popupGallery.gallery.length > 1}
       showPlayButton={false}
+      infinite={false}
       showNav={true}
       showFullscreenButton={false}
       renderLeftNav={(onClick, disabled) => (

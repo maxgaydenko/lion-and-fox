@@ -219,7 +219,11 @@
     background-repeat: no-repeat;
     cursor: pointer;
    }
-
+   button.gallery-button:disabled {
+    opacity: .2;
+    cursor: not-allowed;
+   }
+ 
    button.gallery-button-prev {
     @extend %svg-shevron;
     left: 8px;
