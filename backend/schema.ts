@@ -182,6 +182,11 @@ export const lists: Lists = {
    }),
   },
   access: {
+   operation: {
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
+   },
    filter: {
     query: ({ session }: { session: Session }) => {
      return Boolean(session) ? true : { isPublished: { equals: true } };
@@ -280,6 +285,11 @@ export const lists: Lists = {
    }),
   },
   access: {
+   operation: {
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
+   },
    filter: {
     query: ({ session }: { session: Session }) => {
      return Boolean(session) ? true : { isPublished: { equals: true } };
@@ -349,9 +359,9 @@ export const lists: Lists = {
         return true;
        case RoleModerator: {
         return {
-          users: { some: { id: { equals: session.data.id } } },
-         };
-        }
+         users: { some: { id: { equals: session.data.id } } },
+        };
+       }
        case RoleDemo: {
         console.log("Filter query session", session.data);
         if (session.data.expirationDate) {
