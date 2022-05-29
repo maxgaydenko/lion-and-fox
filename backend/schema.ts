@@ -159,6 +159,14 @@ export const lists: Lists = {
     ui: {},
    }),
    content: document({
+    // relationships: {
+    //   popupGallery: {
+    //     label: 'popup gallery',
+    //     kind: "inline",
+    //     listKey: "PopupGallery",
+    //     selection: "title",
+    //   },
+    // },
     formatting: {
      headingLevels: [1, 2, 3],
      inlineMarks: {
@@ -397,6 +405,34 @@ export const lists: Lists = {
     console.log("validateInput.inputData:", inputData);
     console.log("validateInput.item:", item);
    },
+   beforeOperation: ({ item, operation }) => {
+    if (operation === "delete" && item) {
+     const path = envImagesStoragePath + "/projects/" + item.id;
+     fs.rm(path, { recursive: true, force: true });
+    }
+   },
+  },
+ }),
+ PopupGallery: list({
+  fields: {
+   title: text({ validation: { isRequired: true } }),
+   gallery: json({
+    label: "Images",
+    ui: {
+     views: require.resolve("./fields/gallery/components.tsx"),
+     createView: { fieldMode: "hidden" },
+     listView: { fieldMode: "hidden" },
+     itemView: { fieldMode: "edit" },
+    },
+   }),
+  },
+  access: {
+   filter: {
+    query: isUser,
+   },
+  },
+  ui: {},
+  hooks: {
    beforeOperation: ({ item, operation }) => {
     if (operation === "delete" && item) {
      const path = envImagesStoragePath + "/projects/" + item.id;

@@ -69,3 +69,9 @@ model Showcase {
   gallery       String?
   users         User[]  @relation("Showcase_users")
 }
+
+model PopupGallery {
+  id      String  @id @default(cuid())
+  title   String  @default("")
+  gallery String?
+}
