@@ -145,18 +145,43 @@ export const lists: Lists = {
    url: text({
     validation: {
      isRequired: true,
-     match: { regex: RegExp(/^([a-zA-Z0-9])+(\/[a-zA-Z0-9]+)*$/), explanation: "Url must contains alpha and numbers divided by /" },
+     match: { regex: RegExp(/^([a-zA-Z0-9])+(-[a-zA-Z0-9]+)*(\/[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)*$/), explanation: "Url must contains alpha and numbers divided by /" },
     },
     isIndexed: "unique",
    }),
    pos: integer({ validation: { isRequired: true }, defaultValue: 0 }),
    isPublished: checkbox({}),
+   showInMenu: checkbox({}),
+   img: image({
+    label: "Thumb",
+    hooks: {
+     // validateInput: ({ resolvedData, addValidationError, operation, fieldKey }) => {
+     // },
+     // beforeOperation: ({ item, operation, fieldKey }) => {
+     // },
+    },
+    ui: {
+     itemView: { fieldMode: "edit" },
+    },
+   }),
+   parent: relationship({ref:"Page", many: false}),
+   neighbors: relationship({ref:"Page", many: true}),
    hasBlazon: checkbox(),
    projects: relationship({
     ref: "Project.page",
     many: true,
     // label: "Gallery",
     ui: {},
+   }),
+   pageTitle: text(),
+   gallery: json({
+    label: "Gallery",
+    ui: {
+     views: require.resolve("./fields/gallery/components.tsx"),
+     createView: { fieldMode: "hidden" },
+     listView: { fieldMode: "hidden" },
+     itemView: { fieldMode: "edit" },
+    },
    }),
    content: document({
     // relationships: {
@@ -188,6 +213,7 @@ export const lists: Lists = {
     links: true,
     dividers: true,
    }),
+   relations: relationship({ref: "Page", many: true, label: 'menuName'})
   },
   access: {
    operation: {
@@ -204,8 +230,16 @@ export const lists: Lists = {
   ui: {
    labelField: "menuName",
    listView: {
-    initialColumns: ["menuName", "menuSection", "url", "pos", "isPublished"],
+    initialColumns: ["menuName", "parent", "url", "pos", "isPublished"],
     initialSort: { field: "pos", direction: "ASC" },
+   },
+  },
+  hooks: {
+   beforeOperation: ({ item, operation }) => {
+    if (operation === "delete" && item) {
+     const path = envImagesStoragePath + "/pages/" + item.id;
+     fs.rm(path, { recursive: true, force: true });
+    }
    },
   },
  }),
