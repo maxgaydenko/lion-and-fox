@@ -84,6 +84,10 @@
    opacity: 0.8;
    cursor: pointer;
   }
+  button.gallery-button:disabled {
+   opacity: .2;
+   cursor: not-allowed;
+  }
 
   button.gallery-button-prev {
    @extend %svg-shevron;

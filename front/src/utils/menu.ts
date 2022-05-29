@@ -4,11 +4,17 @@ export enum EMenuItemType {
  Section = "Section",
 }
 
+export enum EMenuItemPosition {
+ BeforePresentations = "BeforePresentations",
+ AfterPresentations = "AfterPresentations",
+}
+
 export interface IMenuItem {
  readonly url: string;
  readonly title: string;
  readonly section: string;
  readonly type: EMenuItemType;
+ readonly pos: EMenuItemPosition;
 }
 
 export interface IMenuProjectItem {
@@ -51,7 +57,8 @@ export const combineMenu = (pages: IMenuDataItem[]): IMenu => {
    section: page.menuSection,
    title: page.menuName,
    url: page.url,
-   type: EMenuItemType.Page
+   type: EMenuItemType.Page,
+   pos: page.pos < 1000? EMenuItemPosition.BeforePresentations: EMenuItemPosition.AfterPresentations,
   }
  });
 

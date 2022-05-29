@@ -26,6 +26,7 @@ export const PopupPresentation: React.FC<IPopupPresentationProps> = (props: IPop
         autoPlay={false}
         showBullets={props.gallery.length > 1}
         showPlayButton={false}
+        infinite={false}
         showNav={true}
         showFullscreenButton={false}
         renderLeftNav={(onClick, disabled) => (

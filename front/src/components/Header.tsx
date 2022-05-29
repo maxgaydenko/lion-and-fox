@@ -23,7 +23,7 @@ export const Header: React.FC<IProps> = (props: IProps) => {
  React.useEffect(() => {
   const selectedItem = props.menu.menuItems.find(f => f.url === props.url && f.type !== EMenuItemType.Section);
   if (selectedItem) {
-   const section = selectedItem.section;
+   let section = selectedItem.section || selectedItem.title;
    const neighbors: IHeaderMenuItem[] = selectedItem.section
     ? props.menu.menuItems.filter(f => f.section === selectedItem.section).map(f => ({ title: f.title, url: f.url }))
     : [];
