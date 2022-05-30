@@ -141,17 +141,22 @@ export const lists: Lists = {
  Page: list({
   fields: {
    menuName: text({ validation: { isRequired: true } }),
-   menuSection: text(),
    url: text({
     validation: {
      isRequired: true,
-     match: { regex: RegExp(/^([a-zA-Z0-9])+(-[a-zA-Z0-9]+)*(\/[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)*$/), explanation: "Url must contains alpha and numbers divided by /" },
+     match: { regex: RegExp(/^(@{0,1})([a-zA-Z0-9])+(-[a-zA-Z0-9]+)*(\/[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)*$/), explanation: "Url must contains alpha and numbers divided by /" },
     },
     isIndexed: "unique",
    }),
+   parent: relationship({ref:"Page", many: false}),
    pos: integer({ validation: { isRequired: true }, defaultValue: 0 }),
-   isPublished: checkbox({}),
    showInMenu: checkbox({}),
+   isPublished: checkbox({
+    ui: {
+     listView: {fieldMode: "read"}
+    }
+   }),
+   // menuSection: text(),
    img: image({
     label: "Thumb",
     hooks: {
@@ -164,15 +169,15 @@ export const lists: Lists = {
      itemView: { fieldMode: "edit" },
     },
    }),
-   parent: relationship({ref:"Page", many: false}),
-   neighbors: relationship({ref:"Page", many: true}),
+   // neighbors: relationship({ref:"Page", many: true}),
    hasBlazon: checkbox(),
-   projects: relationship({
-    ref: "Project.page",
-    many: true,
-    // label: "Gallery",
-    ui: {},
-   }),
+   showNeighborsInHeader: checkbox(),
+   // projects: relationship({
+   //  ref: "Project.page",
+   //  many: true,
+   //  // label: "Gallery",
+   //  ui: {},
+   // }),
    pageTitle: text(),
    gallery: json({
     label: "Gallery",
@@ -213,7 +218,8 @@ export const lists: Lists = {
     links: true,
     dividers: true,
    }),
-   relations: relationship({ref: "Page", many: true, label: 'menuName'})
+   relations: relationship({ref: "Page", many: true, label: 'Related pages'}),
+   showcases: relationship({ref: "Showcase.pages", many: true}),
   },
   access: {
    operation: {
@@ -228,9 +234,9 @@ export const lists: Lists = {
    },
   },
   ui: {
-   labelField: "menuName",
+   labelField: "url",
    listView: {
-    initialColumns: ["menuName", "parent", "url", "pos", "isPublished"],
+    initialColumns: ["menuName", "url", "parent", "pos", "isPublished"],
     initialSort: { field: "pos", direction: "ASC" },
    },
   },
@@ -238,122 +244,6 @@ export const lists: Lists = {
    beforeOperation: ({ item, operation }) => {
     if (operation === "delete" && item) {
      const path = envImagesStoragePath + "/pages/" + item.id;
-     fs.rm(path, { recursive: true, force: true });
-    }
-   },
-  },
- }),
- Project: list({
-  fields: {
-   page: relationship({
-    ref: "Page.projects",
-    many: false,
-   }),
-   url: text({
-    validation: {
-     isRequired: true,
-     match: { regex: RegExp(/^([a-zA-Z0-9])+$/), explanation: "Url must contains alpha and numbers only" },
-    },
-    isIndexed: "unique",
-   }),
-   pos: integer({ validation: { isRequired: true }, defaultValue: 0 }),
-   isPublished: checkbox({}),
-   title: text({ validation: { isRequired: true } }),
-   img: image({
-    label: "Thumb",
-    hooks: {
-     validateInput: ({ resolvedData, addValidationError, operation, fieldKey }) => {
-      // console.log("validateInput on " + operation, resolvedData);
-      // const width = resolvedData[fieldKey]["width"];
-      // console.log("width", width);
-      // // if (operation === "create" && !width) {
-      // if (!width) {
-      //  addValidationError("Image is required");
-      // } else if (width > 1800) {
-      //  addValidationError("Image is too big");
-      // //  const file = `${envImagesStoragePath}${resolvedData[fieldKey]["id"]}.${resolvedData[fieldKey]["extension"]}`;
-      // //  fs.unlink(file);
-      //  //  unlink(file, err => {
-      //  //   console.log(`File ${file} remove error`, err);
-      //  //  });
-      // }
-     },
-     beforeOperation: ({ item, operation, fieldKey }) => {
-      // console.log("beforeOperation on " + operation, item);
-      // if (operation === "delete" && item && item["img_id"] && item["img_extension"]) {
-      //  const file = `${envImagesStoragePath}${item["img_id"]}.${item["img_extension"]}`;
-      //  fs.unlink(file);
-      //  unlink(file, err => {
-      //   console.log(`File ${file} remove error`, err);
-      //  });
-      // }
-     },
-    },
-    ui: {
-     itemView: { fieldMode: "edit" },
-    },
-   }),
-   hasBlazon: checkbox(),
-   gallery: json({
-    label: "Gallery",
-    ui: {
-     views: require.resolve("./fields/gallery/components.tsx"),
-     createView: { fieldMode: "hidden" },
-     listView: { fieldMode: "hidden" },
-     itemView: { fieldMode: "edit" },
-    },
-   }),
-   content: document({
-    formatting: {
-     headingLevels: [1, 2, 3],
-     inlineMarks: {
-      bold: true,
-      italic: true,
-      underline: true,
-      strikethrough: true,
-      code: true,
-      superscript: true,
-      subscript: true,
-      keyboard: true,
-     },
-     listTypes: {
-      ordered: true,
-      unordered: true,
-     },
-     softBreaks: true,
-    },
-    links: true,
-    dividers: true,
-   }),
-  },
-  access: {
-   operation: {
-    create: isAdmin,
-    update: isAdmin,
-    delete: isAdmin,
-   },
-   filter: {
-    query: ({ session }: { session: Session }) => {
-     return Boolean(session) ? true : { isPublished: { equals: true } };
-    },
-   },
-  },
-  ui: {
-   labelField: "title",
-   listView: {
-    initialColumns: ["title", "url", "pos", "isPublished", "page"],
-    initialSort: { field: "pos", direction: "ASC" },
-   },
-  },
-  hooks: {
-   validateInput: ({ resolvedData, addValidationError, operation, inputData, item }) => {
-    console.log("validateInput.resolvedData:", resolvedData);
-    console.log("validateInput.inputData:", inputData);
-    console.log("validateInput.item:", item);
-   },
-   beforeOperation: ({ item, operation }) => {
-    if (operation === "delete" && item) {
-     const path = envImagesStoragePath + "/projects/" + item.id;
      fs.rm(path, { recursive: true, force: true });
     }
    },
@@ -391,6 +281,7 @@ export const lists: Lists = {
     ref: "User.showcases",
     many: true,
    }),
+   pages: relationship({ref: "Page.showcases", many: true}),
   },
   access: {
    filter: {

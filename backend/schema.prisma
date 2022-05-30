@@ -23,54 +23,31 @@ model User {
 }
 
 model Page {
-  id                  String    @id @default(cuid())
-  menuName            String    @default("")
-  menuSection         String    @default("")
-  url                 String    @unique @default("")
-  pos                 Int       @default(0)
-  isPublished         Boolean   @default(false)
-  showInMenu          Boolean   @default(false)
-  img_filesize        Int?
-  img_extension       String?
-  img_width           Int?
-  img_height          Int?
-  img_mode            String?
-  img_id              String?
-  parent              Page?     @relation("Page_parent", fields: [parentId], references: [id])
-  parentId            String?   @map("parent")
-  neighbors           Page[]    @relation("Page_neighbors")
-  hasBlazon           Boolean   @default(false)
-  projects            Project[] @relation("Project_page")
-  pageTitle           String    @default("")
-  gallery             String?
-  content             String    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  relations           Page[]    @relation("Page_relations")
-  from_Page_parent    Page[]    @relation("Page_parent")
-  from_Page_neighbors Page[]    @relation("Page_neighbors")
-  from_Page_relations Page[]    @relation("Page_relations")
+  id                    String     @id @default(cuid())
+  menuName              String     @default("")
+  url                   String     @unique @default("")
+  parent                Page?      @relation("Page_parent", fields: [parentId], references: [id])
+  parentId              String?    @map("parent")
+  pos                   Int        @default(0)
+  showInMenu            Boolean    @default(false)
+  isPublished           Boolean    @default(false)
+  img_filesize          Int?
+  img_extension         String?
+  img_width             Int?
+  img_height            Int?
+  img_mode              String?
+  img_id                String?
+  hasBlazon             Boolean    @default(false)
+  showNeighborsInHeader Boolean    @default(false)
+  pageTitle             String     @default("")
+  gallery               String?
+  content               String     @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  relations             Page[]     @relation("Page_relations")
+  showcases             Showcase[] @relation("Page_showcases")
+  from_Page_parent      Page[]     @relation("Page_parent")
+  from_Page_relations   Page[]     @relation("Page_relations")
 
   @@index([parentId])
-}
-
-model Project {
-  id            String  @id @default(cuid())
-  page          Page?   @relation("Project_page", fields: [pageId], references: [id])
-  pageId        String? @map("page")
-  url           String  @unique @default("")
-  pos           Int     @default(0)
-  isPublished   Boolean @default(false)
-  title         String  @default("")
-  img_filesize  Int?
-  img_extension String?
-  img_width     Int?
-  img_height    Int?
-  img_mode      String?
-  img_id        String?
-  hasBlazon     Boolean @default(false)
-  gallery       String?
-  content       String  @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-
-  @@index([pageId])
 }
 
 model Showcase {
@@ -86,6 +63,7 @@ model Showcase {
   img_id        String?
   gallery       String?
   users         User[]  @relation("Showcase_users")
+  pages         Page[]  @relation("Page_showcases")
 }
 
 model PopupGallery {

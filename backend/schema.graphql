@@ -153,28 +153,14 @@ input ShowcaseRelateToManyForCreateInput {
 type Page {
   id: ID!
   menuName: String
-  menuSection: String
   url: String
-  pos: Int
-  isPublished: Boolean
-  showInMenu: Boolean
-  img: ImageFieldOutput
   parent: Page
-  neighbors(
-    where: PageWhereInput! = {}
-    orderBy: [PageOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Page!]
-  neighborsCount(where: PageWhereInput! = {}): Int
+  pos: Int
+  showInMenu: Boolean
+  isPublished: Boolean
+  img: ImageFieldOutput
   hasBlazon: Boolean
-  projects(
-    where: ProjectWhereInput! = {}
-    orderBy: [ProjectOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Project!]
-  projectsCount(where: ProjectWhereInput! = {}): Int
+  showNeighborsInHeader: Boolean
   pageTitle: String
   gallery: JSON
   content: Page_content_Document
@@ -185,6 +171,13 @@ type Page {
     skip: Int! = 0
   ): [Page!]
   relationsCount(where: PageWhereInput! = {}): Int
+  showcases(
+    where: ShowcaseWhereInput! = {}
+    orderBy: [ShowcaseOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Showcase!]
+  showcasesCount(where: ShowcaseWhereInput! = {}): Int
 }
 
 interface ImageFieldOutput {
@@ -219,17 +212,16 @@ input PageWhereInput {
   NOT: [PageWhereInput!]
   id: IDFilter
   menuName: StringFilter
-  menuSection: StringFilter
   url: StringFilter
-  pos: IntFilter
-  isPublished: BooleanFilter
-  showInMenu: BooleanFilter
   parent: PageWhereInput
-  neighbors: PageManyRelationFilter
+  pos: IntFilter
+  showInMenu: BooleanFilter
+  isPublished: BooleanFilter
   hasBlazon: BooleanFilter
-  projects: ProjectManyRelationFilter
+  showNeighborsInHeader: BooleanFilter
   pageTitle: StringFilter
   relations: PageManyRelationFilter
+  showcases: ShowcaseManyRelationFilter
 }
 
 input IntFilter {
@@ -254,40 +246,39 @@ input PageManyRelationFilter {
   none: PageWhereInput
 }
 
-input ProjectManyRelationFilter {
-  every: ProjectWhereInput
-  some: ProjectWhereInput
-  none: ProjectWhereInput
-}
-
 input PageOrderByInput {
   id: OrderDirection
   menuName: OrderDirection
-  menuSection: OrderDirection
   url: OrderDirection
   pos: OrderDirection
-  isPublished: OrderDirection
   showInMenu: OrderDirection
+  isPublished: OrderDirection
   hasBlazon: OrderDirection
+  showNeighborsInHeader: OrderDirection
   pageTitle: OrderDirection
 }
 
 input PageUpdateInput {
   menuName: String
-  menuSection: String
   url: String
-  pos: Int
-  isPublished: Boolean
-  showInMenu: Boolean
-  img: ImageFieldInput
   parent: PageRelateToOneForUpdateInput
-  neighbors: PageRelateToManyForUpdateInput
+  pos: Int
+  showInMenu: Boolean
+  isPublished: Boolean
+  img: ImageFieldInput
   hasBlazon: Boolean
-  projects: ProjectRelateToManyForUpdateInput
+  showNeighborsInHeader: Boolean
   pageTitle: String
   gallery: JSON
   content: JSON
   relations: PageRelateToManyForUpdateInput
+  showcases: ShowcaseRelateToManyForUpdateInput
+}
+
+input PageRelateToOneForUpdateInput {
+  create: PageCreateInput
+  connect: PageWhereUniqueInput
+  disconnect: Boolean
 }
 
 input ImageFieldInput {
@@ -300,24 +291,11 @@ The `Upload` scalar type represents a file upload.
 """
 scalar Upload
 
-input PageRelateToOneForUpdateInput {
-  create: PageCreateInput
-  connect: PageWhereUniqueInput
-  disconnect: Boolean
-}
-
 input PageRelateToManyForUpdateInput {
   disconnect: [PageWhereUniqueInput!]
   set: [PageWhereUniqueInput!]
   create: [PageCreateInput!]
   connect: [PageWhereUniqueInput!]
-}
-
-input ProjectRelateToManyForUpdateInput {
-  disconnect: [ProjectWhereUniqueInput!]
-  set: [ProjectWhereUniqueInput!]
-  create: [ProjectCreateInput!]
-  connect: [ProjectWhereUniqueInput!]
 }
 
 input PageUpdateArgs {
@@ -327,20 +305,19 @@ input PageUpdateArgs {
 
 input PageCreateInput {
   menuName: String
-  menuSection: String
   url: String
-  pos: Int
-  isPublished: Boolean
-  showInMenu: Boolean
-  img: ImageFieldInput
   parent: PageRelateToOneForCreateInput
-  neighbors: PageRelateToManyForCreateInput
+  pos: Int
+  showInMenu: Boolean
+  isPublished: Boolean
+  img: ImageFieldInput
   hasBlazon: Boolean
-  projects: ProjectRelateToManyForCreateInput
+  showNeighborsInHeader: Boolean
   pageTitle: String
   gallery: JSON
   content: JSON
   relations: PageRelateToManyForCreateInput
+  showcases: ShowcaseRelateToManyForCreateInput
 }
 
 input PageRelateToOneForCreateInput {
@@ -351,84 +328,6 @@ input PageRelateToOneForCreateInput {
 input PageRelateToManyForCreateInput {
   create: [PageCreateInput!]
   connect: [PageWhereUniqueInput!]
-}
-
-input ProjectRelateToManyForCreateInput {
-  create: [ProjectCreateInput!]
-  connect: [ProjectWhereUniqueInput!]
-}
-
-type Project {
-  id: ID!
-  page: Page
-  url: String
-  pos: Int
-  isPublished: Boolean
-  title: String
-  img: ImageFieldOutput
-  hasBlazon: Boolean
-  gallery: JSON
-  content: Project_content_Document
-}
-
-type Project_content_Document {
-  document(hydrateRelationships: Boolean! = false): JSON!
-}
-
-input ProjectWhereUniqueInput {
-  id: ID
-  url: String
-}
-
-input ProjectWhereInput {
-  AND: [ProjectWhereInput!]
-  OR: [ProjectWhereInput!]
-  NOT: [ProjectWhereInput!]
-  id: IDFilter
-  page: PageWhereInput
-  url: StringFilter
-  pos: IntFilter
-  isPublished: BooleanFilter
-  title: StringFilter
-  hasBlazon: BooleanFilter
-}
-
-input ProjectOrderByInput {
-  id: OrderDirection
-  url: OrderDirection
-  pos: OrderDirection
-  isPublished: OrderDirection
-  title: OrderDirection
-  hasBlazon: OrderDirection
-}
-
-input ProjectUpdateInput {
-  page: PageRelateToOneForUpdateInput
-  url: String
-  pos: Int
-  isPublished: Boolean
-  title: String
-  img: ImageFieldInput
-  hasBlazon: Boolean
-  gallery: JSON
-  content: JSON
-}
-
-input ProjectUpdateArgs {
-  where: ProjectWhereUniqueInput!
-  data: ProjectUpdateInput!
-}
-
-input ProjectCreateInput {
-  page: PageRelateToOneForCreateInput
-  url: String
-  pos: Int
-  isPublished: Boolean
-  title: String
-  img: ImageFieldInput
-  hasBlazon: Boolean
-  gallery: JSON
-  content: JSON
 }
 
 type Showcase {
@@ -445,6 +344,13 @@ type Showcase {
     skip: Int! = 0
   ): [User!]
   usersCount(where: UserWhereInput! = {}): Int
+  pages(
+    where: PageWhereInput! = {}
+    orderBy: [PageOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Page!]
+  pagesCount(where: PageWhereInput! = {}): Int
 }
 
 input ShowcaseWhereUniqueInput {
@@ -480,6 +386,7 @@ input ShowcaseWhereInput {
   pos: IntFilter
   isPublished: BooleanFilter
   users: UserManyRelationFilter
+  pages: PageManyRelationFilter
 }
 
 input UserManyRelationFilter {
@@ -502,6 +409,7 @@ input ShowcaseUpdateInput {
   img: ImageFieldInput
   gallery: JSON
   users: UserRelateToManyForUpdateInput
+  pages: PageRelateToManyForUpdateInput
 }
 
 input UserRelateToManyForUpdateInput {
@@ -523,6 +431,7 @@ input ShowcaseCreateInput {
   img: ImageFieldInput
   gallery: JSON
   users: UserRelateToManyForCreateInput
+  pages: PageRelateToManyForCreateInput
 }
 
 input UserRelateToManyForCreateInput {
@@ -589,15 +498,6 @@ type Mutation {
   updatePages(data: [PageUpdateArgs!]!): [Page]
   deletePage(where: PageWhereUniqueInput!): Page
   deletePages(where: [PageWhereUniqueInput!]!): [Page]
-  createProject(data: ProjectCreateInput!): Project
-  createProjects(data: [ProjectCreateInput!]!): [Project]
-  updateProject(
-    where: ProjectWhereUniqueInput!
-    data: ProjectUpdateInput!
-  ): Project
-  updateProjects(data: [ProjectUpdateArgs!]!): [Project]
-  deleteProject(where: ProjectWhereUniqueInput!): Project
-  deleteProjects(where: [ProjectWhereUniqueInput!]!): [Project]
   createShowcase(data: ShowcaseCreateInput!): Showcase
   createShowcases(data: [ShowcaseCreateInput!]!): [Showcase]
   updateShowcase(
@@ -663,14 +563,6 @@ type Query {
   ): [Page!]
   page(where: PageWhereUniqueInput!): Page
   pagesCount(where: PageWhereInput! = {}): Int
-  projects(
-    where: ProjectWhereInput! = {}
-    orderBy: [ProjectOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Project!]
-  project(where: ProjectWhereUniqueInput!): Project
-  projectsCount(where: ProjectWhereInput! = {}): Int
   showcases(
     where: ShowcaseWhereInput! = {}
     orderBy: [ShowcaseOrderByInput!]! = []
