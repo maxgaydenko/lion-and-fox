@@ -4,13 +4,13 @@ import { useMutation, useQuery } from "@apollo/client";
 import { Sidebar } from "./Sidebar";
 import { Menu } from "./Menu";
 import { GET_STRUCT, LAST_ACCESS_UPDATE } from "../gqls/gqls";
-import { combineMenu, IMenu, IMenuDataItem } from "../utils/menu";
+import { combineSiteStruct, ISiteStruct, IStructPageDataItem } from "../utils/struct";
 import { Page } from "./Page";
 import { PageHome } from "./PageHome";
 import { PageError } from "./PageError";
 import { AppError } from "./AppError";
 import { PageLogin } from "./PageLogin";
-import { PageProject } from "./PageProject";
+// import { PageProject } from "./PageProject";
 import { PagePresentations } from "./PagePresentations";
 import { IAuthUser } from "../utils/auth";
 import { PageDemo } from "./PageDemo";
@@ -18,7 +18,7 @@ import { IPopupGallery, PopupGallery } from "./PopupGallery";
 
 interface IStructResult {
  readonly authenticatedItem: IAuthUser | null;
- readonly pages: IMenuDataItem[];
+ readonly pages: IStructPageDataItem[];
 }
 
 function AppLoader() {
@@ -38,7 +38,7 @@ function AppLoader() {
  return data ? (
   <Router>
    <>
-    <App menu={combineMenu(data.pages!)} user={data.authenticatedItem} />
+    <App siteStruct={combineSiteStruct(data.pages.sort(f => f.pos)!)} user={data.authenticatedItem} />
     {data.authenticatedItem && <AppLastAccess user={data.authenticatedItem} />}
    </>
   </Router>
@@ -49,7 +49,7 @@ function AppLoader() {
 
 interface IProps {
  readonly user: IAuthUser | null;
- readonly menu: IMenu;
+ readonly siteStruct: ISiteStruct;
 }
 
 const App: React.FC<IProps> = (props: IProps) => {
@@ -90,15 +90,8 @@ const App: React.FC<IProps> = (props: IProps) => {
      <div className="content-wrapper">
       <Routes>
        <Route path="/" element={<PageHome onPageReady={homePageLoaded} />} />
-       {props.menu.menuItems.map((f, i) => (
-        <Route key={`pageRoute-${i}`} path={f.url} element={<Page url={f.url} menu={props.menu} onPageReady={pageLoaded} />} />
-       ))}
-       {props.menu.projectItems.map((route, i) => (
-        <Route
-         key={`projectRoute-${i}`}
-         path={`${route.pageUrl}/${route.projectUrl}`}
-         element={<PageProject pageUrl={route.pageUrl} projectUrl={route.projectUrl} menu={props.menu} onPageReady={pageLoaded} />}
-        />
+       {props.siteStruct.urls.map((f, i) => (
+        <Route key={`pageRoute-${i}`} path={f} element={<Page url={f} pages={props.siteStruct.pages} onPageReady={pageLoaded} />} />
        ))}
        {props.user && <Route path="presentations" element={<PagePresentations user={props.user} onPageReady={pageLoaded} showPopupGallery={f => setPopupGallery(f)} />} />}
        {!props.user && <Route path="login" element={<PageLogin onPageReady={homePageLoaded} />} />}
@@ -108,7 +101,7 @@ const App: React.FC<IProps> = (props: IProps) => {
      </div>
     </div>
     <Sidebar userName={sidebarUserName()} onMenuHide={() => setMenuShown(false)} onMenuClick={() => setMenuShown(!menuShown)} />
-    <Menu userName={props.user ? props.user.name : undefined} onMenuHide={() => setMenuShown(false)} menu={props.menu} />
+    <Menu userName={props.user ? props.user.name : undefined} onMenuHide={() => setMenuShown(false)} menu={props.siteStruct.menu} pages={props.siteStruct.pages} />
    </div>
   </div>
  );

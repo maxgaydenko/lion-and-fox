@@ -10,15 +10,14 @@ export const GET_STRUCT = gql`
   authenticatedItem {
    ...AuthFragment
   }
-  pages(where: { isPublished: { equals: true } }) {
+  pages(where: { isPublished: { equals: true } }, orderBy: { pos: asc }) {
    url
    pos
    menuName
-   menuSection
-   projectsCount(where: { isPublished: { equals: true } })
-   projects(where: { isPublished: { equals: true } }) {
+   parent {
     url
    }
+   showInMenu
   }
  }
 `;
@@ -27,11 +26,20 @@ export const GET_PAGE_BODY = gql`
  query GetPage($url: String!) {
   page(where: { url: $url }) {
    hasBlazon
+   showNeighborsInHeader
+   pageTitle
+   gallery
    content {
     document
    }
-   projects(where: {isPublished: {equals: true}}) {
+   relations(where: { isPublished: { equals: true } }, orderBy: { pos: asc }) {
     url
+    menuName
+    img {
+     url
+    }
+   }
+   showcases(where: { isPublished: { equals: true } }, orderBy: { pos: asc }) {
     title
     img {
      url
@@ -91,11 +99,9 @@ export const LOGIN = gql`
 
 // TODO use it
 export const ADD_DEMO_USER = gql`
-# mutation AddDemoUser($passwd: String!) {
+ # mutation AddDemoUser($passwd: String!) {
  mutation AddDemoUser($demo: UserCreateInput!) {
-  createUser(
-   data: $demo
-  ) {
+  createUser(data: $demo) {
    id
    name
    role

@@ -1,9 +1,10 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
+import ImageGallery from "react-image-gallery";
 import { Link } from "react-router-dom";
 import { GET_PAGE_BODY } from "../gqls/gqls";
 import { DocumentRenderer } from "../utils/document-renderer";
-import { IMenu } from "../utils/menu";
+import { ISiteStruct, TSiteStructPagesMap } from "../utils/struct";
 import { Header } from "./Header";
 import { PageError } from "./PageError";
 
@@ -11,8 +12,15 @@ interface IResult {
  readonly page: IPageResult
 }
 
-interface IPageProjectResult {
+interface IPageRelationResult {
  readonly url: string
+ readonly menuName: string
+ readonly img?: {
+  readonly url?: string
+ }
+}
+
+interface IPageShowcaseResult {
  readonly title: string
  readonly img?: {
   readonly url?: string
@@ -20,17 +28,20 @@ interface IPageProjectResult {
 }
 
 interface IPageResult {
- // readonly title: string;
  readonly hasBlazon: boolean;
+ readonly showNeighborsInHeader: boolean;
+ readonly pageTitle: string;
+ readonly gallery: string[] | null
  readonly content: {
   readonly document: any
  }
- readonly projects: IPageProjectResult[]
+ readonly relations: IPageRelationResult[]
+ readonly showcases: IPageShowcaseResult[]
 }
 
 interface IProps {
  readonly url: string;
- readonly menu: IMenu;
+ readonly pages: TSiteStructPagesMap;
  onPageReady: () => void
 }
 
@@ -54,9 +65,25 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
 
  return (
   <div className="Page">
-   <Header url={props.url} menu={props.menu} hasBlazon={props.page.hasBlazon} />
+   <Header url={props.url} pages={props.pages} showNeighbors={props.page.showNeighborsInHeader} hasBlazon={props.page.hasBlazon} />
    <div className="body">
-    {props.page.projects.length > 0 && (
+    {props.page.pageTitle && <h1>{props.page.pageTitle}</h1>}
+
+    {props.page.gallery && props.page.gallery.length > 0 && (<div className="wideImg">
+     <ImageGallery
+      items={props.page.gallery.map(f => ({ original: `${process.env.REACT_APP_BACKEND_URL}${f}` }))}
+      autoPlay={false}
+      showBullets={props.page.gallery.length > 1}
+      showPlayButton={false}
+      infinite={false}
+      showNav={true}
+      showFullscreenButton={false}
+      renderLeftNav={(onClick, disabled) => <button onClick={onClick} disabled={disabled} className={'gallery-button gallery-button-prev'} />}
+      renderRightNav={(onClick, disabled) => <button onClick={onClick} disabled={disabled} className={'gallery-button gallery-button-next'} />}
+     />
+    </div>)}
+
+    {/* {props.page.projects.length > 0 && (
      <ul className="gallery">
       {props.page.projects.map((f, i) => (
        <li key={i}>
@@ -69,10 +96,25 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
        </li>
       ))}
      </ul>
-    )}
+    )} */}
     {/* {props.page.title && <h1>{props.page.title}</h1>} */}
 
     <DocumentRenderer document={props.page.content.document} />
+
+    {props.page.relations.length > 0 && (
+     <ul className="gallery">
+      {props.page.relations.map((f, i) => (
+       <li key={i}>
+        <Link to={`/${f.url.replace("@", "")}`}>
+         <div className="thumb">
+          {f.img && f.img.url && <div className="thumb-img" style={{ backgroundImage: `url(${process.env.REACT_APP_BACKEND_URL+f.img.url})` }}></div>}
+         </div>
+         <div className="name">{f.menuName}</div>
+        </Link>
+       </li>
+      ))}
+     </ul>
+    )}
    </div>
   </div>
  );

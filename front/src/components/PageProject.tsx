@@ -3,7 +3,7 @@ import React from "react";
 import ImageGallery from "react-image-gallery";
 import { GET_PROJECT_BODY } from "../gqls/gqls";
 import { DocumentRenderer } from "../utils/document-renderer";
-import { IMenu } from "../utils/menu";
+import { ISiteStruct } from "../utils/struct";
 import { Header } from "./Header";
 import { PageError } from "./PageError";
 
@@ -33,7 +33,7 @@ interface IProjectResult {
 interface IProps {
  readonly pageUrl: string;
  readonly projectUrl: string;
- readonly menu: IMenu;
+ readonly menu: ISiteStruct;
  onPageReady: () => void
 }
 
@@ -56,7 +56,7 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
  }, [])
  return (
   <div className="Page">
-   <Header url={props.pageUrl} menu={props.menu} hasBlazon={props.project.hasBlazon} />
+   {/* <Header url={props.pageUrl} siteStruct={props.menu} hasBlazon={props.project.hasBlazon} /> */}
    <div className="body">
     {props.project.title && <h1>{props.project.title}</h1>}
 

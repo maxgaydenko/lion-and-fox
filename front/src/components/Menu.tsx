@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { onAppLogout } from "../utils/auth";
-import { EMenuItemPosition, IMenu } from "../utils/menu";
+import { EMenuItemPosition, ISiteMenuItem, TSiteStructPagesMap } from "../utils/struct";
 
 interface IProps {
- menu: IMenu;
+ menu: ISiteMenuItem[];
+ pages: TSiteStructPagesMap;
  userName?: string;
  onMenuHide: () => void;
 }
@@ -19,13 +20,9 @@ interface IMenuListItem {
 export const Menu: React.FC<IProps> = (props: IProps) => {
  const [listItems, setListItems] = React.useState<IMenuListItem[]>();
  React.useEffect(() => {
-  let prevSection = "";
-  const _listItems: IMenuListItem[] = props.menu.menuItems.reduce((p, c) => {
-   //  if (c.section && prevSection !== c.section) p.push({ title: c.section, url: `${c.url}`, isSection: true });
-   //  p.push({ title: c.title, url: `${c.url}`, isSection: false });
-   const isSection = Boolean(c.url.indexOf("/") < 0);
-   p.push({ title: c.title, url: c.url, pos: c.pos, isSection });
-   prevSection = c.section;
+  const _listItems: IMenuListItem[] = props.menu.reduce((p, c) => {
+   const isSection = Boolean(props.pages[c.url].parent === null);
+   p.push({ title: props.pages[c.url].title, url: c.url, pos: c.pos, isSection });
    return p;
   }, [] as IMenuListItem[]);
   setListItems(_listItems);
@@ -49,7 +46,7 @@ export const Menu: React.FC<IProps> = (props: IProps) => {
         .filter(f => f.pos === EMenuItemPosition.BeforePresentations)
         .map((f, i) => (
          <li key={i} className={f.isSection ? "section" : ""}>
-          <Link onClick={props.onMenuHide} to={f.url}>
+          <Link onClick={props.onMenuHide} to={f.url.replace("@", "")}>
            {f.title}
           </Link>
          </li>
@@ -87,7 +84,6 @@ export const Menu: React.FC<IProps> = (props: IProps) => {
        </React.Fragment>
       ) : (
        <React.Fragment>
-        <li>&mdash;</li>
         <li className="section">
          <Link onClick={props.onMenuHide} to="/login">
           Log in
