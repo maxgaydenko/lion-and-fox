@@ -106,7 +106,7 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
       {props.page.relations.map((f, i) => (
        <li key={i}>
         <Link to={`/${f.url.replace("@", "")}`}>
-         <div className="thumb">
+         <div className={"thumb" + (f.img && f.img.url ? " thumb-wout-logo": "")}>
           {f.img && f.img.url && <div className="thumb-img" style={{ backgroundImage: `url(${process.env.REACT_APP_BACKEND_URL+f.img.url})` }}></div>}
          </div>
          <div className="name">{f.menuName}</div>
