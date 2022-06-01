@@ -41,7 +41,7 @@ export const Header: React.FC<IProps> = (props: IProps) => {
     bc.shift();
    setHeaderMenu({bc:bc.reverse(), neighbors});
   }
- }, [props.url, props.pages]);
+ }, [props.url, props.showNeighbors]);
 
  return (
   <div className="head">
