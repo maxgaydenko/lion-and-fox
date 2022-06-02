@@ -2,12 +2,13 @@ import fs from "fs/promises";
 import { list } from "@keystone-6/core";
 import { v4 as uuidv4 } from "uuid";
 
-import { text, password, integer, checkbox, relationship, image, json, select, timestamp } from "@keystone-6/core/fields";
+import { text, password, integer, checkbox, relationship, image, json, select, timestamp, virtual } from "@keystone-6/core/fields";
 import { document } from "@keystone-6/fields-document";
 import { Lists } from ".keystone/types";
 import { envImagesStoragePath } from "./env";
 import { RoleAdmin, RoleDemo, RoleModerator } from "./roles";
 import { BaseItem } from "@keystone-6/core/types";
+import { graphql } from "@graphql-ts/schema";
 
 type Session = {
  data: {
@@ -144,17 +145,20 @@ export const lists: Lists = {
    url: text({
     validation: {
      isRequired: true,
-     match: { regex: RegExp(/^(@{0,1})([a-zA-Z0-9])+(-[a-zA-Z0-9]+)*(\/[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)*$/), explanation: "Url must contains alpha and numbers divided by /" },
+     match: {
+      regex: RegExp(/^(@{0,1})([a-zA-Z0-9])+(-[a-zA-Z0-9]+)*(\/[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)*$/),
+      explanation: "Url must contains alpha and numbers divided by /",
+     },
     },
     isIndexed: "unique",
    }),
-   parent: relationship({ref:"Page", many: false}),
+   parent: relationship({ ref: "Page", many: false }),
    pos: integer({ validation: { isRequired: true }, defaultValue: 0 }),
    showInMenu: checkbox({}),
    isPublished: checkbox({
     ui: {
-     listView: {fieldMode: "read"}
-    }
+     listView: { fieldMode: "read" },
+    },
    }),
    // menuSection: text(),
    img: image({
@@ -218,8 +222,8 @@ export const lists: Lists = {
     links: true,
     dividers: true,
    }),
-   relations: relationship({ref: "Page", many: true, label: 'Related pages'}),
-   showcases: relationship({ref: "Showcase.pages", many: true}),
+   relations: relationship({ ref: "Page", many: true, label: "Related pages" }),
+   showcases: relationship({ ref: "Showcase.pages", many: true }),
   },
   access: {
    operation: {
@@ -276,46 +280,67 @@ export const lists: Lists = {
      listView: { fieldMode: "hidden" },
      itemView: { fieldMode: "edit" },
     },
+    access: {
+     read: ({ session, item }: { session: Session; item: any }) => {
+      if (session && session.data) {
+       console.log("Access read", session, item);
+       console.log("Item", item.users);
+       switch (session.data.role) {
+        case RoleAdmin:
+         return true;
+        case RoleModerator:
+         return true;
+        case RoleDemo:
+         return false;
+         // return {
+         //  users: { some: { id: { equals: session.data.id } } },
+         //  isPublished: { equals: true },
+         // };
+       }
+      }
+      return false;
+     },
+    },
    }),
    users: relationship({
     ref: "User.showcases",
     many: true,
    }),
-   pages: relationship({ref: "Page.showcases", many: true}),
+   pages: relationship({ ref: "Page.showcases", many: true }),
   },
   access: {
-   filter: {
-    query: ({ session }: { session: Session }) => {
-     if (session && session.data) {
-      switch (session.data.role) {
-       case RoleAdmin:
-        return true;
-       case RoleModerator: {
-        return {
-         users: { some: { id: { equals: session.data.id } } },
-        };
-       }
-       case RoleDemo: {
-        console.log("Filter query session", session.data);
-        if (session.data.expirationDate) {
-         const expirationDate = new Date(session.data.expirationDate);
-         const now = new Date();
-         if (expirationDate.getTime() < now.getTime()) {
-          throw Error("You have expired access date");
-          // return false;
-         }
-        }
-        return {
-         users: { some: { id: { equals: session.data.id } } },
-         isPublished: { equals: true },
-        };
-       }
-      }
-     }
-     return false;
-     //  return Boolean(session) ? true : { isPublished: { equals: true } };
-    },
-   },
+   // filter: {
+   //  query: ({ session }: { session: Session }) => {
+   //   if (session && session.data) {
+   //    switch (session.data.role) {
+   //     case RoleAdmin:
+   //      return true;
+   //     case RoleModerator: {
+   //      return {
+   //       users: { some: { id: { equals: session.data.id } } },
+   //      };
+   //     }
+   //     case RoleDemo: {
+   //      console.log("Filter query session", session.data);
+   //      if (session.data.expirationDate) {
+   //       const expirationDate = new Date(session.data.expirationDate);
+   //       const now = new Date();
+   //       if (expirationDate.getTime() < now.getTime()) {
+   //        throw Error("You have expired access date");
+   //        // return false;
+   //       }
+   //      }
+   //      return {
+   //       users: { some: { id: { equals: session.data.id } } },
+   //       isPublished: { equals: true },
+   //      };
+   //     }
+   //    }
+   //   }
+   //   return false;
+   //   //  return Boolean(session) ? true : { isPublished: { equals: true } };
+   //  },
+   // },
   },
   ui: {
    labelField: "title",
