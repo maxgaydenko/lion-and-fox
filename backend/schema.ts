@@ -281,21 +281,33 @@ export const lists: Lists = {
      itemView: { fieldMode: "edit" },
     },
     access: {
-     read: ({ session, item }: { session: Session; item: any }) => {
+     read: async ({ session, item, context }: { session: Session; item: any; context: any }) => {
       if (session && session.data) {
-       console.log("Access read", session, item);
-       console.log("Item", item.users);
+      //  const users = await context.db.User.findMany({
+      //   where: {
+      //    AND: [{ id: { equals: session.data.id } }, { showcases: { some: { id: { equals: item.id } } } }],
+      //   },
+      //  });
+      //  console.log("Showcase", item.title);
+      //  console.log(`id: ${item.id}, userId: ${session.data.id}`);
+      //  console.log("Users", users);
+      //  console.log("------------");
        switch (session.data.role) {
         case RoleAdmin:
          return true;
         case RoleModerator:
          return true;
         case RoleDemo:
-         return false;
-         // return {
-         //  users: { some: { id: { equals: session.data.id } } },
-         //  isPublished: { equals: true },
-         // };
+         const users = await context.db.User.findMany({
+          where: {
+           AND: [{ id: { equals: session.data.id } }, { showcases: { some: { id: { equals: item.id } } } }],
+          },
+         });
+         return Boolean(users.length > 0);
+        // return {
+        //  users: { some: { id: { equals: session.data.id } } },
+        //  isPublished: { equals: true },
+        // };
        }
       }
       return false;
