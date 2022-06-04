@@ -331,6 +331,10 @@
    div.thumb-hov {
     cursor: pointer;
    }
+   div.thumb-unauth {
+    cursor: pointer;
+    opacity: .2;
+   }
 
    div.thumb-wout-logo {
     background-image: none !important;

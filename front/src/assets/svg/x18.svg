@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Icons / X</title>
+    <g id="Desktop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="PRESENTATIONS-/-Presentation" transform="translate(-1403.000000, -11.000000)">
+            <g id="Icons-/-X" transform="translate(1392.000000, 0.000000)">
+                <rect id="transp" fill-opacity="0" fill="#D8D8D8" x="0" y="0" width="40" height="40"></rect>
+                <g id="x" transform="translate(12.274406, 12.274406)" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+                    <path d="M15.0976352,0.353553391 L0.353553391,15.0976352 M0.353553391,0.353553391 L15.0976352,15.0976352"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -85,7 +85,7 @@
    cursor: pointer;
   }
   button.gallery-button:disabled {
-   opacity: .2;
+   opacity: 0.2;
    cursor: not-allowed;
   }
 
@@ -124,6 +124,43 @@
 
     .active {
      opacity: 0.8;
+    }
+   }
+  }
+ }
+
+ .popup-auth {
+  max-width: 496px;
+  margin: 0 auto;
+  padding-top: calc(100vh/2 - 208px / 2);
+  .box {
+   margin: 0 16px;
+   box-sizing: border-box;
+   background: rgba(255, 255, 255, 0.4);
+   border-radius: 24px;
+   .label {
+    padding: 24px 32px 66px;
+    text-transform: uppercase;
+    color: #000616;
+   }
+   .action {
+    padding: 24px 32px;
+    text-align: right;
+    button.close {
+     border: none;
+     background: #00fb99;
+     white-space: nowrap;
+     font-size: 15px;
+     line-height: 40px;
+     display: inline-block;
+     padding: 0 36px;
+     color: #000;
+     cursor: pointer;
+     transition: all $menu-duration linear;
+    }
+    button.close:hover {
+     color: #333;
+     // opacity: .8;
     }
    }
   }
@@ -215,7 +252,7 @@
    //  left: calc(-100vw - 100vh + 100px);
    //  top: calc(-100vw - 50vh - 56px);
    left: calc(-100vw - var(--app-height) + 100px);
-   top: calc(-100vw - var(--app-height)/2 - 56px);
+   top: calc(-100vw - var(--app-height) / 2 - 56px);
   }
  }
 

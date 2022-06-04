@@ -91,9 +91,10 @@ const App: React.FC<IProps> = (props: IProps) => {
       <Routes>
        <Route path="/" element={<PageHome onPageReady={homePageLoaded} />} />
        {props.siteStruct.urls.map((f, i) => (
-        <Route key={`pageRoute-${i}`} path={f} element={<Page url={f} pages={props.siteStruct.pages} onPageReady={pageLoaded} />} />
+        <Route key={`pageRoute-${i}`} path={f} element={<Page url={f} pages={props.siteStruct.pages} onPageReady={pageLoaded} showPopupGallery={f => setPopupGallery(f)} />} />
        ))}
-       {props.user && <Route path="presentations" element={<PagePresentations user={props.user} onPageReady={pageLoaded} showPopupGallery={f => setPopupGallery(f)} />} />}
+       {<Route path="presentations" element={<PagePresentations user={props.user} onPageReady={pageLoaded} showPopupGallery={f => setPopupGallery(f)} />} />}
+       {/* {props.user && <Route path="presentations" element={<PagePresentations user={props.user} onPageReady={pageLoaded} showPopupGallery={f => setPopupGallery(f)} />} />} */}
        {!props.user && <Route path="login" element={<PageLogin onPageReady={homePageLoaded} />} />}
        <Route path="demo/:code" element={<PageDemo onPageReady={homePageLoaded} />} />
        <Route path="*" element={<PageError onPageReady={pageLoaded} title="Ooops" message="Page not found" />} />

@@ -4,7 +4,7 @@ import ImageGallery from "react-image-gallery";
 export interface IPopupGallery {
  key: string;
  title: string;
- gallery: string[];
+ gallery: string[] | null;
 }
 
 export interface IPopupGalleryProps {
@@ -13,9 +13,7 @@ export interface IPopupGalleryProps {
 }
 
 export const PopupGallery: React.FC<IPopupGalleryProps> = ({popupGallery,onClose}: IPopupGalleryProps) => {
- return (
-  // <TransitionGroup component={null}>
-  //  <CSSTransition key={props.key} classNames="PageFade" timeout={400}>
+ return (popupGallery.gallery!==null && popupGallery.gallery.length > 0)? (
   <div className="PopupGallery">
    <div className="popup-head">
     <div className="title">{popupGallery.title}</div>
@@ -43,7 +41,14 @@ export const PopupGallery: React.FC<IPopupGalleryProps> = ({popupGallery,onClose
     </div>
    </div>
   </div>
-  //  </CSSTransition>
-  // </TransitionGroup>
+ ): (
+  <div className="PopupGallery">
+   <div className="popup-auth">
+    <div className="box">
+     <div className="label">Authorization required</div>
+     <div className="action"><button className="close" onClick={onClose}>OK</button></div>
+    </div>
+   </div>
+  </div>
  );
 };

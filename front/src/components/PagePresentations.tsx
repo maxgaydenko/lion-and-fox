@@ -29,7 +29,7 @@ interface IResult {
 }
 
 interface IProps {
- user: IAuthUser;
+ user: IAuthUser | null;
  onPageReady: () => void;
  showPopupGallery: (popupGallery: IPopupGallery) => void;
 }
@@ -75,7 +75,7 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
   props.onPageReady();
  }, []);
 
- const isAdmin = Boolean(props.user.role === "admin");
+ const isAdmin = Boolean(props.user !== null && props.user.role === "admin");
 
  //  const onSelectShowcase = (showcaseIdx: number) => {
  //   if (props.showcases[showcaseIdx] && props.showcases[showcaseIdx].gallery && props.showcases[showcaseIdx].gallery!.length > 0)
@@ -123,17 +123,6 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
 
  return (
   <div className={"Page" + (checkedShowcases === "copyMessage" ? " copyMessageShown" : "")}>
-   {/*selectedShowcaseIdx !== null &&
-    props.showcases[selectedShowcaseIdx] &&
-    props.showcases[selectedShowcaseIdx].gallery &&
-    props.showcases[selectedShowcaseIdx].gallery!.length > 0 && (
-     <PopupPresentation
-      key={`showcase-${selectedShowcaseIdx}`}
-      title={props.showcases[selectedShowcaseIdx].title}
-      gallery={props.showcases[selectedShowcaseIdx].gallery!}
-      onClose={onHideShowcase}
-     />
-    )*/}
    {isAdmin && (
     <div className="messageBlock">
      <button className="close" onClick={() => setCheckedShowcases([])}>
@@ -159,7 +148,7 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
       {props.showcases.map((f, i) => (
        <li key={i}>
         <div
-         className={"thumb" + (f.img && f.img.url ? " thumb-wout-logo" : "") + (f.gallery && f.gallery.length > 0 ? " thumb-hov" : "")}
+         className={"thumb" + (f.img && f.img.url ? " thumb-wout-logo" : "") + (f.gallery && f.gallery.length > 0 ? " thumb-hov" : " thumb-unauth")}
          onClick={() => onSelectPresentation(f, i)}>
          {f.img && f.img.url && (
           <div className={"thumb-img"} style={{ backgroundImage: `url(${process.env.REACT_APP_BACKEND_URL + f.img.url})` }}></div>

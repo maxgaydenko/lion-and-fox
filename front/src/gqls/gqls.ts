@@ -44,6 +44,7 @@ export const GET_PAGE_BODY = gql`
     img {
      url
     }
+    gallery
    }
   }
  }
