@@ -35,7 +35,7 @@ function AppLoader() {
   // return <div>{error.message}</div>;
  }
 
- if (data) console.log("App user: ", data.authenticatedItem? `${data.authenticatedItem.name} [${data.authenticatedItem.role}]`: null);
+ if (data) console.log("App user: ", data.authenticatedItem ? `${data.authenticatedItem.name} [${data.authenticatedItem.role}]` : null);
 
  return data ? (
   <Router>
@@ -70,8 +70,9 @@ const App: React.FC<IProps> = (props: IProps) => {
  };
 
  const sidebarUserName = (): string | undefined => {
-  if (props.user) {
-   return props.user.role === "demo" ? props.user.name.substring(0, 18) : props.user.name;
+  if (props.user && props.user.role !== "demo") {
+   return props.user.name;
+   // return props.user.role === "demo" ? props.user.name.substring(0, 18) : props.user.name;
   }
   return undefined;
  };
@@ -99,14 +100,13 @@ const App: React.FC<IProps> = (props: IProps) => {
          element={<Page url={f} pages={props.siteStruct.pages} onPageReady={pageLoaded} showPopupGallery={f => setPopupGallery(f)} />}
         />
        ))}
-       {
-        <Route
-         path="presentations"
-         element={<PagePresentations user={props.user} onPageReady={pageLoaded} showPopupGallery={f => setPopupGallery(f)} />}
-        />
-       }
+       <Route
+        path="presentations"
+        element={<PagePresentations user={props.user} onPageReady={pageLoaded} showPopupGallery={f => setPopupGallery(f)} />}
+       />
+       <Route path="login" element={<PageLogin onPageReady={homePageLoaded} />} />
        {/* {props.user && <Route path="presentations" element={<PagePresentations user={props.user} onPageReady={pageLoaded} showPopupGallery={f => setPopupGallery(f)} />} />} */}
-       {!props.user && <Route path="login" element={<PageLogin onPageReady={homePageLoaded} />} />}
+       {/* {!props.user && <Route path="login" element={<PageLogin onPageReady={homePageLoaded} />} />} */}
        <Route path="demo/:code" element={<PageDemo onPageReady={homePageLoaded} />} />
        <Route path="*" element={<PageError onPageReady={pageLoaded} title="Ooops" message="Page not found" />} />
       </Routes>
@@ -114,7 +114,7 @@ const App: React.FC<IProps> = (props: IProps) => {
     </div>
     <Sidebar userName={sidebarUserName()} onMenuHide={() => setMenuShown(false)} onMenuClick={() => setMenuShown(!menuShown)} />
     <Menu
-     userName={props.user ? props.user.name : undefined}
+     userName={props.user && props.user.role !== "demo" ? props.user.name : undefined}
      onMenuHide={() => setMenuShown(false)}
      menu={props.siteStruct.menu}
      pages={props.siteStruct.pages}

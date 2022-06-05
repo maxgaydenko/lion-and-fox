@@ -18,7 +18,6 @@ export const PageLogin: React.FC<IPageLoginProps> = ({onPageReady}: IPageLoginPr
  };
 
  if (data && data.authenticate) {
-  console.log('Data', data);
   if (data.authenticate.__typename === "UserAuthenticationWithPasswordSuccess") {
    onAppLogin(data.authenticate.sessionToken);
   }
@@ -46,9 +45,7 @@ const PageLoginWrapper: React.FC<IPageLoginWrapperProps> = ({ onSubmit, loading,
 
  const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
-  console.log('submit', login, passwd);
   onSubmit(login, passwd);
-  // loginHandler({ variables: { login, passwd } })
  };
 
  return (
@@ -73,7 +70,7 @@ const PageLoginWrapper: React.FC<IPageLoginWrapperProps> = ({ onSubmit, loading,
       {error && !loading && <div className="err">{error}</div>}
       <div className="buttons">
        {loading ? (
-        <button disabled>Wait...</button>
+        <button disabled={true}>Wait...</button>
        ) : (
         <button type="submit" disabled={!(login && passwd)}>
          Log in

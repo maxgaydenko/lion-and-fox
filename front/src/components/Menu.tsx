@@ -69,7 +69,7 @@ export const Menu: React.FC<IProps> = (props: IProps) => {
       <li className="section">
        <a href="mailto:alive@lionandfox.co.uk">contact</a>
       </li>
-      {props.userName ? (
+      {(props.userName) ? (
        <React.Fragment>
         <li className="section">
          <Link onClick={props.onMenuHide} to="/presentations">

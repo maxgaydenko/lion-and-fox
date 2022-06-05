@@ -97,20 +97,24 @@
    button {
     font-size: 15px;
     line-height: 38px;
-    color: #fff;
     padding: 0 24px;
-    background: none;
-    border: 1px #fff solid;
+    opacity: 0.8;
+    border: 1px #00fb99 solid;
+    background: #00fb99;
+    color: #000;
     cursor: pointer;
     transition: all $hover-duration linear;
    }
 
    button:hover {
-    opacity: 0.9;
+    opacity: 1;
    }
 
    button:disabled {
     cursor: not-allowed;
+    background: none;
+    border: 1px #fff solid;
+    color: #fff;
     opacity: 0.4;
    }
   }
