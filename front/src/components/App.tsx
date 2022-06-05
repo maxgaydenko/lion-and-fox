@@ -35,6 +35,8 @@ function AppLoader() {
   // return <div>{error.message}</div>;
  }
 
+ if (data) console.log("App user: ", data.authenticatedItem? `${data.authenticatedItem.name} [${data.authenticatedItem.role}]`: null);
+
  return data ? (
   <Router>
    <>
@@ -91,9 +93,18 @@ const App: React.FC<IProps> = (props: IProps) => {
       <Routes>
        <Route path="/" element={<PageHome onPageReady={homePageLoaded} />} />
        {props.siteStruct.urls.map((f, i) => (
-        <Route key={`pageRoute-${i}`} path={f} element={<Page url={f} pages={props.siteStruct.pages} onPageReady={pageLoaded} showPopupGallery={f => setPopupGallery(f)} />} />
+        <Route
+         key={`pageRoute-${i}`}
+         path={f}
+         element={<Page url={f} pages={props.siteStruct.pages} onPageReady={pageLoaded} showPopupGallery={f => setPopupGallery(f)} />}
+        />
        ))}
-       {<Route path="presentations" element={<PagePresentations user={props.user} onPageReady={pageLoaded} showPopupGallery={f => setPopupGallery(f)} />} />}
+       {
+        <Route
+         path="presentations"
+         element={<PagePresentations user={props.user} onPageReady={pageLoaded} showPopupGallery={f => setPopupGallery(f)} />}
+        />
+       }
        {/* {props.user && <Route path="presentations" element={<PagePresentations user={props.user} onPageReady={pageLoaded} showPopupGallery={f => setPopupGallery(f)} />} />} */}
        {!props.user && <Route path="login" element={<PageLogin onPageReady={homePageLoaded} />} />}
        <Route path="demo/:code" element={<PageDemo onPageReady={homePageLoaded} />} />
@@ -102,7 +113,12 @@ const App: React.FC<IProps> = (props: IProps) => {
      </div>
     </div>
     <Sidebar userName={sidebarUserName()} onMenuHide={() => setMenuShown(false)} onMenuClick={() => setMenuShown(!menuShown)} />
-    <Menu userName={props.user ? props.user.name : undefined} onMenuHide={() => setMenuShown(false)} menu={props.siteStruct.menu} pages={props.siteStruct.pages} />
+    <Menu
+     userName={props.user ? props.user.name : undefined}
+     onMenuHide={() => setMenuShown(false)}
+     menu={props.siteStruct.menu}
+     pages={props.siteStruct.pages}
+    />
    </div>
   </div>
  );

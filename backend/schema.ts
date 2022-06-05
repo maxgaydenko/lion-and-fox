@@ -9,6 +9,7 @@ import { envImagesStoragePath } from "./env";
 import { RoleAdmin, RoleDemo, RoleModerator } from "./roles";
 import { BaseItem } from "@keystone-6/core/types";
 import { graphql } from "@graphql-ts/schema";
+import { session } from "./auth";
 
 type Session = {
  data: {
@@ -27,7 +28,7 @@ type Session = {
 
 const isUser = ({ session }: { session: Session }) => Boolean(session && session.data && session.data.id);
 
-const isAdmin = ({ session }: { session: Session }) => {
+export const isAdmin = ({ session }: { session: Session }) => {
  return Boolean(session && session.data && session.data.role === RoleAdmin);
 };
 
@@ -90,7 +91,7 @@ export const lists: Lists = {
     type: "string",
     options: [
      { label: "Admin", value: RoleAdmin },
-     { label: "Moderator", value: RoleModerator },
+     { label: "Staff", value: RoleModerator },
      { label: "Demo", value: RoleDemo },
     ],
     defaultValue: RoleModerator,
@@ -283,21 +284,27 @@ export const lists: Lists = {
     access: {
      read: async ({ session, item, context }: { session: Session; item: any; context: any }) => {
       if (session && session.data) {
-      //  const users = await context.db.User.findMany({
-      //   where: {
-      //    AND: [{ id: { equals: session.data.id } }, { showcases: { some: { id: { equals: item.id } } } }],
-      //   },
-      //  });
-      //  console.log("Showcase", item.title);
-      //  console.log(`id: ${item.id}, userId: ${session.data.id}`);
-      //  console.log("Users", users);
-      //  console.log("------------");
+       //  const users = await context.db.User.findMany({
+       //   where: {
+       //    AND: [{ id: { equals: session.data.id } }, { showcases: { some: { id: { equals: item.id } } } }],
+       //   },
+       //  });
+       //  console.log("Showcase", item.title);
+       //  console.log(`id: ${item.id}, userId: ${session.data.id}`);
+       //  console.log("Users", users);
+       //  console.log("------------");
        switch (session.data.role) {
         case RoleAdmin:
          return true;
         case RoleModerator:
-         return true;
         case RoleDemo:
+         if (session.data.expirationDate) {
+          const expirationDate = new Date(session.data.expirationDate);
+          const now = new Date();
+          if (expirationDate.getTime() < now.getTime()) {
+           return false;
+          }
+         }
          const users = await context.db.User.findMany({
           where: {
            AND: [{ id: { equals: session.data.id } }, { showcases: { some: { id: { equals: item.id } } } }],
