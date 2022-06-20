@@ -8,8 +8,9 @@ import { Lists } from ".keystone/types";
 import { envImagesStoragePath } from "./env";
 import { RoleAdmin, RoleDemo, RoleModerator } from "./roles";
 import { BaseItem } from "@keystone-6/core/types";
-import { graphql } from "@graphql-ts/schema";
-import { session } from "./auth";
+// import { graphql } from "@graphql-ts/schema";
+// import { session } from "./auth";
+import { componentBlocks } from "./page-component-blocks";
 
 type Session = {
  data: {
@@ -163,6 +164,7 @@ export const lists: Lists = {
    }),
    // menuSection: text(),
    img: image({
+    storage: "localImgs",
     label: "Thumb",
     hooks: {
      // validateInput: ({ resolvedData, addValidationError, operation, fieldKey }) => {
@@ -194,16 +196,8 @@ export const lists: Lists = {
     },
    }),
    content: document({
-    // relationships: {
-    //   popupGallery: {
-    //     label: 'popup gallery',
-    //     kind: "inline",
-    //     listKey: "PopupGallery",
-    //     selection: "title",
-    //   },
-    // },
     formatting: {
-     headingLevels: [1, 2, 3],
+     headingLevels: [1, 2],
      inlineMarks: {
       bold: true,
       italic: true,
@@ -222,6 +216,10 @@ export const lists: Lists = {
     },
     links: true,
     dividers: true,
+    ui: {
+     views: require.resolve('./page-component-blocks'),
+    },
+    componentBlocks,
    }),
    relations: relationship({ ref: "Page", many: true, label: "Related pages" }),
    showcases: relationship({ ref: "Showcase.pages", many: true }),
@@ -264,6 +262,7 @@ export const lists: Lists = {
     },
    }),
    img: image({
+    storage: "localImgs",
     label: "Thumb",
     hooks: {
      validateInput: ({ resolvedData, addValidationError, operation, fieldKey }) => {},
@@ -408,6 +407,47 @@ export const lists: Lists = {
      fs.rm(path, { recursive: true, force: true });
     }
    },
+  },
+ }),
+ PopupVideo: list({
+  fields: {
+   title: text({ validation: { isRequired: true } }),
+   code: text({
+    label: "Code",
+    ui: {
+     displayMode: "textarea"
+    },
+   }),
+  },
+  access: {
+   filter: {
+    query: isUser,
+   },
+  },
+  ui: {
+   listView: {
+    initialColumns: ["title"]
+   }
+  },
+ }),
+ AssetImage: list({
+  fields: {
+   title: text({ validation: { isRequired: true } }),
+   img: image({
+    storage: "localImgs",
+   }),
+  },
+  access: {
+   operation: {
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
+   },
+  },
+  ui: {
+   listView: {
+    initialSort: {field:"title", direction:"ASC"}
+   }
   },
  }),
 };

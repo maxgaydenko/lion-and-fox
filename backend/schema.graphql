@@ -180,13 +180,12 @@ type Page {
   showcasesCount(where: ShowcaseWhereInput! = {}): Int
 }
 
-interface ImageFieldOutput {
+type ImageFieldOutput {
   id: ID!
   filesize: Int!
   width: Int!
   height: Int!
   extension: ImageExtension!
-  ref: String!
   url: String!
 }
 
@@ -282,8 +281,7 @@ input PageRelateToOneForUpdateInput {
 }
 
 input ImageFieldInput {
-  upload: Upload
-  ref: String
+  upload: Upload!
 }
 
 """
@@ -355,26 +353,6 @@ type Showcase {
 
 input ShowcaseWhereUniqueInput {
   id: ID
-}
-
-type LocalImageFieldOutput implements ImageFieldOutput {
-  id: ID!
-  filesize: Int!
-  width: Int!
-  height: Int!
-  extension: ImageExtension!
-  ref: String!
-  url: String!
-}
-
-type CloudImageFieldOutput implements ImageFieldOutput {
-  id: ID!
-  filesize: Int!
-  width: Int!
-  height: Int!
-  extension: ImageExtension!
-  ref: String!
-  url: String!
 }
 
 input ShowcaseWhereInput {
@@ -477,6 +455,84 @@ input PopupGalleryCreateInput {
   gallery: JSON
 }
 
+type PopupVideo {
+  id: ID!
+  title: String
+  code: String
+}
+
+input PopupVideoWhereUniqueInput {
+  id: ID
+}
+
+input PopupVideoWhereInput {
+  AND: [PopupVideoWhereInput!]
+  OR: [PopupVideoWhereInput!]
+  NOT: [PopupVideoWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  code: StringFilter
+}
+
+input PopupVideoOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  code: OrderDirection
+}
+
+input PopupVideoUpdateInput {
+  title: String
+  code: String
+}
+
+input PopupVideoUpdateArgs {
+  where: PopupVideoWhereUniqueInput!
+  data: PopupVideoUpdateInput!
+}
+
+input PopupVideoCreateInput {
+  title: String
+  code: String
+}
+
+type AssetImage {
+  id: ID!
+  title: String
+  img: ImageFieldOutput
+}
+
+input AssetImageWhereUniqueInput {
+  id: ID
+}
+
+input AssetImageWhereInput {
+  AND: [AssetImageWhereInput!]
+  OR: [AssetImageWhereInput!]
+  NOT: [AssetImageWhereInput!]
+  id: IDFilter
+  title: StringFilter
+}
+
+input AssetImageOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+}
+
+input AssetImageUpdateInput {
+  title: String
+  img: ImageFieldInput
+}
+
+input AssetImageUpdateArgs {
+  where: AssetImageWhereUniqueInput!
+  data: AssetImageUpdateInput!
+}
+
+input AssetImageCreateInput {
+  title: String
+  img: ImageFieldInput
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -516,6 +572,24 @@ type Mutation {
   updatePopupGalleries(data: [PopupGalleryUpdateArgs!]!): [PopupGallery]
   deletePopupGallery(where: PopupGalleryWhereUniqueInput!): PopupGallery
   deletePopupGalleries(where: [PopupGalleryWhereUniqueInput!]!): [PopupGallery]
+  createPopupVideo(data: PopupVideoCreateInput!): PopupVideo
+  createPopupVideos(data: [PopupVideoCreateInput!]!): [PopupVideo]
+  updatePopupVideo(
+    where: PopupVideoWhereUniqueInput!
+    data: PopupVideoUpdateInput!
+  ): PopupVideo
+  updatePopupVideos(data: [PopupVideoUpdateArgs!]!): [PopupVideo]
+  deletePopupVideo(where: PopupVideoWhereUniqueInput!): PopupVideo
+  deletePopupVideos(where: [PopupVideoWhereUniqueInput!]!): [PopupVideo]
+  createAssetImage(data: AssetImageCreateInput!): AssetImage
+  createAssetImages(data: [AssetImageCreateInput!]!): [AssetImage]
+  updateAssetImage(
+    where: AssetImageWhereUniqueInput!
+    data: AssetImageUpdateInput!
+  ): AssetImage
+  updateAssetImages(data: [AssetImageUpdateArgs!]!): [AssetImage]
+  deleteAssetImage(where: AssetImageWhereUniqueInput!): AssetImage
+  deleteAssetImages(where: [AssetImageWhereUniqueInput!]!): [AssetImage]
   endSession: Boolean!
   authenticateUserWithPassword(
     email: String!
@@ -579,6 +653,22 @@ type Query {
   ): [PopupGallery!]
   popupGallery(where: PopupGalleryWhereUniqueInput!): PopupGallery
   popupGalleriesCount(where: PopupGalleryWhereInput! = {}): Int
+  popupVideos(
+    where: PopupVideoWhereInput! = {}
+    orderBy: [PopupVideoOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [PopupVideo!]
+  popupVideo(where: PopupVideoWhereUniqueInput!): PopupVideo
+  popupVideosCount(where: PopupVideoWhereInput! = {}): Int
+  assetImages(
+    where: AssetImageWhereInput! = {}
+    orderBy: [AssetImageOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [AssetImage!]
+  assetImage(where: AssetImageWhereUniqueInput!): AssetImage
+  assetImagesCount(where: AssetImageWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

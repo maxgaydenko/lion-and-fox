@@ -3,11 +3,14 @@ import React from "react";
 import ImageGallery from "react-image-gallery";
 import { Link } from "react-router-dom";
 import { GET_PAGE_BODY } from "../gqls/gqls";
-import { DocumentRenderer } from "../utils/document-renderer";
-import { ISiteStruct, TSiteStructPagesMap } from "../utils/struct";
+import { renderers } from "../utils/custom-renderers";
+import { DocumentRenderer } from '@keystone-6/document-renderer';
+// import { DocumentRenderer } from "../utils/document-renderer";
+import { TSiteStructPagesMap } from "../utils/struct";
 import { Header } from "./Header";
 import { PageError } from "./PageError";
 import { IPopupGallery } from "./PopupGallery";
+import { componentBlockRenderers } from "../utils/component-block-renderers";
 
 interface IResult {
  readonly page: IPageResult;
@@ -116,7 +119,7 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
     )} */}
     {/* {props.page.title && <h1>{props.page.title}</h1>} */}
 
-    <DocumentRenderer document={props.page.content.document} />
+    <DocumentRenderer document={props.page.content.document} renderers={renderers} componentBlocks={componentBlockRenderers} />
 
     {props.page.relations.length > 0 && (
      <ul className="gallery">

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <title>lionandfox</title>
+  <style>
+   body {
+    margin: 0;
+   }
+   iframe {
+    display: block;
+    background: #000;
+    border: none;
+    height: 100vh;
+    width: 100vw;
+   }
+   .formBox {
+   }
+   .formBox form {
+   }
+   .errorBox {
+    display: none;
+   }
+   .inputBox {
+   }
+   .inputBox input {
+   }
+   .actionBox {
+   }
+   .actionBox button {
+   }
+   .actionBox button:hover {
+   }
+   .formBox .error .errorBox {
+    display: block;
+   }
+   body.done .formBox {
+    display: none;
+   }
+   body.hello iframe {
+    display: none;
+   }
+  </style>
+ </head>
+ <body class="hello">
+  <iframe width="100%" height="100%" src="https://lionandfox-dev.web.app/"></iframe>
+  <div class="formBox">
+   <form id="demoForm" onsubmit="return onDemoLogin(this)">
+    <div class="errorBox" id="errorBox"></div>
+    <div class="inputBox"><input autofocus id="demoCode" name="demoCode" type="password" /></div>
+    <div class="actionBox"><button name="demoButton" type="submit">Enter</button></div>
+   </form>
+  </div>
+ </body>
+ <script>
+  function getCookie(name) {
+   let matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"));
+   return matches ? decodeURIComponent(matches[1]) : undefined;
+  }
+  function setCookie(name, value, options = {}) {
+   options = {
+    path: "/",
+    ...options,
+   };
+
+   if (options.expires instanceof Date) {
+    options.expires = options.expires.toUTCString();
+   }
+
+   let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+   for (let optionKey in options) {
+    updatedCookie += "; " + optionKey;
+    let optionValue = options[optionKey];
+    if (optionValue !== true) {
+     updatedCookie += "=" + optionValue;
+    }
+   }
+
+   document.cookie = updatedCookie;
+  }
+
+  function onDemoLogin(f) {
+   const code = f.demoCode.value;
+   f.className = "";
+   f.demoCode.disabled = true;
+   f.demoButton.disabled = true;
+   // if (code !== "12345") {
+   //  document.getElementById("errorBox").innerHTML = "Invalid code";
+   //  f.className = "error";
+   // } else {
+   //  document.getElementById("errorBox").innerHTML = "";
+   //  f.className = "";
+   //  setCookie("demo", "someCode");
+   //  checkSession();
+   // }
+   // f.demoCode.disabled = false;
+   // f.demoButton.disabled = false;
+   fetch("http://localhost:3030/demo", {
+    method: "POST",
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ code }),
+   })
+    .then(r => r.json())
+    .then(r => {
+     console.log("r", r);
+     if (r.code) {
+      document.getElementById("errorBox").innerHTML = "";
+      f.className = "";
+      setCookie("demo", r.code);
+      checkSession();
+     } else {
+      document.getElementById("errorBox").innerHTML = "Invalid code";
+      f.className = "error";
+     }
+     f.demoCode.disabled = false;
+     f.demoButton.disabled = false;
+    })
+    .catch(e => {
+     document.getElementById("errorBox").innerHTML = "Invalid code";
+     f.className = "error";
+     f.demoCode.disabled = false;
+     f.demoButton.disabled = false;
+    });
+   return false;
+  }
+  function checkSession() {
+   const url = window.location.toString().split("?out");
+   console.log("url", url);
+   if (url.length > 1) {
+    setCookie("demo", "");
+    window.location = url[0];
+   } else {
+    const mode = getCookie("demo");
+    if (mode) document.body.className = "done";
+   }
+  }
+  document.addEventListener("DOMContentLoaded", checkSession);
+ </script>
+</html>

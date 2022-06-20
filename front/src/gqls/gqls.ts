@@ -30,7 +30,7 @@ export const GET_PAGE_BODY = gql`
    pageTitle
    gallery
    content {
-    document
+    document(hydrateRelationships:true)
    }
    relations(where: { isPublished: { equals: true } }, orderBy: { pos: asc }) {
     url

@@ -35,7 +35,6 @@ model Page {
   img_extension         String?
   img_width             Int?
   img_height            Int?
-  img_mode              String?
   img_id                String?
   hasBlazon             Boolean    @default(false)
   showNeighborsInHeader Boolean    @default(false)
@@ -59,7 +58,6 @@ model Showcase {
   img_extension String?
   img_width     Int?
   img_height    Int?
-  img_mode      String?
   img_id        String?
   gallery       String?
   users         User[]  @relation("Showcase_users")
@@ -70,4 +68,20 @@ model PopupGallery {
   id      String  @id @default(cuid())
   title   String  @default("")
   gallery String?
+}
+
+model PopupVideo {
+  id    String @id @default(cuid())
+  title String @default("")
+  code  String @default("")
+}
+
+model AssetImage {
+  id            String  @id @default(cuid())
+  title         String  @default("")
+  img_filesize  Int?
+  img_extension String?
+  img_width     Int?
+  img_height    Int?
+  img_id        String?
 }

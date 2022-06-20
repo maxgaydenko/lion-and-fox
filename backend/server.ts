@@ -15,8 +15,24 @@ import {
 export const server: ServerConfig<BaseKeystoneTypeInfo> = {
  cors: true,
  extendExpressApp: (app, createContext) => {
+  app.use(express.json());
   app.use(envFilesBaseUrl, express.static(envFilesStoragePath));
   app.use(envImagesBaseUrl, express.static(envImagesStoragePath));
+  app.post('/demo', (req, res, next) => {
+   console.log('req', req.body);
+   const requestCode = req.body.code;
+   console.log('code', requestCode);
+   const ok = Boolean(requestCode === '12345')
+   let code = '';
+   if(ok) {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZz';
+    for(let i = 0; i < 16; i++) {
+     const idx = Math.floor(Math.random()*alphabet.length)
+     code += alphabet[idx];
+    }
+   }
+   res.json({ok, code})
+  });
   app.post(envImagesGalleryFormUrl, (req, res, next) => {
    const form = formidable({ multiples: false });
    form.parse(req, async (_err, fields, files) => {
