@@ -1,0 +1,439 @@
+.Page {
+ position: relative;
+
+ .messageBlock {
+  position: absolute;
+  z-index: 101;
+  right: 0;
+  top: -100px;
+  margin-top: -5px;
+  width: 100%;
+  transition: all 450ms ease-in-out;
+  button.close {
+   border: none;
+   background: #00fb99;
+   white-space: nowrap;
+   font-size: 15px;
+   line-height: 38px;
+   display: block;
+   width: 100%;
+   padding: 4px;
+   color: #000;
+   cursor: pointer;
+   transition: all $menu-duration linear;
+  }
+  button.close:hover {
+   color: #333;
+   // opacity: .8;
+  }
+ }
+
+ .head {
+  display: flex;
+  justify-content: space-between;
+
+  .bc {
+   color: #ffffff;
+   font-size: 15px;
+
+   .section {
+    text-transform: uppercase;
+    font-weight: 300;
+    letter-spacing: 2px;
+    line-height: 32px;
+    a {
+     color: inherit;
+     text-decoration: none;
+    }
+   }
+
+   .neighbors {
+    // display: none;
+
+    ul {
+     list-style: none;
+     margin: 0;
+     padding: 8px 0 0;
+
+     li {
+      display: inline-block;
+      letter-spacing: 0;
+      line-height: 32px;
+      margin-right: 32px;
+
+      a {
+       color: inherit;
+       text-decoration: none;
+       opacity: 0.4;
+       transition: all $hover-duration linear;
+      }
+
+      a:hover {
+       opacity: 1;
+      }
+     }
+
+     li.selected {
+      border-bottom: 1px #00fb99 solid;
+
+      a {
+       opacity: 1;
+      }
+     }
+    }
+   }
+
+   @media (min-width: $tablet-min-width) {
+    .neighbors {
+     display: block;
+    }
+   }
+  }
+
+  .ac {
+   margin-top: -4px;
+   position: relative;
+
+   button {
+    font-size: 15px;
+    line-height: 38px;
+    padding: 0 24px;
+    opacity: 0.8;
+    border: 1px #00fb99 solid;
+    background: #00fb99;
+    color: #000;
+    cursor: pointer;
+    transition: all $hover-duration linear;
+   }
+
+   button:hover {
+    opacity: 1;
+   }
+
+   button:disabled {
+    cursor: not-allowed;
+    background: none;
+    border: 1px #fff solid;
+    color: #fff;
+    opacity: 0.4;
+   }
+  }
+
+  .blazon {
+   width: 140px;
+   height: 140px;
+   background: url("../assets/png/LF_logo.png") 0 0 no-repeat;
+   background-size: contain;
+   opacity: 0.8;
+
+   @media (min-width: $tablet-min-width) {
+    width: 64px;
+    height: 64px;
+    position: fixed;
+    z-index: 201;
+    left: 100px - 32px;
+    top: 47px;
+    @media (max-height:$tablet-album-min-height) {
+     display: none;
+    }
+   }
+
+   @media (min-width: $desktop-min-width) {
+    width: 140px;
+    height: 140px;
+    left: 200px - 70px;
+   }
+  }
+ }
+
+ .body {
+  padding: 64px 0 0;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 300;
+
+  h1 {
+   font-weight: 100;
+   font-size: 24px;
+   line-height: 33px;
+   padding: 0;
+   margin: 0;
+  }
+
+  p {
+   margin: 0;
+   padding: 28px 0 0;
+   line-height: 28px;
+  }
+
+  ul,
+  ol {
+   margin: 0 0 0 32px;
+   padding: 28px 0 0;
+  }
+
+  hr {
+   margin-top: 28px;
+  }
+
+  a {
+   color: #00fb99;
+   text-decoration: none;
+   transition: all $hover-duration linear;
+  }
+
+  a:hover {
+   opacity: 0.6;
+  }
+
+  .wideImg {
+   padding: 28px 0 0;
+
+   // .image-gallery-icon {
+   //  opacity: .6;
+   //  transition: all $menu-duration linear;
+
+   //  .image-gallery-svg {
+   //   width: 30px;
+   //   height: 60px;
+   //  }
+   // }
+
+   // .image-gallery-icon:hover {
+   //  color: #00FB99;
+   // }
+
+   // .image-gallery-bullets .image-gallery-bullet {
+   //  opacity: .6;
+   // }
+
+   // .image-gallery-bullets .image-gallery-bullet:hover {
+   //  opacity: 1;
+   //  background: #00FB99;
+   //  border: 1px solid #00FB99;
+   // }
+
+   button.gallery-button {
+    position: absolute;
+    z-index: 4;
+    top: 50%;
+    margin-top: -20px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.4);
+    background-position: center center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+   }
+   button.gallery-button:disabled {
+    opacity: .2;
+    cursor: not-allowed;
+   }
+ 
+   button.gallery-button-prev {
+    @extend %svg-shevron;
+    left: 8px;
+    transform: rotate(180deg);
+   }
+
+   button.gallery-button-next {
+    @extend %svg-shevron;
+    right: 8px;
+   }
+
+   .image-gallery-bullets {
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    margin: 8px 0 0;
+
+    .image-gallery-bullets-container {
+     text-align: left;
+
+     .image-gallery-bullet {
+      border: none;
+      background: #fff;
+      opacity: 0.2;
+      transition: all $menu-duration linear;
+      box-shadow: none;
+      margin: 0 16px 0 0;
+      padding: 3px;
+     }
+
+     .active {
+      opacity: 1;
+     }
+    }
+   }
+
+   // img {
+   //  max-width: 100%;
+   // }
+  }
+ }
+
+ ul.gallery {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+   padding: 0 0 32px;
+   margin: 0;
+
+   a {
+    display: block;
+   }
+
+   a:hover {
+    opacity: 1;
+
+    div.thumb {
+     div.thumb-img {
+      left: -16px;
+      top: -16px;
+      right: -16px;
+      bottom: -16px;
+     }
+    }
+
+    div.name {
+     opacity: 1;
+    }
+   }
+
+   div.thumb {
+    position: relative;
+    overflow: hidden;
+    height: 0;
+    width: 100%;
+    padding-bottom: 100%;
+    background-color: rgba(255, 255, 255, 0.2);
+    @extend %svg-logo40;
+    background-size: 13px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    transition: all $hover-duration linear;
+
+    .thumb-img {
+     position: absolute;
+     left: 0;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     background-size: cover;
+     background-repeat: no-repeat;
+     background-position: center center;
+     transition: all $hover-duration ease-in-out;
+     opacity: 0.8;
+    }
+   }
+
+   div.thumb-hov {
+    cursor: pointer;
+   }
+   div.thumb-unauth {
+    cursor: pointer;
+    opacity: .2;
+   }
+
+   div.thumb-wout-logo {
+    background-image: none !important;
+   }
+
+   div.thumb-hov:hover {
+    .thumb-img {
+     left: -16px;
+     top: -16px;
+     right: -16px;
+     bottom: -16px;
+    }
+   }
+
+   div.name {
+    padding-top: 8px;
+    font-size: 15px;
+    line-height: 27px;
+    color: #fff;
+    opacity: 0.6;
+    transition: all $hover-duration linear;
+   }
+
+   label.checkbox {
+    display: inline-block;
+    padding-top: 8px;
+    font-size: 15px;
+    line-height: 27px;
+    color: #fff;
+    opacity: 0.6;
+
+    input {
+     vertical-align: middle;
+    }
+
+    span {
+     vertical-align: middle;
+     margin-left: 4px;
+    }
+   }
+  }
+
+  li.selected {
+   .thumb {
+    background-color: #0000ff66;
+   }
+  }
+ }
+
+ @media (min-width: $gallery-2cols-width) {
+  ul.gallery {
+   margin-left: -40px;
+   display: flex;
+   flex-wrap: wrap;
+
+   li {
+    box-sizing: border-box;
+    width: 50%;
+    padding-left: 40px;
+   }
+  }
+ }
+
+ @media (min-width: $gallery-3cols-width) {
+  ul.gallery {
+   li {
+    width: 33.33%;
+   }
+  }
+ }
+}
+
+.PageFade-enter {
+ opacity: 0;
+ transform: scale(0.9);
+}
+
+.PageFade-enter-active {
+ opacity: 1;
+ transform: translateX(0);
+ transition: opacity 400ms;
+}
+
+.PageFade-exit {
+ opacity: 1;
+}
+
+.PageFade-exit-active {
+ opacity: 0;
+ transform: scale(0.9);
+ transition: opacity 400ms;
+}
+
+.Page.copyMessageShown {
+ .messageBlock {
+  top: 0;
+ }
+}
