@@ -49,6 +49,7 @@
 
    .neighbors {
     // display: none;
+    font-size: 17px;
 
     ul {
      list-style: none;
@@ -154,8 +155,7 @@
   font-family: Helvetica, sans-serif;
 
   h1 {
-   // font-family: inherit;
-   font-weight: 100;
+   font-weight: 400;
    font-size: 24px;
    line-height: 32px;
    padding: 0;
@@ -163,13 +163,12 @@
   }
 
   h2 {
-   // font-family: inherit;
    font-weight: 100;
    font-size: 22px;
    line-height: 32px;
    padding: 0;
    margin: 0;
-   padding-top: 31px;
+   padding-top: 24px;
   }
 
   strong, b {
@@ -179,20 +178,20 @@
 
   p {
    margin: 0;
-   padding: 31px 0 0;
-   line-height: 31px;
+   padding: 24px 0 0;
+   line-height: 24px;
    font-family: inherit;
   }
 
   ul,
   ol {
    margin: 0 0 0 32px;
-   padding: 31px 0 0;
+   padding: 24px 0 0;
    // font-family: inherit;
   }
 
   hr {
-   margin-top: 31px;
+   margin-top: 24px;
   }
 
   a {
@@ -206,7 +205,7 @@
   }
 
   .pageImg {
-   padding: 31px 0 0;
+   padding: 24px 0 0;
    img {
     display: block;
     max-width: 100%;
@@ -226,7 +225,7 @@
   }
 
   .wideImg {
-   padding: 31px 0 0;
+   padding: 24px 0 0;
 
    // .image-gallery-icon {
    //  opacity: .6;
