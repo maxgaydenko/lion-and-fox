@@ -149,36 +149,50 @@
  .body {
   padding: 64px 0 0;
   color: #fff;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 300;
+  font-family: Helvetica, sans-serif;
 
   h1 {
+   // font-family: inherit;
    font-weight: 100;
    font-size: 24px;
-   line-height: 33px;
+   line-height: 32px;
    padding: 0;
    margin: 0;
   }
 
+  h2 {
+   // font-family: inherit;
+   font-weight: 100;
+   font-size: 22px;
+   line-height: 32px;
+   padding: 0;
+   margin: 0;
+   padding-top: 31px;
+  }
+
   strong, b {
-   // color: pink;
    font-weight: 600;
+   font-family: inherit;
   }
 
   p {
    margin: 0;
-   padding: 28px 0 0;
-   line-height: 28px;
+   padding: 31px 0 0;
+   line-height: 31px;
+   font-family: inherit;
   }
 
   ul,
   ol {
    margin: 0 0 0 32px;
-   padding: 28px 0 0;
+   padding: 31px 0 0;
+   // font-family: inherit;
   }
 
   hr {
-   margin-top: 28px;
+   margin-top: 31px;
   }
 
   a {
@@ -192,7 +206,7 @@
   }
 
   .pageImg {
-   padding: 28px 0 0;
+   padding: 31px 0 0;
    img {
     display: block;
     max-width: 100%;
@@ -212,7 +226,7 @@
   }
 
   .wideImg {
-   padding: 28px 0 0;
+   padding: 31px 0 0;
 
    // .image-gallery-icon {
    //  opacity: .6;
@@ -380,8 +394,9 @@
 
    div.name {
     padding-top: 8px;
-    font-size: 15px;
-    line-height: 27px;
+    font-family: Helvetica, sans-serif;
+    font-size: 17px;
+    line-height: 31px;
     color: #fff;
     opacity: 0.6;
     transition: all $hover-duration linear;
@@ -390,8 +405,9 @@
    label.checkbox {
     display: inline-block;
     padding-top: 8px;
-    font-size: 15px;
-    line-height: 27px;
+    font-family: Helvetica, sans-serif;
+    font-size: 17px;
+    line-height: 31px;
     color: #fff;
     opacity: 0.6;
 

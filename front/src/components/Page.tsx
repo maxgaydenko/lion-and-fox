@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { GET_PAGE_BODY } from "../gqls/gqls";
 import { renderers } from "../utils/custom-renderers";
 import { DocumentRenderer } from '@keystone-6/document-renderer';
-// import { DocumentRenderer } from "../utils/document-renderer";
 import { TSiteStructPagesMap } from "../utils/struct";
 import { Header } from "./Header";
 import { PageError } from "./PageError";

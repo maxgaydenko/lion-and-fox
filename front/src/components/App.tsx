@@ -59,6 +59,25 @@ const App: React.FC<IProps> = (props: IProps) => {
  const [menuShown, setMenuShown] = React.useState<boolean>(false);
  const [popupGallery, setPopupGallery] = React.useState<IPopupGallery>();
 
+ React.useEffect(() => {
+  window.addEventListener("hashchange", () => {
+   const hash = window.location.hash;
+   console.log('Hash changed', hash);
+   const prefix = hash.substring(0, 3);
+   switch(prefix) {
+    case '#g:':
+     linkPopupGallery(hash.substring(3));
+     break;
+    default:
+     // nothing to do
+   }
+  })
+ }, []);
+
+ const linkPopupGallery = (galleryId: string) => {
+  console.log('Link popup gallery ', galleryId);
+ }
+
  const pageLoaded = () => {
   setHomeMarker(false);
   setMenuShown(false);
