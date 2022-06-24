@@ -15,6 +15,7 @@ import { PagePresentations } from "./PagePresentations";
 import { IAuthUser } from "../utils/auth";
 import { PageDemo } from "./PageDemo";
 import { IPopupGallery, PopupGallery } from "./PopupGallery";
+import { LinkPopupGallery } from "./LinkPopupGallery";
 
 interface IStructResult {
  readonly authenticatedItem: IAuthUser | null;
@@ -58,25 +59,43 @@ const App: React.FC<IProps> = (props: IProps) => {
  const [homeMarker, setHomeMarker] = React.useState<boolean>(false);
  const [menuShown, setMenuShown] = React.useState<boolean>(false);
  const [popupGallery, setPopupGallery] = React.useState<IPopupGallery>();
+ const [linkPopupGalleryId, setLinkPopupGalleryId] = React.useState<string>();
 
  React.useEffect(() => {
-  window.addEventListener("hashchange", () => {
+  const onHashChange = () => {
    const hash = window.location.hash;
    console.log('Hash changed', hash);
    const prefix = hash.substring(0, 3);
    switch(prefix) {
     case '#g:':
-     linkPopupGallery(hash.substring(3));
+     setLinkPopupGalleryId(hash.substring(3));
+     // linkPopupGallery(hash.substring(3));
      break;
     default:
      // nothing to do
    }
-  })
+  }
+  window.addEventListener("hashchange", onHashChange);
+  onHashChange();
+  // window.addEventListener("keyup", (e) => {
+  //  console.log('KeyUp', e.key, e.altKey, e.code);
+  //  if(e.altKey && e.code === 'ArrowLeft') {
+  //   console.log('Alt-left');
+  //   console.log('pathname', window.location.pathname);
+  //   window.history.replaceState({}, document.title, window.location.pathname);
+  //  }
+  // })
  }, []);
 
- const linkPopupGallery = (galleryId: string) => {
-  console.log('Link popup gallery ', galleryId);
+ const closeLinkPopupGallery = () => {
+  console.log('clpg');
+  window.history.replaceState({}, document.title, window.location.pathname);
+  setLinkPopupGalleryId(undefined);
  }
+
+ // const linkPopupGallery = (galleryId: string) => {
+ //  console.log('Link popup gallery ', galleryId);
+ // }
 
  const pageLoaded = () => {
   setHomeMarker(false);
@@ -98,6 +117,7 @@ const App: React.FC<IProps> = (props: IProps) => {
 
  return (
   <div className="AppBox">
+   {linkPopupGalleryId && <LinkPopupGallery galleryId={linkPopupGalleryId} onClose={closeLinkPopupGallery} />}
    {popupGallery && <PopupGallery popupGallery={popupGallery} onClose={() => setPopupGallery(undefined)} />}
    <div className={"App" + (homeMarker ? " App-home" : " App-page") + (menuShown ? " App-menu-shown" : "")}>
     <div className="layer-background-video">

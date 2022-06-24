@@ -30,7 +30,7 @@ export const GET_PAGE_BODY = gql`
    pageTitle
    gallery
    content {
-    document(hydrateRelationships:true)
+    document(hydrateRelationships: true)
    }
    relations(where: { isPublished: { equals: true } }, orderBy: { pos: asc }) {
     url
@@ -46,6 +46,15 @@ export const GET_PAGE_BODY = gql`
     }
     gallery
    }
+  }
+ }
+`;
+
+export const GET_POPUP_GALLERY = gql`
+ query GetPopupGallery($id: ID) {
+  popupGallery(where: { id: $id }) {
+   title
+   gallery
   }
  }
 `;

@@ -1,3 +1,30 @@
+@keyframes pulse {
+ 0% {
+  transform: scale(.5);
+ }
+ 50% {
+ }
+ 100% {
+  transform: scale(2.0);
+  border-radius: 100%;
+ }
+}
+.AppPulseLoadingIndicator {
+ position: fixed;
+ z-index: 999;
+ top: 4px;
+ right: 4px;
+ width: 6px;
+ height: 6px;
+ background: white;
+ opacity: .1;
+ animation-name: pulse;
+ animation-duration: 1s;
+ animation-timing-function: ease-out;
+ animation-direction: alternate;
+ animation-iteration-count: infinite;
+ animation-play-state: running;
+}
 .PopupGallery {
  position: fixed;
  z-index: 500;
@@ -132,7 +159,7 @@
  .popup-auth {
   max-width: 496px;
   margin: 0 auto;
-  padding-top: calc(100vh/2 - 208px / 2);
+  padding-top: calc(100vh / 2 - 208px / 2);
   .box {
    margin: 0 16px;
    box-sizing: border-box;
