@@ -1,11 +1,11 @@
 @keyframes pulse {
  0% {
-  transform: scale(.5);
+  transform: scale(0.5);
  }
  50% {
  }
  100% {
-  transform: scale(2.0);
+  transform: scale(2);
   border-radius: 100%;
  }
 }
@@ -17,7 +17,7 @@
  width: 6px;
  height: 6px;
  background: white;
- opacity: .1;
+ opacity: 0.1;
  animation-name: pulse;
  animation-duration: 1s;
  animation-timing-function: ease-out;
@@ -37,7 +37,7 @@
 
  .popup-head {
   position: fixed;
-  z-index: 501;
+  z-index: 502;
   left: 0;
   top: 0;
   right: 0;
@@ -74,6 +74,40 @@
   box-sizing: border-box;
   height: 100%;
 
+  .popup-body-box {
+   display: flex;
+   width: 100%;
+   height: 100%;
+   justify-content: center;
+   align-items: center;
+   .video {
+    position: relative;
+    width: 100%;
+    @media (min-aspect-ratio: 16/9) {
+     height: 100%;
+     background: black;
+    }
+    @media (max-aspect-ratio: 16/9) {
+     padding-top: 56.25%;
+     background: black;
+    }
+
+    iframe {
+     position: absolute;
+     z-index: 501;
+     left: 0;
+     top: 0;
+     @media (min-aspect-ratio: 16/9) {
+      width: 100%;
+      height: 100%;
+     }
+     @media (max-aspect-ratio: 16/9) {
+      width: 100%;
+      height: 100%;
+     }
+    }
+   }
+  }
   .popup-body-vbox {
    display: flex;
    width: 100%;
@@ -294,20 +328,24 @@
  }
 
  .layer-content {
-  margin-left: 64px;
+  // margin-left: 64px;
+  // margin-right: 16px;
+  // padding: 16px 0;
   margin-right: 16px;
-  padding: 16px 0;
+  padding: 16px 0 16px 64px;
   box-sizing: border-box;
   transition: all $menu-duration linear;
 
   @media (min-width: $tablet-min-width) {
-   margin-left: 164px;
+   // margin-left: 164px;
+   padding-left: 164px;
    padding-top: 56px;
    padding-bottom: 56px;
   }
 
   @media (min-width: $desktop-min-width) {
-   margin-left: 224px;
+   // margin-left: 224px;
+   padding-left: 224px;
   }
 
   .content-wrapper {
@@ -365,6 +403,9 @@
  }
  .layer-content {
   filter: blur(10px);
+ }
+ .blazon {
+  opacity: 0;
  }
  .Sidebar {
   display: none;

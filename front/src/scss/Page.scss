@@ -226,7 +226,7 @@
   }
 
   .wideImg {
-   padding: 24px 0 0;
+   padding: 24px 0 40px;
 
    // .image-gallery-icon {
    //  opacity: .6;
@@ -254,16 +254,19 @@
 
    button.gallery-button {
     position: absolute;
-    z-index: 4;
-    top: 50%;
-    margin-top: -20px;
+    top: 100%;
+    // z-index: 4;
+    // top: 50%;
+    // margin-top: -20px;
     width: 40px;
     height: 40px;
     border: none;
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.4);
+    // border-radius: 50%;
+    // background-color: rgba(0, 0, 0, 0.4);
+    background-color: transparent;
     background-position: center center;
     background-repeat: no-repeat;
+    opacity: 0.8;
     cursor: pointer;
    }
    button.gallery-button:disabled {
@@ -273,21 +276,21 @@
  
    button.gallery-button-prev {
     @extend %svg-shevron;
-    left: 8px;
+    right: 40px;
     transform: rotate(180deg);
    }
 
    button.gallery-button-next {
     @extend %svg-shevron;
-    right: 8px;
+    right: 0px;
    }
 
    .image-gallery-bullets {
     top: 100%;
-    left: 0;
-    right: 0;
+    left: 16px;
+    right: 80px;
     width: 100%;
-    margin: 8px 0 0;
+    margin: 14px 0 0;
 
     .image-gallery-bullets-container {
      text-align: left;

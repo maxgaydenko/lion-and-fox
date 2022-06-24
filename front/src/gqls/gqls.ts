@@ -59,6 +59,15 @@ export const GET_POPUP_GALLERY = gql`
  }
 `;
 
+export const GET_POPUP_VIDEO = gql`
+ query GetPopupVideo($id: ID) {
+  popupVideo(where: { id: $id }) {
+   title
+   code
+  }
+ }
+`
+
 export const GET_PROJECT_BODY = gql`
  query GetProject($projectUrl: String!) {
   project(where: { url: $projectUrl }) {

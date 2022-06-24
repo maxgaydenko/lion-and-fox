@@ -7,23 +7,21 @@ export const componentBlockRenderers: InferRenderersForComponentBlocks<typeof co
   if (props.assetImg?.data.img.url) {
    return (
     <div className="pageImg">
-     <img src={process.env.REACT_APP_BACKEND_URL + props.assetImg?.data.img.url} />
+     {props.url ? (
+      <a href={props.url}>
+       <img src={process.env.REACT_APP_BACKEND_URL + props.assetImg?.data.img.url} />
+      </a>
+     ) : (
+      <img src={process.env.REACT_APP_BACKEND_URL + props.assetImg?.data.img.url} />
+     )}
     </div>
    );
   }
   return null;
  },
  videoCode: props => {
-  // if (props.code) return <div dangerouslySetInnerHTML={{ __html: props.code.toString() }} />;
-  if(props.code) {
-   return (
-    <div className="pageVideo" dangerouslySetInnerHTML={{__html: props.code}} />
-   )
-   // const div = document.createElement('div');
-   // div.innerHTML = props.code.toString();
-   // console.log('props', props.code);
-   // const html = div.childNodes.length > 0? div.childNodes[0].nodeValue: null;
-   // return <div dangerouslySetInnerHTML={{__html: html!==null? html: ""}} />
+  if (props.code) {
+   return <div className="pageVideo" dangerouslySetInnerHTML={{ __html: props.code }} />;
   }
   return null;
  },
