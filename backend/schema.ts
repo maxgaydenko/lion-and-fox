@@ -395,9 +395,9 @@ export const lists: Lists = {
    }),
   },
   access: {
-   filter: {
-    query: isUser,
-   },
+   // filter: {
+   //  query: isUser,
+   // },
   },
   ui: {
    listView: {
@@ -424,9 +424,9 @@ export const lists: Lists = {
    }),
   },
   access: {
-   filter: {
-    query: isUser,
-   },
+   // filter: {
+   //  query: isUser,
+   // },
   },
   ui: {
    listView: {
