@@ -10,6 +10,7 @@ import { Header } from "./Header";
 import { PageError } from "./PageError";
 import { IPopupGallery } from "./PopupGallery";
 import { componentBlockRenderers } from "../utils/component-block-renderers";
+import { isGalleryHtml } from "../utils/gallery";
 
 interface IResult {
  readonly page: IPageResult;
@@ -76,18 +77,20 @@ export const LoadedPage: React.FC<ILoadedProps> = (props: ILoadedProps) => {
   });
  };
 
+ const galleryItems = props.page.gallery? props.page.gallery.filter(f => !isGalleryHtml(f)): [];
+
  return (
   <div className="Page">
    <Header url={props.url} pages={props.pages} showNeighbors={props.page.showNeighborsInHeader} hasBlazon={props.page.hasBlazon} />
    <div className="body">
     {props.page.pageTitle && <h1>{props.page.pageTitle}</h1>}
 
-    {props.page.gallery && props.page.gallery.length > 0 && (
+    {galleryItems.length > 0 && (
      <div className="wideImg">
       <ImageGallery
-       items={props.page.gallery.map(f => ({ original: `${process.env.REACT_APP_BACKEND_URL}${f}` }))}
+       items={galleryItems.map(f => ({ original: `${process.env.REACT_APP_BACKEND_URL}${f}` }))}
        autoPlay={false}
-       showBullets={props.page.gallery.length > 1}
+       showBullets={galleryItems.length > 1}
        showPlayButton={false}
        infinite={false}
        showNav={true}

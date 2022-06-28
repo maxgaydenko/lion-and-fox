@@ -118,6 +118,21 @@
    .image-gallery {
     width: 100vw;
    }
+   .embeded-iframe {
+    width: 100%;
+    height: calc(100vh - 80px);
+    border: 0;
+   }
+   .embeded-frame {
+    background: yellowgreen;
+    width: 100%;
+    height: calc(100vh - 80px);
+    iframe {
+     width: 100%;
+     height: calc(100vh - 80px);
+     border: 0;
+    }
+   }
   }
 
   button {

@@ -158,7 +158,7 @@ export const Field = ({ field, value, onChange }: FieldProps<typeof controller>)
     ) : (
      <input
       type="file"
-      accept=".jpg, .jpeg, .png, .svg"
+      accept=".jpg, .jpeg, .png, .svg, .html"
       onChange={e => {
        const files = e.target.files;
        if (files !== null && files.length > 0) {

@@ -399,7 +399,11 @@ export const lists: Lists = {
     query: isUser,
    },
   },
-  ui: {},
+  ui: {
+   listView: {
+    initialColumns: ["title", "id"]
+   }
+  },
   hooks: {
    beforeOperation: ({ item, operation }) => {
     if (operation === "delete" && item) {
@@ -426,7 +430,7 @@ export const lists: Lists = {
   },
   ui: {
    listView: {
-    initialColumns: ["title"]
+    initialColumns: ["title", "id"]
    }
   },
  }),

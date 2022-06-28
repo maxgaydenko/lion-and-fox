@@ -16,6 +16,7 @@ export const server: ServerConfig<BaseKeystoneTypeInfo> = {
  cors: true,
  extendExpressApp: (app, createContext) => {
   app.use(express.json());
+  app.use("/assets", express.static("./assets"));
   app.use(envFilesBaseUrl, express.static(envFilesStoragePath));
   app.use(envImagesBaseUrl, express.static(envImagesStoragePath));
   app.post('/demo', (req, res, next) => {
@@ -47,8 +48,8 @@ export const server: ServerConfig<BaseKeystoneTypeInfo> = {
      if (!fields[envImagesGalleryFormPath]) throw Error("There are no path param");
      const path = (<string>fields[envImagesGalleryFormPath]).replace(/\./g, "");
      const fileParts = file.originalFilename.split(".");
-     if (["jpg", "jpeg", "png", "gif", "svg"].indexOf(fileParts[fileParts.length - 1].toLowerCase()) < 0)
-      throw Error("Invalid image format");
+     if (["jpg", "jpeg", "png", "gif", "svg", "html"].indexOf(fileParts[fileParts.length - 1].toLowerCase()) < 0)
+      throw Error("Invalid file format");
 
      const filePath = `${path}/${new Date().getTime()}/`;
      await fs.mkdir(envImagesStoragePath + filePath, { recursive: true });
